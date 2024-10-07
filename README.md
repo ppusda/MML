@@ -17,11 +17,11 @@
 
 ![MML_ERD](https://github.com/user-attachments/assets/f2d2c64d-5ae6-4fe6-b64d-8cf9717f2566)
 
-## ⚙ API 설계
+## ⚙ API
 ### User
 - `GET /user` - 회원 조회
-- `POST /user` - 회원가입
-- `DELETE /user/n` - n번 회원탈퇴
+- `POST /user` - 회원 가입
+- `DELETE /user/n` - n번 회원 탈퇴
 
 ### Music
 - `GET /music` - 음악 조회
@@ -35,7 +35,7 @@
 - `PATCH /playlist/n` - n번 플레이리스트 정보 수정
 - `DELETE /playlist/n` - n번 플레이리스트 삭제
 
-### Music-Playlist
+### Playlist-Music
 - `POST /playlist/n/music` - n번 플레이리스트에 음악 추가
 - `DELETE /playlist/n/music` - n번 플레이리스트에 음악 삭제
 
