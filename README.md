@@ -19,25 +19,46 @@
 
 ## ⚙ API
 ### User
-- `GET /user` - 회원 조회
+<details>
+  
+  <summary><code>GET /user</code> - 회원 조회</summary>
+
+  **Request**
+  ```json
+  {}
+  ```
+
+  **Response**
+  ```json
+  {
+    "userReponse" : [
+      {
+        "id" : 1,
+        "email" : "ppusda@naver.com"
+      },
+    ]
+  }
+  ```
+
+</details>
 - `POST /user` - 회원 가입
-- `DELETE /user/n` - n번 회원 탈퇴
+- `DELETE /user/{n}` - n번 회원 탈퇴
 
 ### Music
 - `GET /music` - 음악 조회
 - `POST /music` - 음악 등록
-- `PATCH /music/n` - n번 음악 정보 수정
-- `DELETE /music/n` - n번 음악 삭제
+- `PATCH /music/{n}` - n번 음악 정보 수정
+- `DELETE /music/{n}` - n번 음악 삭제
 
 ### Playlist
 - `GET /playlist` - 플레이리스트 조회
 - `POST /playlist` - 플레이리스트 생성
-- `PATCH /playlist/n` - n번 플레이리스트 정보 수정
-- `DELETE /playlist/n` - n번 플레이리스트 삭제
+- `PATCH /playlist/{n}` - n번 플레이리스트 정보 수정
+- `DELETE /playlist/{n}` - n번 플레이리스트 삭제
 
 ### Playlist-Music
-- `POST /playlist/n/music` - n번 플레이리스트에 음악 추가
-- `DELETE /playlist/n/music` - n번 플레이리스트에 음악 삭제
+- `POST /playlist/{n}/music` - n번 플레이리스트에 음악 추가
+- `DELETE /playlist/{n}/music` - n번 플레이리스트에 음악 삭제
 
 ## 📑 참고
 본 프로젝트는 [인프런 워밍업 클럽 스터디 2기 - 백엔드 프로젝트 (Kotlin, Spring Boot)](https://www.inflearn.com/course/offline/warmup-club-2-be-bk) 의 서브 미션을 위한 프로젝트입니다.
