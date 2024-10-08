@@ -36,29 +36,328 @@
         "id" : 1,
         "email" : "ppusda@naver.com"
       },
+      {
+        "id" : 2,
+        "email" : "ppusda1234@gmail.com"
+      },
     ]
   }
   ```
 
 </details>
-- `POST /user` - 회원 가입
-- `DELETE /user/{n}` - n번 회원 탈퇴
+
+<details>
+  
+  <summary><code>POST /user</code> - 회원 가입</summary>
+
+  **Request**
+  ```json
+  {
+    "email" : "ppusda@naver.com",
+    "password" : "1234",
+    "passwordCheck" : "1234"
+  }
+  ```
+
+  **Response**e
+  ```json
+  {}
+  ```
+
+</details>
+
+<details>
+  
+  <summary><code>DELETE /user/{n}</code> - n번 회원 탈퇴</summary>
+
+  **Request**
+  ```json
+  {}
+  ```
+
+  **Response**
+  ```json
+  {}
+  ```
+
+</details>
+
+### User-Sign
+
+<details>
+  
+  <summary><code>POST /user/sign</code> - 회원 로그인</summary>
+
+  **Request**
+  ```json
+  {
+    "email" : "ppusda@naver.com",
+    "password" : "1234"
+  }
+  ```
+
+  **Response**
+  ```json
+  {}
+  ```
+
+</details>
+
+<details>
+  
+  <summary><code>DELETE /user/sign</code> - 회원 로그아웃</summary>
+
+  **Request**
+  ```json
+  {}
+  ```
+
+  **Response**
+  ```json
+  {}
+  ```
+
+</details>
 
 ### Music
-- `GET /music` - 음악 조회
-- `POST /music` - 음악 등록
-- `PATCH /music/{n}` - n번 음악 정보 수정
-- `DELETE /music/{n}` - n번 음악 삭제
+<details>
+  
+  <summary><code>GET /music</code> - 음악 조회</summary>
+
+  **Request**
+  ```json
+  {}
+  ```
+
+  **Response**
+  ```json
+  {
+    "musicResponse" : [
+      {
+        "id" : 1,
+        "title" : "Gang Gang Schiele",
+        "artist" : "혁오",
+        "url" : "https://www.youtube.com/watch?v=WB4547-tSJA",
+      },
+      {
+        "id" : 2,
+        "title" : "멋진헛간 Remix",
+        "artist" : "혁오",
+        "url" : "https://www.youtube.com/watch?v=3DpL4UcCdWk"
+      }
+    ]
+  }
+  ```
+
+</details>
+
+<details>
+  
+  <summary><code>POST /music</code> - 음악 등록</summary>
+
+  **Request**
+  ```json
+  {
+    "title" : "Gang Gang Schiele",
+    "artist" : "혁오",
+    "url" : "https://www.youtube.com/watch?v=WB4547-tSJA",
+  }
+  ```
+
+  **Response**
+  ```json
+  {}
+  ```
+
+</details>
+
+<details>
+  
+  <summary><code>PATCH /music/{n}</code> - n번 음악 정보 수정</summary>
+
+  **Request**
+  ```json
+  {
+    "title" : "멋진헛간 Remix",
+    "artist" : "혁오",
+    "url" : "https://www.youtube.com/watch?v=3DpL4UcCdWk" 
+  }
+  ```
+
+  **Response**
+  ```json
+  {}
+  ```
+
+</details>
+
+<details>
+  
+  <summary><code>DELETE /music/{n}</code> - n번 음악 삭제</summary>
+
+  **Request**
+  ```json
+  {}
+  ```
+
+  **Response**
+  ```json
+  {}
+  ```
+
+</details>
 
 ### Playlist
-- `GET /playlist` - 플레이리스트 조회
-- `POST /playlist` - 플레이리스트 생성
-- `PATCH /playlist/{n}` - n번 플레이리스트 정보 수정
-- `DELETE /playlist/{n}` - n번 플레이리스트 삭제
+
+<details>
+  
+  <summary><code>GET /playlist</code> - 플레이리스트 조회</summary>
+
+  **Request**
+  ```json
+  {}
+  ```
+
+  **Response**
+  ```json
+  {
+    "playlistResponse" : [
+      {
+        "id" : 1,
+        "ownerEmail" : "ppusda@naver.com",
+        "name" : "내가 자주 듣는 혁오 노래 모음집"
+      },
+      {
+        "id" : 2,
+        "ownerEmail" : "ppusda1234@gmail.com",
+        "name" : "혁오"
+      }
+    ]
+  }
+  ```
+
+</details>
+
+<details>
+  
+  <summary><code>POST /playlist</code> - 플레이리스트 생성</summary>
+
+  **Request**
+  ```json
+  {
+    "name" : "내가 자주 듣는 혁오 노래 모음집"
+  }
+  ```
+
+  **Response**
+  ```json
+  {}
+  ```
+
+</details>
+
+<details>
+  
+  <summary><code>PATCH /playlist/{n}</code> - n번 플레이리스트 정보 수정</summary>
+
+  **Request**
+  ```json
+  {
+    "name" : "혁오"
+  }
+  ```
+
+  **Response**
+  ```json
+  {}
+  ```
+
+</details>
+
+<details>
+  
+  <summary><code>DELETE /playlist/{n}</code> - n번 플레이리스트 삭제</summary>
+
+  **Request**
+  ```json
+  {}
+  ```
+
+  **Response**
+  ```json
+  {}
+  ```
+
+</details>
 
 ### Playlist-Music
-- `POST /playlist/{n}/music` - n번 플레이리스트에 음악 추가
-- `DELETE /playlist/{n}/music` - n번 플레이리스트에 음악 삭제
+
+<details>
+  
+  <summary><code>GET /playlist/{n}/music</code> - n번 플레이리스트 조회</summary>
+
+  **Request**
+  ```json
+  {
+    "playlistMusicResponse" : {
+      "id" : 1,
+      "ownerEmail" : "ppusda@naver.com",
+      "musics" : [
+        {
+          "id" : 1,
+          "title" : "Gang Gang Schiele",
+          "artist" : "혁오",
+          "url" : "https://www.youtube.com/watch?v=WB4547-tSJA",
+        },
+        {
+          "id" : 2,
+          "title" : "멋진헛간 Remix",
+          "artist" : "혁오",
+          "url" : "https://www.youtube.com/watch?v=3DpL4UcCdWk"
+        }
+      ]
+    }
+  }
+  ```
+
+  **Response**
+  ```json
+  {}
+  ```
+
+</details>
+
+<details>
+  
+  <summary><code>POST /playlist/{n}/music</code> - n번 플레이리스트에 음악 추가</summary>
+
+  **Request**
+  ```json
+  {}
+  ```
+
+  **Response**
+  ```json
+  {}
+  ```
+
+</details>
+
+<details>
+  
+  <summary><code>DELETE /playlist/{n}/music</code> - n번 플레이리스트에 음악 삭제</summary>
+
+  **Request**
+  ```json
+  {}
+  ```
+
+  **Response**
+  ```json
+  {}
+  ```
+
+</details>
 
 ## 📑 참고
 본 프로젝트는 [인프런 워밍업 클럽 스터디 2기 - 백엔드 프로젝트 (Kotlin, Spring Boot)](https://www.inflearn.com/course/offline/warmup-club-2-be-bk) 의 서브 미션을 위한 프로젝트입니다.
