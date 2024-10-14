@@ -15,7 +15,7 @@ class Music(
 
     var title: String = title
 
-    var artist: String = title
+    var artist: String = artist
 
-    var url: String = title
+    var url: String = url
 }

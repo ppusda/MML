@@ -14,11 +14,9 @@ class Playlist(
 
     var name: String = name
 
-    @OneToMany(targetEntity = Music::class,
-            fetch = FetchType.LAZY,
-            cascade = [CascadeType.ALL])
-    @JoinColumn(name = "music_id")
+    @ManyToMany(targetEntity = Music::class, fetch = FetchType.LAZY)
     var musics: MutableList<Music> = mutableListOf()
+    // CascadeType 사용 불가, JoinColumn 사용 불가, 조회 편의성을 위해 추가
 
     fun addMusics(musics: MutableList<Music>?) {
         if (musics != null) {
