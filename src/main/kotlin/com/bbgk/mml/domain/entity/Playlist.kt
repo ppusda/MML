@@ -12,5 +12,17 @@ class Playlist(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
 
-    var title: String = name
+    var name: String = name
+
+    @OneToMany(targetEntity = Music::class,
+            fetch = FetchType.LAZY,
+            cascade = [CascadeType.ALL])
+    @JoinColumn(name = "music_id")
+    var musics: MutableList<Music> = mutableListOf()
+
+    fun addMusics(musics: MutableList<Music>?) {
+        if (musics != null) {
+            this.musics.addAll(musics)
+        }
+    }
 }

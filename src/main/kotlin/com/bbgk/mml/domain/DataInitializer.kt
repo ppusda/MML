@@ -33,12 +33,13 @@ class DataInitializer(
 
         val savedMusics = musicRepository.saveAll(musics)
 
-        val playlists = mutableListOf(
-                Playlist("혁오 노래 모음"),
-                Playlist("내가 자주 듣는 노래")
-        )
+        val playlist1 = Playlist("혁오 노래 모음")
+        playlist1.addMusics(mutableListOf(savedMusics[0], savedMusics[1]))
 
-        val savedPlaylists = playlistRepository.saveAll(playlists)
+        val playlist2 = Playlist("내가 자주 듣는 노래")
+        playlist2.addMusics(savedMusics)
+
+        val savedPlaylists = playlistRepository.saveAll(mutableListOf(playlist1, playlist2))
 
         val playlistMusic = mutableListOf(
                 PlaylistMusic(savedPlaylists[0], savedMusics[0]),
