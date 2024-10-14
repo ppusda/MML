@@ -3,7 +3,10 @@ package com.bbgk.mml.domain.entity
 import jakarta.persistence.*
 
 @Entity
-class PlaylistMusic {
+class PlaylistMusic(
+        playlist: Playlist,
+        music: Music
+) {
 
     @Id
     @Column(name = "playlist_music_id")
@@ -12,9 +15,9 @@ class PlaylistMusic {
 
     @ManyToOne
     @JoinColumn(name = "playlist_id")
-    val playlist: Playlist? = null
+    var playlist: Playlist = playlist
 
     @ManyToOne
     @JoinColumn(name = "album_id")
-    val music: Music? = null
+    var music: Music = music
 }
