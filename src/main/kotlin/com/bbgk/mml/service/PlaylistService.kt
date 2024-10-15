@@ -17,4 +17,10 @@ class PlaylistService(
         val playlists = playlistRepository.findAll()
         return playlists.map { PlaylistDTO(it) }
     }
+
+    @Transactional(readOnly = true)
+    fun getPlaylist(id: Long): PlaylistDTO {
+        val playlist = playlistRepository.findById(id)
+        return PlaylistDTO(playlist.get())
+    }
 }
