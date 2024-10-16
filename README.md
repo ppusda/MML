@@ -360,6 +360,119 @@
 
 </details>
 
+## 🏆 미션 결과물
+
+<details>
+  
+  <summary>[미션 4] 조회 REST API 만들기</summary>
+
+  커밋 내용 => [feat: 조회 API 테스트 코드 작성](https://github.com/ppusda/MML/commit/497518e55bac5a840560496dd8f50ea39d87c940)
+  
+  <table>
+    <tr>
+      <th>음악 전체 조회</th>
+      <td><img src="https://github.com/user-attachments/assets/65edf250-0345-4062-9baf-6d2d475827aa"/></td>
+      <td>
+        <pre>
+          <code>
+[
+  {
+    "title": "Gang Gang Schiele",
+    "artist": "혁오",
+    "url": "https://www.youtube.com/watch?v=Xjk3w7NcZAU"
+  },
+  {
+    "title": "멋진헛간 Remix",
+    "artist": "혁오",
+    "url": "https://www.youtube.com/watch?v=3DpL4UcCdWk"
+  },
+  {
+    "title": "Happy",
+    "artist": "Day6",
+    "url": "https://www.youtube.com/watch?v=VXp2dCXYrvQ"
+  }
+]
+          </code>
+        </pre>
+      </td>
+    </tr>
+    <tr>
+      <th>플레이리스트 전체 조회</th>
+      <td><img src="https://github.com/user-attachments/assets/6a1b02b9-a5d2-4738-9cf6-38f43126a9cf"/></td>
+      <td>
+        <pre>
+          <code>
+[
+  {
+    "name": "혁오 노래 모음",
+    "musics": [
+      {
+        "title": "Gang Gang Schiele",
+        "artist": "혁오",
+        "url": "https://www.youtube.com/watch?v=Xjk3w7NcZAU"
+      },
+      {
+        "title": "멋진헛간 Remix",
+        "artist": "혁오",
+        "url": "https://www.youtube.com/watch?v=3DpL4UcCdWk"
+      }
+    ]
+  },
+  {
+    "name": "내가 자주 듣는 노래",
+    "musics": [
+      {
+        "title": "Gang Gang Schiele",
+        "artist": "혁오",
+        "url": "https://www.youtube.com/watch?v=Xjk3w7NcZAU"
+      },
+      {
+        "title": "멋진헛간 Remix",
+        "artist": "혁오",
+        "url": "https://www.youtube.com/watch?v=3DpL4UcCdWk"
+      },
+      {
+        "title": "Happy",
+        "artist": "Day6",
+        "url": "https://www.youtube.com/watch?v=VXp2dCXYrvQ"
+      }
+    ]
+  }
+]
+          </code>
+        </pre>
+      </td>
+    </tr>
+    <tr>
+      <th>N번 플레이리스트 조회</th>
+      <td><img src="https://github.com/user-attachments/assets/acc33ae6-e7ad-4d28-84c4-75622253dda4"/></td>
+      <td>
+        <pre>
+          <code>
+{
+  "name": "혁오 노래 모음",
+  "musics": [
+    {
+      "title": "Gang Gang Schiele",
+      "artist": "혁오",
+      "url": "https://www.youtube.com/watch?v=Xjk3w7NcZAU"
+    },
+    {
+      "title": "멋진헛간 Remix",
+      "artist": "혁오",
+      "url": "https://www.youtube.com/watch?v=3DpL4UcCdWk"
+    }
+  ]
+}
+          </code>
+        </pre>
+      </td>
+    </tr>
+  </table>
+
+</details>
+
+
 ## 📑 참고
 본 프로젝트는 [인프런 워밍업 클럽 스터디 2기 - 백엔드 프로젝트 (Kotlin, Spring Boot)](https://www.inflearn.com/course/offline/warmup-club-2-be-bk) 의 서브 미션을 위한 프로젝트입니다.
 
@@ -370,7 +483,7 @@
   - [x] [미션 1] 테이블 설계하기(~10/4 금)
   - [x] [미션 2] 깃허브 리포지토리에 프로젝트 올리기(~10/4 금)
   - [x] [미션 3] REST API 설계하기(~10/8 화)
-  - [ ] [미션 4] 조회 REST API 만들기(~10/15 화)
+  - [x] [미션 4] 조회 REST API 만들기(~10/15 화)
   - [ ] [미션 5] 삽입, 수정, 삭제 REST API 만들기(~10/21 월)
   - [ ] [자체 미션] 이후 고도화
 
