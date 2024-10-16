@@ -8,6 +8,6 @@ data class PlaylistDTO(
 ) {
     constructor(playlist: Playlist) : this (
             name = playlist.name,
-            musics = playlist.musics.map { MusicDTO(it) }
+            musics = playlist.playlistMusics.map { MusicDTO(it.music) }
     )
 }

@@ -20,7 +20,9 @@ class PlaylistService(
 
     @Transactional(readOnly = true)
     fun getPlaylist(id: Long): PlaylistDTO {
-        val playlist = playlistRepository.findById(id)
-        return PlaylistDTO(playlist.get())
+        val playlist = playlistRepository.findById(id).orElseThrow {
+            RuntimeException("존재하지 않는 플레이리스트입니다.")
+        }
+        return PlaylistDTO(playlist)
     }
 }

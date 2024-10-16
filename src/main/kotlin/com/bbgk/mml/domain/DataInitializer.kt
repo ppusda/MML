@@ -30,16 +30,21 @@ class DataInitializer(
                 Music("멋진헛간 Remix", "혁오", "https://www.youtube.com/watch?v=3DpL4UcCdWk"),
                 Music("Happy", "Day6", "https://www.youtube.com/watch?v=VXp2dCXYrvQ")
         )
-
         val savedMusics = musicRepository.saveAll(musics)
 
         val playlist1 = Playlist("혁오 노래 모음")
-        playlist1.addMusics(mutableListOf(savedMusics[0], savedMusics[1]))
-
         val playlist2 = Playlist("내가 자주 듣는 노래")
-        playlist2.addMusics(savedMusics)
-
         val savedPlaylists = playlistRepository.saveAll(mutableListOf(playlist1, playlist2))
+
+        playlist1.addMusics(mutableListOf(
+                PlaylistMusic(savedPlaylists[0], savedMusics[0]),
+                PlaylistMusic(savedPlaylists[0], savedMusics[1])
+        ))
+        playlist2.addMusics(mutableListOf(
+                PlaylistMusic(savedPlaylists[1], savedMusics[0]),
+                PlaylistMusic(savedPlaylists[1], savedMusics[1]),
+                PlaylistMusic(savedPlaylists[1], savedMusics[2])
+        ))
 
         val playlistMusic = mutableListOf(
                 PlaylistMusic(savedPlaylists[0], savedMusics[0]),

@@ -18,6 +18,6 @@ class PlaylistMusic(
     var playlist: Playlist = playlist
 
     @ManyToOne
-    @JoinColumn(name = "album_id")
+    @JoinColumn(name = "music_id")
     var music: Music = music
 }

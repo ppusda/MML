@@ -14,13 +14,13 @@ class Playlist(
 
     var name: String = name
 
-    @ManyToMany(targetEntity = Music::class, fetch = FetchType.LAZY)
-    var musics: MutableList<Music> = mutableListOf()
+    @OneToMany(mappedBy = "playlist", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    val playlistMusics: MutableList<PlaylistMusic> = mutableListOf()
     // CascadeType 사용 불가, JoinColumn 사용 불가, 조회 편의성을 위해 추가
 
-    fun addMusics(musics: MutableList<Music>?) {
-        if (musics != null) {
-            this.musics.addAll(musics)
+    fun addMusics(playlistMusics: MutableList<PlaylistMusic>?) {
+        if (playlistMusics != null) {
+            this.playlistMusics.addAll(playlistMusics)
         }
     }
 }
