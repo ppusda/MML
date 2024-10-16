@@ -16,7 +16,6 @@ class Playlist(
 
     @OneToMany(mappedBy = "playlist", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     val playlistMusics: MutableList<PlaylistMusic> = mutableListOf()
-    // CascadeType 사용 불가, JoinColumn 사용 불가, 조회 편의성을 위해 추가
 
     fun addMusics(playlistMusics: MutableList<PlaylistMusic>?) {
         if (playlistMusics != null) {
