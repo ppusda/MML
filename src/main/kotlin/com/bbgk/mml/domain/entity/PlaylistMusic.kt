@@ -13,11 +13,11 @@ class PlaylistMusic(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Playlist::class, fetch = FetchType.LAZY)
     @JoinColumn(name = "playlist_id")
     var playlist: Playlist = playlist
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Music::class, fetch = FetchType.LAZY)
     @JoinColumn(name = "music_id")
     var music: Music = music
 }
