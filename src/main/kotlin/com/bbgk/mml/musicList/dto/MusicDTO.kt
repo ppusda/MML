@@ -1,4 +1,4 @@
-package com.bbgk.mml.dto
+package com.bbgk.mml.musicList.dto
 
 import com.bbgk.mml.domain.entity.Music
 

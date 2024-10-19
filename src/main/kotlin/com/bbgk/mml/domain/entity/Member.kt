@@ -3,7 +3,7 @@ package com.bbgk.mml.domain.entity
 import jakarta.persistence.*
 
 @Entity
-class User(
+class Member(
     email: String,
     password: String
 ) {
@@ -15,5 +15,8 @@ class User(
     var email: String = email
 
     var password: String = password
+
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    val playlists: MutableList<Playlist> = mutableListOf()
 
 }

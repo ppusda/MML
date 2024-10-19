@@ -1,7 +1,7 @@
-package com.bbgk.mml.controller
+package com.bbgk.mml.musicList.controller
 
-import com.bbgk.mml.dto.MusicDTO
-import com.bbgk.mml.service.MusicService
+import com.bbgk.mml.musicList.dto.MusicDTO
+import com.bbgk.mml.musicList.service.MusicService
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -12,7 +12,7 @@ class MusicController(
         val musicService: MusicService
 ) {
     @GetMapping
-    fun getIntroductions(): List<MusicDTO> {
+    fun getMusics(): List<MusicDTO> {
         return musicService.getMusics()
     }
 }

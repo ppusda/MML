@@ -1,7 +1,7 @@
-package com.bbgk.mml.service
+package com.bbgk.mml.musicList.service
 
 import com.bbgk.mml.domain.repository.MusicRepository
-import com.bbgk.mml.dto.MusicDTO
+import com.bbgk.mml.musicList.dto.MusicDTO
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 

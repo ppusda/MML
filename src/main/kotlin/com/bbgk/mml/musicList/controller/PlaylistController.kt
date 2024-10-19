@@ -1,7 +1,7 @@
-package com.bbgk.mml.controller
+package com.bbgk.mml.musicList.controller
 
-import com.bbgk.mml.dto.PlaylistDTO
-import com.bbgk.mml.service.PlaylistService
+import com.bbgk.mml.musicList.dto.PlaylistDTO
+import com.bbgk.mml.musicList.service.PlaylistService
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping

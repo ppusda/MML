@@ -5,7 +5,7 @@ import jakarta.persistence.*
 @Entity
 class Playlist(
         name: String,
-        user: User
+        member: Member
 ) {
 
     @Id
@@ -15,9 +15,9 @@ class Playlist(
 
     var name: String = name
 
-    @ManyToOne(targetEntity = User::class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    val user: User = user
+    @ManyToOne(targetEntity = Member::class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    val member: Member = member
 
     @OneToMany(mappedBy = "playlist", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     val playlistMusics: MutableList<PlaylistMusic> = mutableListOf()
