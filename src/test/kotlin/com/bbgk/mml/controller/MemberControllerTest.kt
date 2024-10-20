@@ -23,4 +23,6 @@ class MemberControllerTest : BaseControllerTest() {
         // then
         Assertions.assertThat(jsonArray.length()).isPositive()
     }
+
+
 }
