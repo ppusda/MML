@@ -27,4 +27,8 @@ class Playlist(
             this.playlistMusics.addAll(playlistMusics)
         }
     }
+
+    fun update(name: String) {
+        this.name = name
+    }
 }
