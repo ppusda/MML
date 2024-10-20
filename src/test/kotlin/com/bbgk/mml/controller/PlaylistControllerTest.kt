@@ -9,8 +9,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import java.nio.charset.StandardCharsets
 
-@SpringBootTest
-@AutoConfigureMockMvc
+
 class PlaylistControllerTest : BaseControllerTest() {
 
     private val N: Int = 1

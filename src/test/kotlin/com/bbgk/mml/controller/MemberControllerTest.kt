@@ -4,18 +4,16 @@ import org.assertj.core.api.Assertions
 import org.json.JSONArray
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
-import org.springframework.boot.test.context.SpringBootTest
 import java.nio.charset.StandardCharsets
 
-class MusicControllerTest : BaseControllerTest() {
+
+class MemberControllerTest : BaseControllerTest() {
 
     @Test
-    @DisplayName("Musics 조회")
-    fun testGetMusics() {
+    @DisplayName("Members 조회")
+    fun testGetMembers() {
         // given
-        val uri = "/music"
+        val uri = "/member"
 
         // when
         val mvcResult = performGet(uri)
@@ -25,5 +23,4 @@ class MusicControllerTest : BaseControllerTest() {
         // then
         Assertions.assertThat(jsonArray.length()).isPositive()
     }
-
 }
