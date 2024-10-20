@@ -4,7 +4,7 @@ import com.bbgk.mml.domain.entity.Member
 import com.bbgk.mml.domain.repository.MemberRepository
 import com.bbgk.mml.member.dto.MemberDTO
 import com.bbgk.mml.member.dto.MemberForm
-import com.bbgk.mml.musicList.dto.MusicForm
+import com.bbgk.mml.domain.exception.MmlInternalServerErrorException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -22,7 +22,7 @@ class MemberService(
     @Transactional(readOnly = true)
     fun findMemberById(id: Long): Member {
         return memberRepository.findById(id).orElseThrow{
-            throw RuntimeException("존재하지 않는 사용자입니다.")
+            throw MmlInternalServerErrorException("존재하지 않는 사용자입니다.")
         }
     }
 
@@ -34,6 +34,7 @@ class MemberService(
 
     @Transactional
     fun deleteMember(id: Long) {
+        findMemberById(id)
         memberRepository.deleteById(id)
     }
 

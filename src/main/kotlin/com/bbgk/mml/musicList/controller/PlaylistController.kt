@@ -1,20 +1,13 @@
 package com.bbgk.mml.musicList.controller
 
-import com.bbgk.mml.domain.entity.Playlist
+import com.bbgk.mml.domain.data.ApiResponse
 import com.bbgk.mml.member.service.MemberService
 import com.bbgk.mml.musicList.dto.PlaylistDTO
 import com.bbgk.mml.musicList.dto.PlaylistForm
 import com.bbgk.mml.musicList.service.PlaylistService
+import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/playlist")
@@ -28,19 +21,22 @@ class PlaylistController(
     }
 
     @PostMapping
-    fun createPlaylist(@RequestBody @Validated playlistForm: PlaylistForm, @RequestParam uid: Long) {
+    fun createPlaylist(@RequestBody @Validated playlistForm: PlaylistForm, @RequestParam uid: Long): ResponseEntity<Any> {
         val owner = memberService.findMemberById(uid)
         playlistService.savePlaylist(owner, playlistForm)
+        return ApiResponse.successCreate()
     }
 
-    @PutMapping("/{pid}")
-    fun updatePlaylist(@PathVariable(name="pid", required=true) pid: Long, @RequestBody @Validated playlistForm: PlaylistForm) {
+    @PatchMapping("/{pid}")
+    fun updatePlaylist(@PathVariable(name="pid", required=true) pid: Long, @RequestBody @Validated playlistForm: PlaylistForm): ResponseEntity<Any> {
         playlistService.updatePlaylist(pid, playlistForm)
+        return ApiResponse.successUpdate()
     }
 
     @DeleteMapping("/{pid}")
-    fun deletePlaylist(@PathVariable(name="pid", required=true) pid: Long) {
+    fun deletePlaylist(@PathVariable(name="pid", required=true) pid: Long): ResponseEntity<Any> {
         playlistService.deletePlaylist(pid)
+        return ApiResponse.successDelete()
     }
 
 }
