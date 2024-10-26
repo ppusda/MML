@@ -14,15 +14,21 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/playlist")
 class PlaylistMusicController(
-        val playlistService: PlaylistService,
-        val playlistMusicService: PlaylistMusicService
+    val playlistService: PlaylistService,
+    val playlistMusicService: PlaylistMusicService
 ) {
 
+    /**
+     * /playlists/{pid}
+     */
     @GetMapping("/{pid}/music")
     fun getPlaylist(@PathVariable(name="pid", required=true) pid: Long): PlaylistDTO {
         return playlistService.getPlaylist(pid)
     }
 
+    /**
+     * /playlists/{pid}/musics/{mid}
+     */
     @PostMapping("/{pid}/music")
     fun addMusicInPlaylist(@PathVariable(name="pid", required=true) pid: Long, @RequestParam mid: Long) {
         playlistMusicService.addMusicInPlaylist(pid, mid)

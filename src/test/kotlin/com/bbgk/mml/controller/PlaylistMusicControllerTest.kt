@@ -11,6 +11,11 @@ import java.nio.charset.StandardCharsets
 
 class PlaylistMusicControllerTest : BaseControllerTest() {
 
+    /**
+     * SpringBootTest를 사용해도 좋습니다.
+     * WebMvcTest를 활용해 인터페이스만 검증하는 방법도 있습니다.
+     */
+
     val mid = 1L
 
     @Test
