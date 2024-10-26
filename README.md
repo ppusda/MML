@@ -472,6 +472,22 @@
 
 </details>
 
+<details>
+  
+  <summary>[미션 5] 삽입, 수정, 삭제 REST API 만들기</summary>
+
+  커밋 내용 => [feat: [미션5] 삽입, 수정, 삭제 REST API 만들기](https://github.com/ppusda/MML/commit/39f5ab22c7c6e1ff6f3c93b9826aef17d35cae7c)
+  
+  <table>
+    <tr>
+      <th>테스트 결과</th>
+      <td><img src="https://github.com/user-attachments/assets/f21a8528-34b0-4c03-90bb-0712c17b6681"/></td>
+    </tr> 
+  </table>
+
+</details>
+
+
 
 ## 📑 참고
 본 프로젝트는 [인프런 워밍업 클럽 스터디 2기 - 백엔드 프로젝트 (Kotlin, Spring Boot)](https://www.inflearn.com/course/offline/warmup-club-2-be-bk) 의 서브 미션을 위한 프로젝트입니다.
@@ -484,7 +500,22 @@
   - [x] [미션 2] 깃허브 리포지토리에 프로젝트 올리기(~10/4 금)
   - [x] [미션 3] REST API 설계하기(~10/8 화)
   - [x] [미션 4] 조회 REST API 만들기(~10/15 화)
-  - [ ] [미션 5] 삽입, 수정, 삭제 REST API 만들기(~10/21 월)
+  - [x] [미션 5] 삽입, 수정, 삭제 REST API 만들기(~10/21 월)
   - [ ] [자체 미션] 이후 고도화
+
+</details>
+
+<details>
+  
+  <summary>📑 고도화 계획</summary>
+
+  코드 리뷰 => [코드 리뷰](https://github.com/ppusda/MML/pull/1)
+  코드 리뷰 해주신 내용을 고려하여 코드를 수정하고, 고도화를 진행해보려고 합니다.
+  
+  - [] Restful 하도록 API 수정하기
+  - [] 읽기 좋은 코드로 수정하기 (주석, 메서드 네이밍 수정)
+  - [] 테스트 코드 추가하기 (Coverage를 최대한 채워보기, 단위 테스트 작성)
+  - [] UI 추가하기
+  - [] 더미 데이터 추가하기
 
 </details>
