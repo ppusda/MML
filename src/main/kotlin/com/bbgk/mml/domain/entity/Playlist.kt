@@ -4,8 +4,8 @@ import jakarta.persistence.*
 
 @Entity
 class Playlist(
-        name: String,
-        member: Member
+    name: String,
+    member: Member
 ) {
 
     @Id
@@ -29,6 +29,8 @@ class Playlist(
     }
 
     fun update(name: String) {
-        this.name = name
+        if (this.name != null) {
+            this.name = name
+        }
     }
 }
