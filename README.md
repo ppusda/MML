@@ -364,6 +364,30 @@
 
 <details>
   
+  <summary>[미션 1] 테이블 설계하기 제출 스레드</summary>
+
+  커밋 내용 => [Update README.md](https://github.com/ppusda/MML/commit/9964f8345a719f880f1355529373801b27f0d425)
+
+</details>
+
+<details>
+  
+  <summary>[미션 2] 깃허브 리포지토리에 프로젝트 올리기</summary>
+
+  커밋 내용 => [init: initialize project](https://github.com/ppusda/MML/commit/8aeb1b11555e157b6f17439522feed22a96f8b0c)
+
+</details>
+
+<details>
+  
+  <summary>[미션 3] REST API 설계하기</summary>
+
+  커밋 내용 => [docs: API 설계 - 요청/응답 전체 추가](https://github.com/ppusda/MML/commit/8b23bae06ec013b6e26c076f5f7697b4c32c8a13)
+
+</details>
+
+<details>
+  
   <summary>[미션 4] 조회 REST API 만들기</summary>
 
   커밋 내용 => [feat: 조회 API 테스트 코드 작성](https://github.com/ppusda/MML/commit/497518e55bac5a840560496dd8f50ea39d87c940)
