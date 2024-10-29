@@ -16,7 +16,7 @@ class PlaylistMusicControllerTest : BaseControllerTest() {
      * WebMvcTest를 활용해 인터페이스만 검증하는 방법도 있습니다.
      */
 
-    val mid = 1L
+    val musicId = 1L
 
     @Test
     @Transactional
@@ -27,7 +27,7 @@ class PlaylistMusicControllerTest : BaseControllerTest() {
         val playlistForm = PlaylistForm("playlist", member)
 
         // when
-        val mvcResult = performPostWithId(uri, playlistForm, "mid", mid)
+        val mvcResult = performPostWithId(uri, playlistForm, "musicId", musicId)
         val response = mvcResult.response
 
         // then
@@ -42,7 +42,7 @@ class PlaylistMusicControllerTest : BaseControllerTest() {
         val playlistForm = PlaylistForm("playlist", member)
 
         // when
-        val mvcResult = performPostWithId(uri, playlistForm, "mid", mid)
+        val mvcResult = performPostWithId(uri, playlistForm, "musicId", musicId)
         val response = mvcResult.response
 
         // then
@@ -57,7 +57,7 @@ class PlaylistMusicControllerTest : BaseControllerTest() {
         val playlistForm = PlaylistForm("playlist", member)
 
         // when
-        val mvcResult = performPostWithId(uri, playlistForm, "mid", mid)
+        val mvcResult = performPostWithId(uri, playlistForm, "musicId", musicId)
         val response = mvcResult.response
 
         // then
@@ -72,7 +72,7 @@ class PlaylistMusicControllerTest : BaseControllerTest() {
         val uri = "/playlist/1/music"
 
         // when
-        val mvcResult = performDeleteWithId(uri, "mid", mid)
+        val mvcResult = performDeleteWithId(uri, "musicId", musicId)
         val response = mvcResult.response
 
         // then
@@ -86,7 +86,7 @@ class PlaylistMusicControllerTest : BaseControllerTest() {
         val uri = "/playlists/1/music"
 
         // when
-        val mvcResult = performDeleteWithId(uri, "mid", mid)
+        val mvcResult = performDeleteWithId(uri, "musicId", musicId)
         val response = mvcResult.response
 
         // then
@@ -100,7 +100,7 @@ class PlaylistMusicControllerTest : BaseControllerTest() {
         val uri = "/playlist/5/music"
 
         // when
-        val mvcResult = performDeleteWithId(uri, "mid", mid)
+        val mvcResult = performDeleteWithId(uri, "musicId", musicId)
         val response = mvcResult.response
 
         // then

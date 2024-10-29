@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 import java.util.*
 
 interface PlaylistMusicRepository : JpaRepository<PlaylistMusic, Long> {
-    fun findByPlaylistIdAndMusicId(pid: Long, mid: Long): Optional<PlaylistMusic>
+    fun findByPlaylistIdAndMusicId(playlistId: Long, musicId: Long): Optional<PlaylistMusic>
 }

@@ -9,7 +9,7 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/music")
+@RequestMapping("/v1/musics")
 class MusicController(
         val musicService: MusicService
 ) {
@@ -24,15 +24,15 @@ class MusicController(
         return ApiResponse.successCreate()
     }
 
-    @PatchMapping("/{mid}")
-    fun updateMusic(@PathVariable(name="mid", required=true) mid: Long, @RequestBody @Validated musicForm: MusicForm): ResponseEntity<Any> {
-        musicService.updateMusic(mid, musicForm)
+    @PatchMapping("/{musicId}")
+    fun updateMusic(@PathVariable(name="musicId", required=true) musicId: Long, @RequestBody @Validated musicForm: MusicForm): ResponseEntity<Any> {
+        musicService.updateMusic(musicId, musicForm)
         return ApiResponse.successUpdate()
     }
 
-    @DeleteMapping("/{mid}")
-    fun deleteMusic(@PathVariable(name="mid", required=true) mid: Long): ResponseEntity<Any> {
-        musicService.deleteMusic(mid)
+    @DeleteMapping("/{musicId}")
+    fun deleteMusic(@PathVariable(name="musicId", required=true) musicId: Long): ResponseEntity<Any> {
+        musicService.deleteMusic(musicId)
         return ApiResponse.successDelete()
     }
 }

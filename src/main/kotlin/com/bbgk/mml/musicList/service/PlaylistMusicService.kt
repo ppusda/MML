@@ -14,9 +14,9 @@ class PlaylistMusicService(
 ) {
 
     @Transactional
-    fun addMusicInPlaylist(pid: Long, mid: Long) {
-        val playlist = playlistService.getPlayListById(pid)
-        val music = musicService.findMusicById(mid)
+    fun addMusicInPlaylist(playlistId: Long, musicId: Long) {
+        val playlist = playlistService.getPlayListById(playlistId)
+        val music = musicService.findMusicById(musicId)
 
         val playlistMusic = mutableListOf<PlaylistMusic>(
             PlaylistMusic(playlist, music)
@@ -33,11 +33,11 @@ class PlaylistMusicService(
     }
 
     @Transactional
-    fun deleteMusicInPlaylist(pid: Long, mid: Long) {
+    fun deleteMusicInPlaylist(playlistId: Long, musicId: Long) {
         /**
          * ifPresentOrElse를 사용해볼 수도 있습니다.
          */
-        val playlistMusic = playlistMusicRepository.findByPlaylistIdAndMusicId(pid, mid).orElseThrow {
+        val playlistMusic = playlistMusicRepository.findByPlaylistIdAndMusicId(playlistId, musicId).orElseThrow {
             throw MmlInternalServerErrorException("존재하지 않는 플레이리스트 내 음악입니다.")
         }
 

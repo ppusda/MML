@@ -12,31 +12,26 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/playlist")
+@RequestMapping("/playlists")
 class PlaylistMusicController(
     val playlistService: PlaylistService,
     val playlistMusicService: PlaylistMusicService
 ) {
 
-    /**
-     * /playlists/{pid}
-     */
-    @GetMapping("/{pid}/music")
-    fun getPlaylist(@PathVariable(name="pid", required=true) pid: Long): PlaylistDTO {
-        return playlistService.getPlaylist(pid)
+
+    @GetMapping("/{playlistId}/musics")
+    fun getPlaylist(@PathVariable(name="playlistId", required=true) playlistId: Long): PlaylistDTO {
+        return playlistService.getPlaylist(playlistId)
     }
 
-    /**
-     * /playlists/{pid}/musics/{mid}
-     */
-    @PostMapping("/{pid}/music")
-    fun addMusicInPlaylist(@PathVariable(name="pid", required=true) pid: Long, @RequestParam mid: Long) {
-        playlistMusicService.addMusicInPlaylist(pid, mid)
+    @PostMapping("/{playlistId}/musics")
+    fun addMusicInPlaylist(@PathVariable(name="playlistId", required=true) playlistId: Long, @RequestParam musicId: Long) {
+        playlistMusicService.addMusicInPlaylist(playlistId, musicId)
     }
 
-    @DeleteMapping("/{pid}/music")
-    fun deleteMusicInPlaylist(@PathVariable(name="pid", required=true) pid: Long, @RequestParam mid: Long) {
-        playlistMusicService.deleteMusicInPlaylist(pid, mid)
+    @DeleteMapping("/{playlistId}/musics")
+    fun deleteMusicInPlaylist(@PathVariable(name="playlistId", required=true) playlistId: Long, @RequestParam musicId: Long) {
+        playlistMusicService.deleteMusicInPlaylist(playlistId, musicId)
     }
 
 }
