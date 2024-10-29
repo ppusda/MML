@@ -15,7 +15,7 @@
 
 ## 🔗 ERD
 
-![MML_ERD](https://github.com/user-attachments/assets/205c1e35-8288-4556-bd0a-2640f935394b)
+![MML_ERD](https://github.com/user-attachments/assets/d1abddd5-577f-4441-aa4a-9daa935fb816)
 
 
 ## ⚙ API
