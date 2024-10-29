@@ -22,7 +22,7 @@
 ### User
 <details>
   
-  <summary><code>GET /user</code> - 회원 조회</summary>
+  <summary><code>GET /members</code> - 회원 조회</summary>
 
   **Request**
   ```json
@@ -49,7 +49,7 @@
 
 <details>
   
-  <summary><code>POST /user</code> - 회원 가입</summary>
+  <summary><code>POST /members</code> - 회원 가입</summary>
 
   **Request**
   ```json
@@ -69,7 +69,7 @@
 
 <details>
   
-  <summary><code>DELETE /user/{n}</code> - n번 회원 탈퇴</summary>
+  <summary><code>DELETE /members/{n}</code> - n번 회원 탈퇴</summary>
 
   **Request**
   ```json
@@ -87,7 +87,7 @@
 
 <details>
   
-  <summary><code>POST /user/sign</code> - 회원 로그인</summary>
+  <summary><code>POST /members/signs</code> - 회원 로그인</summary>
 
   **Request**
   ```json
@@ -106,7 +106,7 @@
 
 <details>
   
-  <summary><code>DELETE /user/sign</code> - 회원 로그아웃</summary>
+  <summary><code>DELETE /members/signs</code> - 회원 로그아웃</summary>
 
   **Request**
   ```json
@@ -123,7 +123,7 @@
 ### Music
 <details>
   
-  <summary><code>GET /music</code> - 음악 조회</summary>
+  <summary><code>GET /musics</code> - 음악 조회</summary>
 
   **Request**
   ```json
@@ -154,7 +154,7 @@
 
 <details>
   
-  <summary><code>POST /music</code> - 음악 등록</summary>
+  <summary><code>POST /musics</code> - 음악 등록</summary>
 
   **Request**
   ```json
@@ -174,7 +174,7 @@
 
 <details>
   
-  <summary><code>PATCH /music/{n}</code> - n번 음악 정보 수정</summary>
+  <summary><code>PATCH /musics/{n}</code> - n번 음악 정보 수정</summary>
 
   **Request**
   ```json
@@ -194,7 +194,7 @@
 
 <details>
   
-  <summary><code>DELETE /music/{n}</code> - n번 음악 삭제</summary>
+  <summary><code>DELETE /musics/{n}</code> - n번 음악 삭제</summary>
 
   **Request**
   ```json
@@ -212,7 +212,7 @@
 
 <details>
   
-  <summary><code>GET /playlist</code> - 플레이리스트 조회</summary>
+  <summary><code>GET /playlists</code> - 플레이리스트 조회</summary>
 
   **Request**
   ```json
@@ -241,7 +241,7 @@
 
 <details>
   
-  <summary><code>POST /playlist</code> - 플레이리스트 생성</summary>
+  <summary><code>POST /playlists</code> - 플레이리스트 생성</summary>
 
   **Request**
   ```json
@@ -259,7 +259,7 @@
 
 <details>
   
-  <summary><code>PATCH /playlist/{n}</code> - n번 플레이리스트 정보 수정</summary>
+  <summary><code>PATCH /playlists/{n}</code> - n번 플레이리스트 정보 수정</summary>
 
   **Request**
   ```json
@@ -277,7 +277,7 @@
 
 <details>
   
-  <summary><code>DELETE /playlist/{n}</code> - n번 플레이리스트 삭제</summary>
+  <summary><code>DELETE /playlists/{n}</code> - n번 플레이리스트 삭제</summary>
 
   **Request**
   ```json
@@ -295,7 +295,7 @@
 
 <details>
   
-  <summary><code>GET /playlist/{n}/music</code> - n번 플레이리스트 조회</summary>
+  <summary><code>GET /playlists/{n}/musics</code> - n번 플레이리스트 조회</summary>
 
   **Request**
   ```json
@@ -330,7 +330,7 @@
 
 <details>
   
-  <summary><code>POST /playlist/{n}/music</code> - n번 플레이리스트에 음악 추가</summary>
+  <summary><code>POST /playlists/{n}/musics</code> - n번 플레이리스트에 음악 추가</summary>
 
   **Request**
   ```json
@@ -346,7 +346,7 @@
 
 <details>
   
-  <summary><code>DELETE /playlist/{n}/music</code> - n번 플레이리스트에 음악 삭제</summary>
+  <summary><code>DELETE /playlists/{n}/musics</code> - n번 플레이리스트에 음악 삭제</summary>
 
   **Request**
   ```json
@@ -511,7 +511,33 @@
 
 </details>
 
+## 🧩 고도화 결과물
 
+<details>
+  
+  <summary>Restful 하도록 API 수정하기</summary>
+
+  커밋 내용 => [refactor: Api 수정 (자원 복수형, 버저닝)](https://github.com/ppusda/MML/commit/105e29759e1489490ff1b93dae9f60efc202d893), [refactor: Api 수정 (PUT, PATCH)](https://github.com/ppusda/MML/commit/58559a6fe2e49ce72a2e3ac2005d506d4c1355d8)
+
+  ### PUT, PATCH에 대하여
+
+  위 내용은 이전부터 고민하고 사용했다고 생각했지만 코치님께 관련 피드백을 받게 되었다.
+  그렇게 자료를 좀 더 찾아보게 되었고 아래와 같은 고민과 생각을 마주치게 되었다.
+  
+  [수정이라는 작업을 할 때 PUT을 더 사용하는 이유가 있을까요?](https://www.inflearn.com/community/questions/1175426/%EC%88%98%EC%A0%95%EC%9D%B4%EB%9D%BC%EB%8A%94-%EC%9E%91%EC%97%85%EC%9D%84-%ED%95%A0-%EB%95%8C-put%EC%9D%84-%EB%8D%94-%EC%82%AC%EC%9A%A9%ED%95%98%EB%8A%94-%EC%9D%B4%EC%9C%A0%EA%B0%80-%EC%9E%88%EC%9D%84%EA%B9%8C%EC%9A%94?srsltid=AfmBOoqsSWzuKAMi-dHVhdjLSY8lzRR2-ZaaE-n0DDki3FHIlgOE-JKT) <br>
+  [그래서 PUT 이랑 PATCH 는 뭐가 다른건가요](https://cindycho.tistory.com/79)
+  
+  부끄럽게도 나는 단순히 "PUT은 자원의 전체 교체", "PATCH는 자원의 일부 교체" 정도의 개념만 알고 있었기에 문제였던 것을 알게되었다. <br>
+  아래와 같은 내용을 알아두려고 한다.
+
+  - 언급되는 자원은 Entity의 컬럼들과 동일 시 되지 않는다. / DTO에 명시 한 목록이 자원이 되며, 이 자원들을 모두 교체 하느냐 마느냐가 PUT, PATCH로 갈리게 된다.
+  - PUT은 자원의 전체 교체, 입력 받은 **모든 데이터가 그대로 반영**되어야 한다.
+  - PATCH는 자원의 일부 교체, 입력 받은 데이터 중 **null이 있더라도 이전 데이터를 유지하며, 입력된 데이터만 반영**한다.
+  - REST한 API를 항상 지키기는 힘들다. 하지만 차이를 알고 정해놓은 컨벤션에 맞춰서만 작성한다면 크게 문제되지는 않는다.
+
+  위와 같은 내용들을 생각하고 코드를 수정했으며, Music의 경우는 PUT으로 변경, Playlist의 경우는 PATCH로 동작 할 수 있도록 코드를 수정하였다.
+  
+</details>
 
 ## 📑 참고
 본 프로젝트는 [인프런 워밍업 클럽 스터디 2기 - 백엔드 프로젝트 (Kotlin, Spring Boot)](https://www.inflearn.com/course/offline/warmup-club-2-be-bk) 의 서브 미션을 위한 프로젝트입니다.
@@ -536,10 +562,10 @@
   코드 리뷰 => [코드 리뷰](https://github.com/ppusda/MML/pull/1)
   코드 리뷰 해주신 내용을 고려하여 코드를 수정하고, 고도화를 진행해보려고 합니다.
   
-  - [] Restful 하도록 API 수정하기
-  - [] 읽기 좋은 코드로 수정하기 (주석, 메서드 네이밍 수정)
-  - [] 테스트 코드 추가하기 (Coverage를 최대한 채워보기, 단위 테스트 작성)
-  - [] UI 추가하기
-  - [] 더미 데이터 추가하기
+  - [X] Restful 하도록 API 수정하기 (10/30 수)
+  - [ ] 읽기 좋은 코드로 수정하기 (주석, 메서드 네이밍 수정)
+  - [ ] 테스트 코드 추가하기 (Coverage를 최대한 채워보기, 단위 테스트 작성)
+  - [ ] UI 추가하기
+  - [ ] 더미 데이터 추가하기
 
 </details>
