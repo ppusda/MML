@@ -24,7 +24,7 @@ class MusicController(
         return ApiResponse.successCreate()
     }
 
-    @PatchMapping("/{musicId}")
+    @PutMapping("/{musicId}")
     fun updateMusic(@PathVariable(name="musicId", required=true) musicId: Long, @RequestBody @Validated musicForm: MusicForm): ResponseEntity<Any> {
         musicService.updateMusic(musicId, musicForm)
         return ApiResponse.successUpdate()

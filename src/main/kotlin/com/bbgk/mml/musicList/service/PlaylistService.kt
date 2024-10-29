@@ -52,17 +52,12 @@ class PlaylistService(
 
     @Transactional
     fun updatePlaylist(id: Long, form: PlaylistForm) {
-        getPlayListById(id) // 중복?
         val playlist = getPlayListById(id)
 
         /**
          * 업데이트할 필드가 많아지면 어떻게 할 수 있을까요?
          * 1. 파라미터 추가할 수 있습니다. 코틀린의 장점입니다.
          * 2. 개별 업데이트 메소드 추가할 수 있습니다. 자바라면 이 방식이 안전할 것입니다.
-         *
-         * PUT vs PATCH
-         * 항상 입력받은 값 그대로 붙여넣습니다.
-         * Null이 들어오면 기존 데이터는 사라집니다.
          */
         playlist.update(name = form.name)
     }
