@@ -11,6 +11,9 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.jupiter.MockitoExtension
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 
 
 @ExtendWith(MockitoExtension::class)
@@ -24,6 +27,11 @@ class MemberServiceTest {
 
     val DATA_SIZE = 5
 
+    val PAGE_NUMBER = 0
+    val PAGE_SIZE = 5
+
+    val pageable: Pageable = PageRequest.of(PAGE_NUMBER, PAGE_SIZE)
+
     @Test
     fun testGetMembers() {
         // given
@@ -33,11 +41,11 @@ class MemberServiceTest {
             members.add(member)
         }
 
-        Mockito.`when`(memberRepository.findAll())
-                .thenReturn(members)
+        val page = PageImpl(members, pageable, DATA_SIZE.toLong())
+        Mockito.`when`(memberRepository.findAll(pageable)).thenReturn(page)
 
         // when
-        val memberDTOs = memberService.getMembers()
+        val memberDTOs = memberService.getMembers(PAGE_NUMBER)
 
         // then
         assertThat(memberDTOs).hasSize(DATA_SIZE)
