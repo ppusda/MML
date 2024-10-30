@@ -60,7 +60,7 @@ class MemberService(
     }
 
     /**
-     * 아이디로 회원을 삭제합니다.
+     * 아이디로 검색한 회원을 삭제합니다.
      *
      * @param id 검색할 회원 아이디
      * @throws MmlBadRequestException 존재하지 않는 사용자를 검색했을 때 발생
