@@ -10,6 +10,9 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.jupiter.MockitoExtension
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 
 
 @ExtendWith(MockitoExtension::class)
@@ -23,6 +26,10 @@ class MusicServiceTest {
 
     val DATA_SIZE = 5
 
+    val PAGE_NUMBER = 0
+    val PAGE_SIZE = 5
+    val pageable: Pageable = PageRequest.of(PAGE_NUMBER, PAGE_SIZE)
+
     @Test
     fun testGetMusics() {
         // given
@@ -32,11 +39,11 @@ class MusicServiceTest {
             musics.add(music)
         }
 
-        Mockito.`when`(musicRepository.findAll())
-                .thenReturn(musics)
+        val page = PageImpl(musics, pageable, DATA_SIZE.toLong())
+        Mockito.`when`(musicRepository.findAll(pageable)).thenReturn(page)
 
         // when
-        val musicsDTOs = musicService.getMusics()
+        val musicsDTOs = musicService.getMusics(0)
 
         // then
         assertThat(musicsDTOs).hasSize(DATA_SIZE)

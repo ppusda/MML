@@ -50,6 +50,15 @@ abstract class BaseControllerTest {
                 .andReturn()
     }
 
+    protected fun performPut(uri: String, form: Any): MvcResult {
+        return mockMvc
+                .perform(MockMvcRequestBuilders.put(uri)
+                        .content(objectMapper.writeValueAsString(form))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print())
+                .andReturn()
+    }
+
     protected fun performPatch(uri: String, form: Any): MvcResult {
         return mockMvc
                 .perform(MockMvcRequestBuilders.patch(uri)
