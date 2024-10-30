@@ -2,17 +2,18 @@ package com.bbgk.mml.service
 
 import com.bbgk.mml.domain.entity.Member
 import com.bbgk.mml.domain.entity.Playlist
-import com.bbgk.mml.domain.repository.MusicRepository
 import com.bbgk.mml.domain.repository.PlaylistRepository
 import com.bbgk.mml.musicList.service.PlaylistService
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.jupiter.MockitoExtension
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import java.util.*
 
 
@@ -38,6 +39,10 @@ class PlaylistServiceTest {
     val DATA_SIZE = 5
     val TEST_MEMBER = Member("testMember", "1234")
 
+    val PAGE_NUMBER = 0
+    val PAGE_SIZE = 5
+    val pageable: Pageable = PageRequest.of(PAGE_NUMBER, PAGE_SIZE)
+
     @Test
     fun testGetPlaylists() {
         // given
@@ -47,11 +52,11 @@ class PlaylistServiceTest {
             playlists.add(playlist)
         }
 
-        Mockito.`when`(playlistRepository.findAll())
-            .thenReturn(playlists)
+        val page = PageImpl(playlists, pageable, DATA_SIZE.toLong())
+        Mockito.`when`(playlistRepository.findAll(pageable)).thenReturn(page)
 
         // when
-        val musicsDTOs = playlistService.getPlaylists()
+        val musicsDTOs = playlistService.getPlaylists(0)
 
         // then
         assertThat(musicsDTOs).hasSize(DATA_SIZE)
@@ -66,7 +71,7 @@ class PlaylistServiceTest {
             .thenReturn(Optional.of(playlist))
 
         // when
-        val musicsDTO = playlistService.getPlaylist(1)
+        val musicsDTO = playlistService.findPlaylistById(1)
 
         // then
         assertThat(musicsDTO.name).isEqualTo("1")

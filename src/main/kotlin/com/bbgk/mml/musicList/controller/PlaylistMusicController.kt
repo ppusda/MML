@@ -21,7 +21,7 @@ class PlaylistMusicController(
 
     @GetMapping("/{playlistId}/musics")
     fun getPlaylist(@PathVariable(name="playlistId", required=true) playlistId: Long): PlaylistDTO {
-        return playlistService.getPlaylist(playlistId)
+        return playlistService.findPlaylistById(playlistId)
     }
 
     @PostMapping("/{playlistId}/musics")

@@ -15,7 +15,7 @@ class PlaylistMusicService(
 
     @Transactional
     fun addMusicInPlaylist(playlistId: Long, musicId: Long) {
-        val playlist = playlistService.getPlayListById(playlistId)
+        val playlist = playlistService.findPlayListById(playlistId)
         val music = musicService.findMusicById(musicId)
 
         val playlistMusic = mutableListOf<PlaylistMusic>(
