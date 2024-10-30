@@ -10,6 +10,11 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
+/**
+ * 회원과 관련된 서비스를 제공하는 클래스입니다.
+ *
+ * @property musicRepository 회원 리포지토리
+ */
 @Service
 class MemberService(
         private val memberRepository: MemberRepository

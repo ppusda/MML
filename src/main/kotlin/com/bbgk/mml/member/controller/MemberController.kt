@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 /**
- * 회원과 관련된 Rest Api를 제공하는 컨트롤러 입니다.
+ * 회원과 관련된 REST API를 제공하는 컨트롤러 입니다.
  *
- * @property memberService 회원 서비스
+ * @property memberService 회원 관련 기능 제공 서비스
  */
 @RestController
 @RequestMapping("/v1/members")
