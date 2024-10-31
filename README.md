@@ -539,6 +539,51 @@
   
 </details>
 
+<hr>
+
+<details>
+  
+  <summary>읽기 좋은 코드로 수정하기 (주석, 메서드 네이밍 수정, 퍼사드 패턴 적용)</summary>
+
+  커밋 내용 => 
+
+  <table>
+    <tr>
+      <th>10/30 목</th>
+      <td>
+        <a href="https://github.com/ppusda/MML/commit/ac20b1d1e7df747848bf61330bd2d72328d45b86">refactor: 읽기 좋은 코드로 수정하기 - Member (+ List -> Page로 수정)</a><br>
+        <a href="https://github.com/ppusda/MML/commit/0fed734a91b46ed3d2b8d81ffe9ace7d253cd193">refactor: 읽기 좋은 코드로 수정하기 - Member (누락 및 오타 수정)</a><br>
+        <a href="https://github.com/ppusda/MML/commit/42009d2c11584fa8bfee6fde2805d5a184f67977">refactor: 읽기 좋은 코드로 수정하기 - Member (오타 수정)</a><br>
+        <a href="https://github.com/ppusda/MML/commit/f3e6a83bc10d53817a24dc646c9877aa49448657">refactor: 읽기 좋은 코드로 수정하기 - Member (주석 수정)</a><br>
+        <a href="https://github.com/ppusda/MML/commit/14dd3eb228719213d508755dc6e9b6269bfb0249">refactor: 읽기 좋은 코드로 수정하기 - Music (+ List -> Page로 수정, 테스트 코드 일부 수정)</a><br>
+        <a href="https://github.com/ppusda/MML/commit/2c30baa89100c3d488b5f4e0d2314406e2a4044f">refactor: 읽기 좋은 코드로 수정하기 - Playlist (+ List -> Page로 수정)</a><br>
+      </td>
+    </tr> 
+    <tr>
+      <th>11/01 금</th>
+      <td>
+        <a href="https://github.com/ppusda/MML/commit/98a0400baa93a7ea17841dceafb58d95554f8384">refactor: 읽기 좋은 코드로 수정하기 - PlaylistMusic (+ List -> Page로 수정, 테스트 코드 일부 수정)</a><br>
+        <a href="https://github.com/ppusda/MML/commit/b8896382739d16dc9cced465c060eb81f89b7142">refactor: 읽기 좋은 코드로 수정하기 - PlaylistMusic (Operation 추가)</a><br>
+        <a href="https://github.com/ppusda/MML/commit/526c026ed9914218ff5ca5594f0924b9c7e93c41">refactor: 읽기 좋은 코드로 수정하기 - 퍼사드 패턴 적용하기 (MusicListRepository)</a><br>
+        <a href="https://github.com/ppusda/MML/commit/ed67c314e6431978797c159d36e0c98d871d9953">refactor: 읽기 좋은 코드로 수정하기 - 오타 수정 및 불필요한 import 제거</a><br>
+      </td>
+    </tr> 
+  </table>
+
+  ### 후기
+
+  이번 자체미션에서는 한 번에 이해되지 않는 메서드 네이밍을 수정하거나 구현했던 기능들에 대해 모두 주석을 달아보게 되었다.
+  처음 작성할 때는 이상한 점을 느끼지 못했는데 다시 보니 이상하다고 느껴지는 메서드 네임들도 있었고, 주석을 달다 보니 누구나 이런 부분에서 벗어나더라도 더 쉽게 이해할 수 있을 것 같다고 생각하게 되었다.
+  
+  물론 어려운 작업은 아니었지만 생각을 요하는 작업이었던 것 같다.
+  
+  추가로 퍼사드 패턴을 적용해서 Music, Playlist 간에 발생하는 간단한 DB 로직들을 합쳐서 관리할 수 있게 하였다.
+  혼자서 직접 적용해보는 건 처음이었지만 어렵지는 않았고, 수정한 코드를 보니 확실히 더 깔끔해졌다고 느꼈다.
+  
+  복잡한 구조라면 이러한 패턴을 적용해보는 것을 고민해봐야겠다고 생각되었고, 다른 디자인 패턴들도 적용해볼 수 있는지 좀 더 알아봐야겠다.
+  
+</details>
+
 ## 📑 참고
 본 프로젝트는 [인프런 워밍업 클럽 스터디 2기 - 백엔드 프로젝트 (Kotlin, Spring Boot)](https://www.inflearn.com/course/offline/warmup-club-2-be-bk) 의 서브 미션을 위한 프로젝트입니다.
 
@@ -563,7 +608,7 @@
   코드 리뷰 해주신 내용을 고려하여 코드를 수정하고, 고도화를 진행해보려고 합니다.
   
   - [X] Restful 하도록 API 수정하기 (10/30 수)
-  - [ ] 읽기 좋은 코드로 수정하기 (주석, 메서드 네이밍 수정)
+  - [x] 읽기 좋은 코드로 수정하기 (주석, 메서드 네이밍 수정, 퍼사드 패턴 적용) (10/31 목 ~ 11/01 금)
   - [ ] 테스트 코드 추가하기 (Coverage를 최대한 채워보기, 단위 테스트 작성)
   - [ ] UI 추가하기
   - [ ] 더미 데이터 추가하기
