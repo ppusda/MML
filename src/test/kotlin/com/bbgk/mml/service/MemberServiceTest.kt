@@ -2,7 +2,6 @@ package com.bbgk.mml.service
 
 import com.bbgk.mml.domain.entity.Member
 import com.bbgk.mml.domain.repository.MemberRepository
-import com.bbgk.mml.domain.repository.MusicRepository
 import com.bbgk.mml.member.service.MemberService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test

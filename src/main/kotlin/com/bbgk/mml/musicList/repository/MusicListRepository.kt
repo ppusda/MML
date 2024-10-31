@@ -29,7 +29,7 @@ class MusicListRepository( // 퍼사드 패턴 적용, 간단한 DB 기능 분�
     /**
      * 음악 목록을 페이지 별로 조회합니다.
      *
-     * @param page 현재 페이지
+     * @param pageable 페이지 정보
      * @return 음악 목록을 담은 페이지
      */
     @Transactional(readOnly = true)
@@ -74,7 +74,7 @@ class MusicListRepository( // 퍼사드 패턴 적용, 간단한 DB 기능 분�
     /**
      * 재생목록 목록을 페이지 별로 조회합니다.
      *
-     * @param page 현재 페이지
+     * @param pageable 페이지 정보
      * @return 재생목록 목록을 담은 페이지
      */
     @Transactional(readOnly = true)
