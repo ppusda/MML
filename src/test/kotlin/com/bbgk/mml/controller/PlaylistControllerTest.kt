@@ -2,7 +2,6 @@ package com.bbgk.mml.controller
 
 import com.bbgk.mml.musicList.dto.PlaylistForm
 import org.assertj.core.api.Assertions
-import org.json.JSONArray
 import org.json.JSONObject
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -18,22 +17,22 @@ class PlaylistControllerTest : BaseControllerTest() {
     @DisplayName("Playlists 조회")
     fun testGetPlaylists() {
         // given
-        val uri = "/playlist"
+        val uri = "/v1/playlists?page=0"
 
         // when
         val mvcResult = performGet(uri)
         val contentAsString = mvcResult.response.getContentAsString(StandardCharsets.UTF_8)
-        val jsonArray = JSONArray(contentAsString)
+        val jsonObject = JSONObject(contentAsString)
 
         // then
-        Assertions.assertThat(jsonArray.length()).isPositive()
+        Assertions.assertThat(jsonObject.optJSONArray("content").length()).isPositive()
     }
 
     @Test
     @DisplayName("N번 Playlist 조회")
     fun testGetNPlaylist() {
         // given
-        val uri = "/playlist/${N}/music"
+        val uri = "/v1/playlists/${N}/musics"
 
         // when
         val mvcResult = performGet(uri)
@@ -49,7 +48,7 @@ class PlaylistControllerTest : BaseControllerTest() {
     @DisplayName("Playlist Post 요청 시 생성 성공")
     fun testPostPlaylist_Success() {
         // given
-        val uri = "/playlist"
+        val uri = "/v1/playlists"
         val playlistForm = PlaylistForm("playlist", member)
 
         // when
@@ -64,7 +63,7 @@ class PlaylistControllerTest : BaseControllerTest() {
     @DisplayName("Playlist Post 요청 시 경로 오류")
     fun testPostPlaylist_NotFound() {
         // given
-        val uri = "/playlists"
+        val uri = "/v1/playlists-error"
         val playlistForm = PlaylistForm("playlist", member)
 
         // when
@@ -76,20 +75,20 @@ class PlaylistControllerTest : BaseControllerTest() {
     }
 
     @Test
-    @DisplayName("Playlist Post 요청 시 서버 오류")
+    @DisplayName("Playlist Post 요청 시 클라이언트 오류")
     fun testPostPlaylist_ServerError() {
         // given
-        val uri = "/playlist"
+        val uri = "/v1/playlists"
         val playlistForm = PlaylistForm("playlist", member)
 
-        uid = 3L // 초기 데이터에 없음
+        uid = 5L // 초기 데이터에 없음
 
         // when
         val mvcResult = performPostWithId(uri, playlistForm, "uid", uid)
         val response = mvcResult.response
 
         // then
-        Assertions.assertThat(response.status).isEqualTo(500)
+        Assertions.assertThat(response.status).isEqualTo(400) // MmlBadRequestException
     }
 
     @Test
@@ -97,7 +96,7 @@ class PlaylistControllerTest : BaseControllerTest() {
     @DisplayName("Playlist Patch 요청 시 수정 성공")
     fun testPatchPlaylist_Success() {
         // given
-        val uri = "/playlist/1"
+        val uri = "/v1/playlists/1"
         val playlistForm = PlaylistForm("edited playlist", member)
 
         // when
@@ -125,10 +124,10 @@ class PlaylistControllerTest : BaseControllerTest() {
     }
 
     @Test
-    @DisplayName("Playlist Patch 요청 시 서버 오류")
+    @DisplayName("Playlist Patch 요청 시 클라이언트 오류")
     fun testPatchPlaylist_ServerError() {
         // given
-        val uri = "/playlist/5" // 5번 없음
+        val uri = "/v1/playlists/5" // 초기 데이터에 5번 없음
         val playlistForm = PlaylistForm("edited playlist", member)
 
         // when
@@ -136,7 +135,7 @@ class PlaylistControllerTest : BaseControllerTest() {
         val response = mvcResult.response
 
         // then
-        Assertions.assertThat(response.status).isEqualTo(500)
+        Assertions.assertThat(response.status).isEqualTo(400) // MmlBadRequestException
     }
 
     @Test
@@ -144,7 +143,7 @@ class PlaylistControllerTest : BaseControllerTest() {
     @DisplayName("Playlist Delete 요청 시 삭제 성공")
     fun testDeletePlaylist_Success() {
         // given
-        val uri = "/playlist/1"
+        val uri = "/v1/playlists/1"
 
         // when
         val mvcResult = performDelete(uri)
@@ -169,17 +168,17 @@ class PlaylistControllerTest : BaseControllerTest() {
     }
 
     @Test
-    @DisplayName("Playlist Delete 요청 시 서버 오류")
+    @DisplayName("Playlist Delete 요청 시 클라이언트 오류")
     fun testDeletePlaylist_ServerError() {
         // given
-        val uri = "/playlist/5"
+        val uri = "/v1/playlists/5"
 
         // when
         val mvcResult = performDelete(uri)
         val response = mvcResult.response
 
         // then
-        Assertions.assertThat(response.status).isEqualTo(500)
+        Assertions.assertThat(response.status).isEqualTo(400) // MmlBadRequestException
     }
 
 }
