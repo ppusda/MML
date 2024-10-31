@@ -2,22 +2,18 @@ package com.bbgk.mml.musicList.service
 
 import com.bbgk.mml.domain.entity.PlaylistMusic
 import com.bbgk.mml.domain.exception.MmlBadRequestException
-import com.bbgk.mml.domain.repository.PlaylistMusicRepository
+import com.bbgk.mml.musicList.repository.MusicListRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 /**
  * 재생목록 내 음악과 서비스를 제공하는 클래스입니다.
  *
- * @property playlistService 재생목록 서비스
- * @property musicService 음악 서비스
- * @property playlistMusicRepository 재생목록 내 음악 리포지토리
+ * @property musicListRepository 음악, 재생목록 관련 기능 제공 리포지토리
  */
 @Service
 class PlaylistMusicService(
-        private val playlistService: PlaylistService,
-        private val musicService: MusicService,
-        private val playlistMusicRepository: PlaylistMusicRepository
+        private val musicListRepository: MusicListRepository
 ) {
 
     /**
@@ -29,13 +25,14 @@ class PlaylistMusicService(
      */
     @Transactional
     fun addMusicInPlaylist(playlistId: Long, musicId: Long) {
-        val playlist = playlistService.findPlayListById(playlistId)
-        val music = musicService.findMusicById(musicId)
+        val playlist = musicListRepository.findPlayListById(playlistId)
+        val music = musicListRepository.findMusicById(musicId)
 
-        // 중복 체크
-        if (playlistMusicRepository.findByPlaylistIdAndMusicId(playlistId, musicId).isPresent) {
-            throw MmlBadRequestException("이미 재생목록 내 존재하는 음악입니다.")
-        }
+        musicListRepository.findByPlaylistIdAndMusicId(
+                playlistId = playlistId,
+                musicId = musicId,
+                message = "이미 재생목록 내 존재하는 음악입니다."
+        ) // 중복 체크
 
         val playlistMusic = mutableListOf<PlaylistMusic>(
             PlaylistMusic(playlist, music)
@@ -54,23 +51,13 @@ class PlaylistMusicService(
      */
     @Transactional
     fun deleteMusicInPlaylist(playlistId: Long, musicId: Long) {
-        val playlistMusic = findByPlaylistIdAndMusicId(playlistId, musicId)
-        playlistMusicRepository.deleteById(playlistMusic.id!!)
-    }
+        val playlistMusic = musicListRepository.findByPlaylistIdAndMusicId(
+                playlistId = playlistId,
+                musicId = musicId,
+                message = "존재하지 않는 플레이리스트 내 음악입니다."
+        )
 
-    /**
-     * 아이디로 재생목록 내 음악을 검색합니다.
-     *
-     * @param playlistId 재생목록 아이디
-     * @param musicId 음악 아이디
-     * @return 검색된 재생목록 내 음악
-     * @throws MmlBadRequestException 재생목록 내 존재하지 않는 음악을 검색했을 때 발생
-     */
-    @Transactional(readOnly = true)
-    fun findByPlaylistIdAndMusicId(playlistId: Long, musicId: Long): PlaylistMusic {
-        return playlistMusicRepository.findByPlaylistIdAndMusicId(playlistId, musicId).orElseThrow {
-            throw MmlBadRequestException("존재하지 않는 플레이리스트 내 음악입니다.")
-        }
+        musicListRepository.deletePlaylistMusicById(playlistMusic.id!!)
     }
 
 }
