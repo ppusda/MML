@@ -111,7 +111,7 @@ class PlaylistControllerTest : BaseControllerTest() {
     @DisplayName("Playlist Patch 요청 시 경로 오류")
     fun testPatchPlaylist_NotFound() {
         // given
-        val uri = "/playlists/1"
+        val uri = "/v1/playlists-error/1"
 
         val playlistForm = PlaylistForm("edited playlist", member)
 
@@ -157,7 +157,7 @@ class PlaylistControllerTest : BaseControllerTest() {
     @DisplayName("Playlist Delete 요청 시 경로 오류")
     fun testDeletePlaylist_NotFound() {
         // given
-        val uri = "/playlists/1"
+        val uri = "/v1/playlists-error/1"
 
         // when
         val mvcResult = performDelete(uri)

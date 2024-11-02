@@ -1,7 +1,7 @@
 package com.bbgk.mml.service
 
 import com.bbgk.mml.domain.entity.Music
-import com.bbgk.mml.domain.repository.MusicRepository
+import com.bbgk.mml.musicList.repository.MusicListRepository
 import com.bbgk.mml.musicList.service.MusicService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -22,7 +22,7 @@ class MusicServiceTest {
     lateinit var musicService: MusicService
 
     @Mock
-    lateinit var musicRepository: MusicRepository
+    lateinit var musicListRepository: MusicListRepository
 
     val DATA_SIZE = 5
 
@@ -40,7 +40,8 @@ class MusicServiceTest {
         }
 
         val page = PageImpl(musics, pageable, DATA_SIZE.toLong())
-        Mockito.`when`(musicRepository.findAll(pageable)).thenReturn(page)
+        Mockito.`when`(musicListRepository.getMusicsForPage(pageable))
+                .thenReturn(page)
 
         // when
         val musicsDTOs = musicService.getMusics(0)

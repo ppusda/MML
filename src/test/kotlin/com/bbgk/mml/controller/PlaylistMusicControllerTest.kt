@@ -14,7 +14,7 @@ class PlaylistMusicControllerTest : BaseControllerTest() {
      * WebMvcTest를 활용해 인터페이스만 검증하는 방법도 있습니다.
      */
 
-    val musicId = 3L
+    val musicId = 2L
 
     @Test
     @Transactional

@@ -1,7 +1,7 @@
 package com.bbgk.mml.controller
 
 import org.assertj.core.api.Assertions
-import org.json.JSONArray
+import org.json.JSONObject
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import java.nio.charset.StandardCharsets
@@ -13,15 +13,15 @@ class MemberControllerTest : BaseControllerTest() {
     @DisplayName("Members 조회")
     fun testGetMembers() {
         // given
-        val uri = "/member"
+        val uri = "/v1/members?page=0"
 
         // when
         val mvcResult = performGet(uri)
         val contentAsString = mvcResult.response.getContentAsString(StandardCharsets.UTF_8)
-        val jsonArray = JSONArray(contentAsString)
+        val jsonObject = JSONObject(contentAsString)
 
         // then
-        Assertions.assertThat(jsonArray.length()).isPositive()
+        Assertions.assertThat(jsonObject.optJSONArray("content").length()).isPositive()
     }
 
 
