@@ -2,15 +2,21 @@ package com.bbgk.mml.service
 
 import com.bbgk.mml.domain.entity.Member
 import com.bbgk.mml.domain.entity.Playlist
+import com.bbgk.mml.domain.exception.MmlBadRequestException
+import com.bbgk.mml.musicList.dto.PlaylistForm
 import com.bbgk.mml.musicList.repository.MusicListRepository
 import com.bbgk.mml.musicList.service.PlaylistService
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito
+import org.mockito.Mockito.`when`
 import org.mockito.junit.jupiter.MockitoExtension
+import org.mockito.kotlin.*
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
@@ -19,61 +25,166 @@ import org.springframework.data.domain.Pageable
 @ExtendWith(MockitoExtension::class)
 class PlaylistServiceTest {
 
-    /**
-     * 단위 테스트를 어떻게 짜야할지 모를 때는 Jacoco로 커버리지를 측정하면 좋습니다.
-     * 코드의 어떤 라인이 실행되지 않았는지 보는 것만으로도 케이스를 추가할 수 있습니다.
-     * 하지만 커버리지만으로 커버되지 않는 케이스가 반드시 있으니 주의해야 합니다.
-     *
-     * 현재 테스트가 작성되지 않은 메소드가 많습니다.
-     * 분기나 예외 던지는 케이스까지 고려해서 커버리지 100%를 달성해보면 배우는 게 있을 것입니다.
-     * 토스 슬래시: https://www.youtube.com/watch?v=jdlBu2vFv58
-     */
-
     @InjectMocks
     lateinit var playlistService: PlaylistService
 
     @Mock
-    lateinit var musicListRepository: MusicListRepository // MusicListRepository의 Mock 객체
+    lateinit var musicListRepository: MusicListRepository
 
     val DATA_SIZE = 5
-    val TEST_MEMBER = Member("testMember", "1234")
+    val PLAYLIST_ID = 1L
+    val OWNER = Member("testMember", "1234")
 
     val PAGE_NUMBER = 0
     val PAGE_SIZE = 5
     val pageable: Pageable = PageRequest.of(PAGE_NUMBER, PAGE_SIZE)
 
     @Test
+    @DisplayName("재생목록 목록을 조회합니다.")
     fun testGetPlaylists() {
         // given
         val playlists = mutableListOf<Playlist>()
         for (i in 1..DATA_SIZE) {
-            val playlist = Playlist("$i", TEST_MEMBER)
+            val playlist = Playlist("$i", OWNER)
             playlists.add(playlist)
         }
 
         val page = PageImpl(playlists, pageable, DATA_SIZE.toLong())
-        Mockito.`when`(musicListRepository.getPlaylistsForPage(pageable))
+        `when`(musicListRepository.getPlaylistsForPage(any()))
                 .thenReturn(page)
 
         // when
-        val musicsDTOs = playlistService.getPlaylists(0)
+        val playlistDTOs = playlistService.getPlaylists(0)
 
         // then
-        assertThat(musicsDTOs).hasSize(DATA_SIZE)
+        verify(musicListRepository).getPlaylistsForPage(pageable)
+        assertThat(playlistDTOs).hasSize(DATA_SIZE)
     }
 
     @Test
-    fun testGetPlaylist() {
+    @DisplayName("재생목록을 아이디로 조회합니다.")
+    fun testFindPlaylistById() {
         // given
-        val playlist = Playlist("1", TEST_MEMBER)
+        val playlist = Playlist("name", OWNER)
 
-        Mockito.`when`(musicListRepository.findPlayListById(1))
+        `when`(musicListRepository.findPlayListById(any()))
             .thenReturn(playlist)
 
         // when
-        val musicsDTO = playlistService.findPlaylistById(1)
+        val playlistDTO = playlistService.findPlaylistById(PLAYLIST_ID)
 
         // then
-        assertThat(musicsDTO.name).isEqualTo("1")
+        verify(musicListRepository).findPlayListById(PLAYLIST_ID)
+        assertThat(playlistDTO.name).isEqualTo(playlist.name)
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 재생목록을 아이디로 조회할 때 에러가 발생합니다.")
+    fun testFindNotExistPlaylistById() {
+        // given
+        val playlist = Playlist("name", OWNER)
+
+        `when`(musicListRepository.findPlayListById(any()))
+                .thenThrow(MmlBadRequestException("존재하지 않는 플레이리스트입니다."))
+
+        // when
+        assertThrows<MmlBadRequestException> {
+            playlistService.findPlaylistById(PLAYLIST_ID)
+        }
+
+        // then
+        verify(musicListRepository).findPlayListById(PLAYLIST_ID)
+    }
+
+    @Test
+    @DisplayName("재생목록 정보를 저장합니다.")
+    fun testSavePlaylist() {
+        // given
+        val playlistForm = PlaylistForm("title", OWNER)
+        val playlist = playlistForm.toEntity(OWNER)
+        val argumentCaptor = argumentCaptor<Playlist>()
+
+        doNothing().`when`(musicListRepository).savePlaylist(any())
+
+        // when
+        playlistService.savePlaylist(OWNER, playlistForm)
+
+        // then
+        verify(musicListRepository).savePlaylist(argumentCaptor.capture())
+
+        // 캡처한 객체 검증
+        val savedPlaylist = argumentCaptor.allValues[0]
+        assertThat(savedPlaylist.name).isEqualTo(playlist.name)
+    }
+
+    @Test
+    @DisplayName("재생목록 정보를 수정합니다.")
+    fun testUpdatePlaylist() {
+        // given
+        val playlistForm = PlaylistForm("updatedName", OWNER)
+        val existPlaylist = Playlist("name", OWNER)
+
+        `when`(musicListRepository.findPlayListById(any()))
+                .thenReturn(existPlaylist)
+
+        // when
+        playlistService.updatePlaylist(PLAYLIST_ID, playlistForm)
+
+        // then
+        assertThat(existPlaylist.name).isEqualTo(playlistForm.name) // 변경 사항 검증
+    }
+
+
+    @Test
+    @DisplayName("존재하지 않는 재생목록을 수정하려고 할 때 예외가 발생합니다.")
+    fun testUpdateNotExistPlaylist() {
+        // given
+        val playlistForm = PlaylistForm("updatedName", OWNER)
+
+        `when`(musicListRepository.findPlayListById(any()))
+                .thenThrow(MmlBadRequestException("존재하지 않는 재생목록입니다."))
+
+        // when
+        assertThrows<MmlBadRequestException> {
+            playlistService.updatePlaylist(PLAYLIST_ID, playlistForm)
+        }
+
+        // then
+        verify(musicListRepository).findPlayListById(PLAYLIST_ID)
+    }
+
+
+    @Test
+    @DisplayName("재생목록을 삭제합니다.")
+    fun testDeletePlaylist() {
+        // given
+        val playlist = Playlist("name", OWNER)
+
+        `when`(musicListRepository.findPlayListById(any()))
+                .thenReturn(playlist)
+        doNothing().`when`(musicListRepository).deletePlaylistById(any())
+
+        // when
+        playlistService.deletePlaylist(PLAYLIST_ID)
+
+        // then
+        Mockito.verify(musicListRepository).deletePlaylistById(PLAYLIST_ID)
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 재생목록을 삭제하려고 할 때 예외가 발생합니다.")
+    fun testDeleteNotExistMusic() {
+        // given
+        `when`(musicListRepository.findPlayListById(any()))
+                .thenThrow(MmlBadRequestException("존재하지 않는 재생목록입니다."))
+
+        // when
+        assertThrows<MmlBadRequestException> {
+            playlistService.deletePlaylist(PLAYLIST_ID)
+        }
+
+        // then
+        verify(musicListRepository).findPlayListById(PLAYLIST_ID)
+        verify(musicListRepository, never()).deletePlaylistById(any())
     }
 }
