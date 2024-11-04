@@ -1,5 +1,6 @@
-package com.bbgk.mml.controller
+package com.bbgk.mml.musicList.controller
 
+import com.bbgk.mml.BaseControllerTest
 import com.bbgk.mml.musicList.dto.PlaylistForm
 import org.assertj.core.api.Assertions
 import org.json.JSONObject

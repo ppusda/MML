@@ -1,10 +1,9 @@
-package com.bbgk.mml.service
+package com.bbgk.mml.member.service
 
 import com.bbgk.mml.domain.entity.Member
 import com.bbgk.mml.domain.exception.MmlBadRequestException
 import com.bbgk.mml.domain.repository.MemberRepository
 import com.bbgk.mml.member.dto.MemberForm
-import com.bbgk.mml.member.service.MemberService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test

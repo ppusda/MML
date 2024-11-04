@@ -1,4 +1,4 @@
-package com.bbgk.mml.controller
+package com.bbgk.mml
 
 import com.bbgk.mml.domain.entity.Member
 import com.fasterxml.jackson.databind.ObjectMapper

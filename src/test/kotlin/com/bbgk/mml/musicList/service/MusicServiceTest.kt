@@ -1,10 +1,9 @@
-package com.bbgk.mml.service
+package com.bbgk.mml.musicList.service
 
 import com.bbgk.mml.domain.entity.Music
 import com.bbgk.mml.domain.exception.MmlBadRequestException
 import com.bbgk.mml.musicList.dto.MusicForm
 import com.bbgk.mml.musicList.repository.MusicListRepository
-import com.bbgk.mml.musicList.service.MusicService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -12,7 +11,6 @@ import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
-import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.*
@@ -140,7 +138,7 @@ class MusicServiceTest {
         musicService.deleteMusic(MUSIC_ID)
 
         // then
-        Mockito.verify(musicListRepository).deleteMusicById(MUSIC_ID)
+        verify(musicListRepository).deleteMusicById(MUSIC_ID)
     }
 
     @Test

@@ -1,5 +1,6 @@
-package com.bbgk.mml.controller
+package com.bbgk.mml.member.controller
 
+import com.bbgk.mml.BaseControllerTest
 import org.assertj.core.api.Assertions
 import org.json.JSONObject
 import org.junit.jupiter.api.DisplayName

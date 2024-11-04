@@ -1,11 +1,10 @@
-package com.bbgk.mml.service
+package com.bbgk.mml.musicList.service
 
 import com.bbgk.mml.domain.entity.Member
 import com.bbgk.mml.domain.entity.Playlist
 import com.bbgk.mml.domain.exception.MmlBadRequestException
 import com.bbgk.mml.musicList.dto.PlaylistForm
 import com.bbgk.mml.musicList.repository.MusicListRepository
-import com.bbgk.mml.musicList.service.PlaylistService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -13,7 +12,6 @@ import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
-import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.*
@@ -168,7 +166,7 @@ class PlaylistServiceTest {
         playlistService.deletePlaylist(PLAYLIST_ID)
 
         // then
-        Mockito.verify(musicListRepository).deletePlaylistById(PLAYLIST_ID)
+        verify(musicListRepository).deletePlaylistById(PLAYLIST_ID)
     }
 
     @Test

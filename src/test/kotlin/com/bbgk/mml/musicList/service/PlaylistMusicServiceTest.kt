@@ -13,7 +13,7 @@ import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
-import org.mockito.Mockito
+import org.mockito.Mockito.`when`
 import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doNothing
@@ -41,10 +41,10 @@ class PlaylistMusicServiceTest {
         val playlist = Playlist("name", OWNER)
         val music = Music("title", "artist", "url")
 
-        Mockito.`when`(musicListRepository.findPlayListById(any()))
+        `when`(musicListRepository.findPlayListById(any()))
                 .thenReturn(playlist)
 
-        Mockito.`when`(musicListRepository.findMusicById(any()))
+        `when`(musicListRepository.findMusicById(any()))
                 .thenReturn(music)
 
         // when
@@ -61,7 +61,7 @@ class PlaylistMusicServiceTest {
     @DisplayName("존재하지 않는 재생목록 내 음악을 추가할 때 에러가 발생합니다.")
     fun testAddMusicInNotExistPlaylist() {
         // given
-        Mockito.`when`(musicListRepository.findPlayListById(any()))
+        `when`(musicListRepository.findPlayListById(any()))
                 .thenThrow(MmlBadRequestException("존재하지 않는 재생목록입니다."))
 
         // when
@@ -79,9 +79,9 @@ class PlaylistMusicServiceTest {
         // given
         val playlist = Playlist("name", OWNER)
 
-        Mockito.`when`(musicListRepository.findPlayListById(any()))
+        `when`(musicListRepository.findPlayListById(any()))
                 .thenReturn(playlist)
-        Mockito.`when`(musicListRepository.findMusicById(any()))
+        `when`(musicListRepository.findMusicById(any()))
                 .thenThrow(MmlBadRequestException("존재하지 않는 재생목록입니다."))
 
         // when
@@ -102,7 +102,7 @@ class PlaylistMusicServiceTest {
         val music = Music("title", "artist", "url")
         val playlistMusic = PlaylistMusic(playlist, music).apply { id = PLAYLIST_MUSIC_ID } // ID 설정
 
-        Mockito.`when`(musicListRepository.findByPlaylistIdAndMusicId(PLAYLIST_ID, MUSIC_ID, MESSAGE))
+        `when`(musicListRepository.findByPlaylistIdAndMusicId(PLAYLIST_ID, MUSIC_ID, MESSAGE))
                 .thenReturn(playlistMusic)
         doNothing().`when`(musicListRepository).deletePlaylistMusicById(PLAYLIST_MUSIC_ID)
 
@@ -123,9 +123,9 @@ class PlaylistMusicServiceTest {
         val music = Music("title", "artist", "url")
         val playlistMusic = PlaylistMusic(playlist, music).apply { id = PLAYLIST_MUSIC_ID } // ID 설정
 
-        Mockito.`when`(musicListRepository.findByPlaylistIdAndMusicId(PLAYLIST_ID, MUSIC_ID, MESSAGE))
+        `when`(musicListRepository.findByPlaylistIdAndMusicId(PLAYLIST_ID, MUSIC_ID, MESSAGE))
                 .thenReturn(playlistMusic)
-        Mockito.`when`(musicListRepository.deletePlaylistMusicById(PLAYLIST_MUSIC_ID))
+        `when`(musicListRepository.deletePlaylistMusicById(PLAYLIST_MUSIC_ID))
                 .thenThrow(MmlBadRequestException(MESSAGE))
 
         // when
