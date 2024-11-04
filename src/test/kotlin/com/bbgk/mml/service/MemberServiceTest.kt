@@ -11,11 +11,11 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.ArgumentCaptor
-import org.mockito.ArgumentMatchers.any
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.junit.jupiter.MockitoExtension
+import org.mockito.kotlin.any
 import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.never
 import org.mockito.kotlin.verify
@@ -34,6 +34,7 @@ class MemberServiceTest {
     @Mock
     lateinit var memberRepository: MemberRepository
 
+    val MEMBER_ID = 1L
     val DATA_SIZE = 5
 
     val PAGE_NUMBER = 0
@@ -66,17 +67,16 @@ class MemberServiceTest {
     @DisplayName("회원을 아이디로 조회합니다.")
     fun testFindMemberById() {
         // given
-        val memberId = 1L
         val member = Member("test_1", "1")
 
-        `when`(memberRepository.findById(memberId))
+        `when`(memberRepository.findById(any()))
                 .thenReturn(Optional.of(member))
 
         // when
-        val findMember = memberService.findMemberById(memberId)
+        val findMember = memberService.findMemberById(MEMBER_ID)
 
         // then
-        verify(memberRepository).findById(memberId)
+        verify(memberRepository).findById(MEMBER_ID)
         assertThat(findMember.email).isEqualTo(member.email)
         assertThat(findMember.id).isEqualTo(member.id)
     }
@@ -85,18 +85,16 @@ class MemberServiceTest {
     @DisplayName("존재하지 않는 회원을 아이디로 조회했을 때 예외가 발생합니다.")
     fun testFindNotExistMemberById() {
         // given
-        val memberId = 1L
-
-        `when`(memberRepository.findById(memberId))
+        `when`(memberRepository.findById(any()))
                 .thenReturn(Optional.empty())
 
         // when
         assertThrows<MmlBadRequestException> {
-            memberService.findMemberById(memberId)
+            memberService.findMemberById(MEMBER_ID)
         }
 
         // then
-        verify(memberRepository).findById(memberId)
+        verify(memberRepository).findById(MEMBER_ID)
     }
 
     @Test
@@ -105,7 +103,7 @@ class MemberServiceTest {
         // given
         val memberForm = MemberForm("test_1", "1")
         val member = memberForm.toEntity()
-        `when`(memberRepository.save(any(Member::class.java))).thenReturn(member)
+        `when`(memberRepository.save(any())).thenReturn(member)
 
         // when
         memberService.saveMember(memberForm)
@@ -125,36 +123,33 @@ class MemberServiceTest {
     @DisplayName("회원 정보를 삭제합니다.")
     fun testDeleteMember() {
         // given
-        val memberId = 1L
         val member = Member("test_1", "1")
-        `when`(memberRepository.findById(memberId))
+        `when`(memberRepository.findById(any()))
                 .thenReturn(Optional.of(member)) // findById로 검증을 진행하기에 Mock 설정
-        doNothing().`when`(memberRepository).deleteById(memberId)
+        doNothing().`when`(memberRepository).deleteById(MEMBER_ID)
 
         // when
-        memberService.deleteMember(memberId)
+        memberService.deleteMember(MEMBER_ID)
 
         // then
-        verify(memberRepository).deleteById(memberId) // deleteById 메서드 호출 확인
+        verify(memberRepository).deleteById(MEMBER_ID) // deleteById 메서드 호출 확인
     }
 
     @Test
     @DisplayName("존재하지 않는 회원을 삭제하려고 할 때 예외가 발생합니다.")
     fun testDeleteNotExistMember() {
         // given
-        val memberId = 1L
-
-        `when`(memberRepository.findById(memberId))
+        `when`(memberRepository.findById(any()))
                 .thenReturn(Optional.empty()) // findById로 검증을 진행하기에 Mock 설정
 
         // when
         assertThrows<MmlBadRequestException> {
-            memberService.deleteMember(memberId)
+            memberService.deleteMember(MEMBER_ID)
         }
 
         // then
-        verify(memberRepository).findById(memberId) // 호출되었는지 확인
-        verify(memberRepository, never()).deleteById(memberId) // 오류로 인해 호출되지 않아야 함
+        verify(memberRepository).findById(MEMBER_ID) // 호출되었는지 확인
+        verify(memberRepository, never()).deleteById(MEMBER_ID) // 오류로 인해 호출되지 않아야 함
     }
 
 }
