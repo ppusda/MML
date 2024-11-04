@@ -40,6 +40,8 @@ dependencies {
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+	testImplementation ("org.mockito.kotlin:mockito-kotlin:5.4.0") // Test 진행 시 any(), ArgumentCaptor에 null 문제가 발생하여 추가
+	// Kotlin 버전의 Mockito, https://github.com/mockito/mockito-kotlin?tab=readme-ov-file
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
@@ -66,6 +68,7 @@ tasks.jacocoTestReport {
 }
 tasks.jacocoTestReport {
 	reports {
+		html.required = true // HTML 리포트 활성화
 		xml.required = false // 출력 형식 설정
 		csv.required = false // 출력 형식 설정
 		html.outputLocation = layout.buildDirectory.dir("jacocoHtml") // HTML jacoco 보고서 생성 디렉토리
@@ -75,7 +78,7 @@ tasks.jacocoTestCoverageVerification {
 	violationRules {
 		rule {
 			limit {
-				minimum = "0.5".toBigDecimal() // 빌드 시 테스트 커버리지 제한 값 설정, 50% 이상이 테스트되지 않으면 실패
+				minimum = "0.9".toBigDecimal() // 빌드 시 테스트 커버리지 제한 값 설정, 50% 이상이 테스트되지 않으면 실패
 			}
 		}
 
@@ -93,18 +96,20 @@ tasks.jacocoTestCoverageVerification {
 	}
 }
 
+/**
 tasks.test {
 	extensions.configure(JacocoTaskExtension::class) {
 		destinationFile = layout.buildDirectory.file("jacoco/jacocoTest.exec").get().asFile // 테스트 실행 시 생성되는 커버리지 데이터 파일의 경로 지정
 		// https://youtrack.jetbrains.com/issue/KTIJ-17783/False-positive-Val-cannot-be-reassigned-in-build.gradle.kts
-		// 위 내용에서 Val cannot be reassigned 에러가 발생함. 이는 IDE에서만 발생하는 에러 같음
+		// 위 내용에서 Val cannot be reassigned 에러가 발생함. 이는 IDE에서만 발생하는 에러 같음, 아래 설정도 동일
 		classDumpDir = layout.buildDirectory.dir("jacoco/classpathdumps").get().asFile // 코드 커버리지 분석을 수행할 때 필요한 클래스 파일들을 저장하는 경로 지정
 	}
 }
+*/
 
 tasks.test {
 	configure<JacocoTaskExtension> {
-		isEnabled = false // 설정 활성화 / 비활성화
+		isEnabled = true // 설정 활성화 / 비활성화
 		destinationFile = layout.buildDirectory.file("jacoco/${name}.exec").get().asFile // 테스트 실행 시 생성되는 커버리지 데이터 파일의 경로 지정
 		includes = emptyList() // 포함할 클래스 패턴 목록
 		excludes = emptyList() // 제외할 클래스 패턴 목록
