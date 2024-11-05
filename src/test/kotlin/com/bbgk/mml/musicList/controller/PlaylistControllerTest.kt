@@ -2,17 +2,24 @@ package com.bbgk.mml.musicList.controller
 
 import com.bbgk.mml.BaseControllerTest
 import com.bbgk.mml.musicList.dto.PlaylistForm
+import com.bbgk.mml.musicList.service.MusicService
 import org.assertj.core.api.Assertions
 import org.json.JSONObject
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import org.springframework.transaction.annotation.Transactional
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import java.nio.charset.StandardCharsets
 
 
-class PlaylistControllerTest : BaseControllerTest() {
+class PlaylistControllerTest(
+        @Autowired private val mockMvc: MockMvc
+) : BaseControllerTest(mockMvc) {
 
-    private val N: Int = 1
+    @MockBean
+    private lateinit var playlistService: MusicService
 
     @Test
     @DisplayName("Playlists 조회")
@@ -21,7 +28,7 @@ class PlaylistControllerTest : BaseControllerTest() {
         val uri = "/v1/playlists?page=0"
 
         // when
-        val mvcResult = performGet(uri)
+        val mvcResult = performGet(uri, MockMvcResultMatchers.status().isOk)
         val contentAsString = mvcResult.response.getContentAsString(StandardCharsets.UTF_8)
         val jsonObject = JSONObject(contentAsString)
 
@@ -36,7 +43,7 @@ class PlaylistControllerTest : BaseControllerTest() {
         val uri = "/v1/playlists/${N}/musics"
 
         // when
-        val mvcResult = performGet(uri)
+        val mvcResult = performGet(uri, MockMvcResultMatchers.status().isOk)
         val contentAsString = mvcResult.response.getContentAsString(StandardCharsets.UTF_8)
         val jsonObject = JSONObject(contentAsString)
 
@@ -45,7 +52,6 @@ class PlaylistControllerTest : BaseControllerTest() {
     }
 
     @Test
-    @Transactional
     @DisplayName("Playlist Post 요청 시 생성 성공")
     fun testPostPlaylist_Success() {
         // given
@@ -53,7 +59,7 @@ class PlaylistControllerTest : BaseControllerTest() {
         val playlistForm = PlaylistForm("playlist", member)
 
         // when
-        val mvcResult = performPostWithId(uri, playlistForm, "uid", uid)
+        val mvcResult = performPostWithId(uri, playlistForm, "uid", USER_ID)
         val response = mvcResult.response
 
         // then
@@ -68,7 +74,7 @@ class PlaylistControllerTest : BaseControllerTest() {
         val playlistForm = PlaylistForm("playlist", member)
 
         // when
-        val mvcResult = performPostWithId(uri, playlistForm, "uid", uid)
+        val mvcResult = performPostWithId(uri, playlistForm, "uid", USER_ID)
         val response = mvcResult.response
 
         // then
@@ -82,10 +88,10 @@ class PlaylistControllerTest : BaseControllerTest() {
         val uri = "/v1/playlists"
         val playlistForm = PlaylistForm("playlist", member)
 
-        uid = 5L // 초기 데이터에 없음
+        USER_ID = 5L
 
         // when
-        val mvcResult = performPostWithId(uri, playlistForm, "uid", uid)
+        val mvcResult = performPostWithId(uri, playlistForm, "uid", USER_ID)
         val response = mvcResult.response
 
         // then
@@ -93,7 +99,6 @@ class PlaylistControllerTest : BaseControllerTest() {
     }
 
     @Test
-    @Transactional
     @DisplayName("Playlist Patch 요청 시 수정 성공")
     fun testPatchPlaylist_Success() {
         // given
@@ -140,7 +145,6 @@ class PlaylistControllerTest : BaseControllerTest() {
     }
 
     @Test
-    @Transactional
     @DisplayName("Playlist Delete 요청 시 삭제 성공")
     fun testDeletePlaylist_Success() {
         // given

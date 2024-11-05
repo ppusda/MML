@@ -2,23 +2,24 @@ package com.bbgk.mml.musicList.controller
 
 import com.bbgk.mml.BaseControllerTest
 import com.bbgk.mml.musicList.dto.PlaylistForm
+import com.bbgk.mml.musicList.service.PlaylistService
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import org.springframework.transaction.annotation.Transactional
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.test.web.servlet.MockMvc
 
+@WebMvcTest(PlaylistMusicController::class)
+class PlaylistMusicControllerTest(
+        @Autowired private val mockMvc: MockMvc
+) : BaseControllerTest(mockMvc) {
 
-class PlaylistMusicControllerTest : BaseControllerTest() {
-
-    /**
-     * SpringBootTest를 사용해도 좋습니다.
-     * WebMvcTest를 활용해 인터페이스만 검증하는 방법도 있습니다.
-     */
-
-    val musicId = 2L
+    @MockBean
+    private lateinit var playlistService: PlaylistService
 
     @Test
-    @Transactional
     @DisplayName("Playlist 내 Music 담기 성공")
     fun testPostPlaylistMusic_Success() {
         // given
@@ -26,7 +27,7 @@ class PlaylistMusicControllerTest : BaseControllerTest() {
         val playlistForm = PlaylistForm("playlist", member)
 
         // when
-        val mvcResult = performPostWithId(uri, playlistForm, "musicId", musicId)
+        val mvcResult = performPostWithId(uri, playlistForm, "musicId", MUSIC_ID)
         val response = mvcResult.response
 
         // then
@@ -41,7 +42,7 @@ class PlaylistMusicControllerTest : BaseControllerTest() {
         val playlistForm = PlaylistForm("playlist", member)
 
         // when
-        val mvcResult = performPostWithId(uri, playlistForm, "musicId", musicId)
+        val mvcResult = performPostWithId(uri, playlistForm, "musicId", MUSIC_ID)
         val response = mvcResult.response
 
         // then
@@ -56,7 +57,7 @@ class PlaylistMusicControllerTest : BaseControllerTest() {
         val playlistForm = PlaylistForm("playlist", member)
 
         // when
-        val mvcResult = performPostWithId(uri, playlistForm, "musicId", musicId)
+        val mvcResult = performPostWithId(uri, playlistForm, "musicId", MUSIC_ID)
         val response = mvcResult.response
 
         // then
@@ -64,18 +65,17 @@ class PlaylistMusicControllerTest : BaseControllerTest() {
     }
 
     @Test
-    @Transactional
     @DisplayName("Playlist 내 Music 삭제 요청 시 삭제 성공")
     fun testDeletePlaylist_Success() {
         // given
         val uri = "/v1/playlists/1/musics"
 
         // when
-        val mvcResult = performDeleteWithId(uri, "musicId", musicId)
+        val mvcResult = performDeleteWithId(uri, "musicId", MUSIC_ID)
         val response = mvcResult.response
 
         // then
-        Assertions.assertThat(response.status).isEqualTo(200) // Mml
+        Assertions.assertThat(response.status).isEqualTo(200)
     }
 
     @Test
@@ -85,7 +85,7 @@ class PlaylistMusicControllerTest : BaseControllerTest() {
         val uri = "/v1/playlists/1/musics-error"
 
         // when
-        val mvcResult = performDeleteWithId(uri, "musicId", musicId)
+        val mvcResult = performDeleteWithId(uri, "musicId", MUSIC_ID)
         val response = mvcResult.response
 
         // then
@@ -99,12 +99,11 @@ class PlaylistMusicControllerTest : BaseControllerTest() {
         val uri = "/v1/playlists/5/musics"
 
         // when
-        val mvcResult = performDeleteWithId(uri, "musicId", musicId)
+        val mvcResult = performDeleteWithId(uri, "musicId", MUSIC_ID)
         val response = mvcResult.response
 
         // then
         Assertions.assertThat(response.status).isEqualTo(400)
     }
-
 
 }
