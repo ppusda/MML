@@ -539,8 +539,6 @@
   
 </details>
 
-<hr>
-
 <details>
   
   <summary>읽기 좋은 코드로 수정하기 (주석, 메서드 네이밍 수정, 퍼사드 패턴 적용)</summary>
@@ -584,6 +582,66 @@
   
 </details>
 
+<details>
+  
+  <summary>테스트 코드 추가하기 (테스트 커버리지 100% 달성, 단위 테스트 작성)</summary>
+
+  커밋 내용 => 
+
+  <table>
+    <tr>
+      <th>11/02 토</th>
+      <td>
+        <a href="https://github.com/ppusda/MML/commit/1cd83d06e115975e5a6da5c505ef362c32df5d1e">feat: JaCoCo 설정 추가 (+ 각 요소 설명)</a><br>
+        <a href="https://github.com/ppusda/MML/commit/5f46369f5ee9570516ca9df0c2737663cf64c1c2">refactor: 테스트 커버리지 100% 달성하기 - 기존 테스트 변경사항 수정</a><br>
+      </td>
+    </tr> 
+    <tr>
+      <th>11/03 일</th>
+      <td>
+        <a href="https://github.com/ppusda/MML/commit/373c6084814e106612c369225a2888a2f4262dd9">feat: 테스트 커버리지 100% 달성하기 - MemberService 테스트 작성</a><br>
+      </td>
+    </tr>
+    <tr>
+      <th>11/04 월</th>
+      <td>
+        <a href="https://github.com/ppusda/MML/commit/31353d16df692bdde8c97615a98e8970144351e7">feat: 테스트 커버리지 100% 달성하기 - MemberService 예외 상황 테스트 작성 (+ Mockito-Kotlin 추가)</a><br>
+      </td>
+    </tr>
+    <tr>
+      <th>11/05 화</th>
+      <td>
+        <a href="https://github.com/ppusda/MML/commit/a9ce047adf05c02bb057008821dc37b578c40f97">fix: 테스트 커버리지 100% 달성하기 - MemberService / 상수로 수정, mockito-kotlin 라이브러리로 수정</a><br>
+        <a href="https://github.com/ppusda/MML/commit/f0a1414f07940695499b6227b669b53d97b63ca8">feat: 테스트 커버리지 100% 달성하기 - MusicService 테스트 작성</a><br>
+        <a href="https://github.com/ppusda/MML/commit/877c67aeba47b6f6a32e55d42d660ba0e8b3f61c">feat: 테스트 커버리지 100% 달성하기 - PlaylistService 테스트 작성</a><br>
+        <a href="https://github.com/ppusda/MML/commit/e30b24d9d8ff761fe02b0d2c9cf79d8d77370cd5">feat: 테스트 커버리지 100% 달성하기 - PlaylistMusicService 테스트 작성</a><br>
+        <a href="https://github.com/ppusda/MML/commit/a35a7a90327c82757ff767bb6dcfb661557b78a9">fix: 테스트 커버리지 100% 달성하기 - 불필요한 import 제거 및 디렉토리 정리</a><br>
+      </td>
+    </tr>
+    <tr>
+      <th>11/06 수</th>
+      <td>
+        <a href="https://github.com/ppusda/MML/commit/92788561266007a87076c962d5a9a368050d815c">refactor: 테스트 커버리지 100% 달성하기 - BaseServiceTest 기본 설정 클래스 추가</a><br>
+        <a href="https://github.com/ppusda/MML/commit/180c71b5e50d18213a905dbed0796bf9f9c13c87">refactor: 테스트 커버리지 100% 달성하기 - BaseControllerTest 기본 설정 클래스 추가 (WebMvcTest)</a><br>
+        <a href="https://github.com/ppusda/MML/commit/fe41a1304758edb71cfa365ce06eb93e8d8eb804">fix: 테스트 커버리지 100% 달성하기 - BaseServiceTest 접근제어자 및 명명규칙 준수</a><br>
+      </td>
+    </tr> 
+  </table>
+
+  ### 테스트 커버리지 - 초기
+  ![테스트 커버리지 - 초기](https://github.com/user-attachments/assets/faa7f62b-2e4a-4bbf-b5db-5de2c0a70992)
+
+  ### 테스트 커버리지 - 기존 테스트 변경사항 수정 후
+  ![테스트 커버리지 - 기존 테스트 변경사항 수정 후](https://github.com/user-attachments/assets/18df3306-3e98-435f-9e2d-d0cd380a7de8)
+
+  ### 테스트 커버리지 - 멤버 추가 후
+  ![테스트 커버리지 - 멤버 추가 후](https://github.com/user-attachments/assets/ee94586d-2ca0-4f77-b56c-f17d2bf8d3e3)
+
+  ### 테스트 커버리지 - 서비스 추가 후
+  ![테스트 커버리지 - 서비스 추가 후](https://github.com/user-attachments/assets/f57c968f-cd41-429b-aa82-0a5c42435858)
+
+</details>
+
 ## 📑 참고
 본 프로젝트는 [인프런 워밍업 클럽 스터디 2기 - 백엔드 프로젝트 (Kotlin, Spring Boot)](https://www.inflearn.com/course/offline/warmup-club-2-be-bk) 의 서브 미션을 위한 프로젝트입니다.
 
@@ -609,7 +667,7 @@
   
   - [X] Restful 하도록 API 수정하기 (10/30 수)
   - [x] 읽기 좋은 코드로 수정하기 (주석, 메서드 네이밍 수정, 퍼사드 패턴 적용) (10/31 목 ~ 11/01 금)
-  - [ ] 테스트 코드 추가하기 (Coverage를 최대한 채워보기, 단위 테스트 작성)
+  - [ ] 테스트 코드 추가하기 (테스트 커버리지 100% 달성, 단위 테스트 작성) (11/02 토 ~ 진행 중)
   - [ ] UI 추가하기
   - [ ] 더미 데이터 추가하기
 
