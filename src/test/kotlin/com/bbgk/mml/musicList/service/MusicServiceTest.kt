@@ -1,5 +1,6 @@
 package com.bbgk.mml.musicList.service
 
+import com.bbgk.mml.BaseServiceTest
 import com.bbgk.mml.domain.entity.Music
 import com.bbgk.mml.domain.exception.MmlBadRequestException
 import com.bbgk.mml.musicList.dto.MusicForm
@@ -8,32 +9,20 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
-import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.*
 import org.springframework.data.domain.PageImpl
-import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Pageable
 
 
-@ExtendWith(MockitoExtension::class)
-class MusicServiceTest {
+class MusicServiceTest: BaseServiceTest() {
 
     @InjectMocks
     lateinit var musicService: MusicService
 
     @Mock
     lateinit var musicListRepository: MusicListRepository
-
-    val MUSIC_ID = 1L
-    val DATA_SIZE = 5
-
-    val PAGE_NUMBER = 0
-    val PAGE_SIZE = 5
-    val pageable: Pageable = PageRequest.of(PAGE_NUMBER, PAGE_SIZE)
 
     @Test
     @DisplayName("음악 목록을 조회합니다.")

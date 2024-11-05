@@ -1,6 +1,6 @@
 package com.bbgk.mml.musicList.service
 
-import com.bbgk.mml.domain.entity.Member
+import com.bbgk.mml.BaseServiceTest
 import com.bbgk.mml.domain.entity.Music
 import com.bbgk.mml.domain.entity.Playlist
 import com.bbgk.mml.domain.entity.PlaylistMusic
@@ -10,29 +10,20 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
-import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.verify
 
-@ExtendWith(MockitoExtension::class)
-class PlaylistMusicServiceTest {
+class PlaylistMusicServiceTest: BaseServiceTest() {
 
     @InjectMocks
     lateinit var playlistMusicService: PlaylistMusicService
 
     @Mock
     lateinit var musicListRepository: MusicListRepository
-
-    val PLAYLIST_ID = 1L
-    val MUSIC_ID = 1L
-    val PLAYLIST_MUSIC_ID = 1L
-    val MESSAGE = "존재하지 않는 플레이리스트 내 음악입니다."
-    val OWNER = Member("testMember", "1234")
 
     @Test
     @DisplayName("재생목록 내 음악을 추가합니다.")
@@ -102,7 +93,7 @@ class PlaylistMusicServiceTest {
         val music = Music("title", "artist", "url")
         val playlistMusic = PlaylistMusic(playlist, music).apply { id = PLAYLIST_MUSIC_ID } // ID 설정
 
-        `when`(musicListRepository.findByPlaylistIdAndMusicId(PLAYLIST_ID, MUSIC_ID, MESSAGE))
+        `when`(musicListRepository.findByPlaylistIdAndMusicId(PLAYLIST_ID, MUSIC_ID, PLAYLIST_MESSAGE))
                 .thenReturn(playlistMusic)
         doNothing().`when`(musicListRepository).deletePlaylistMusicById(PLAYLIST_MUSIC_ID)
 
@@ -123,10 +114,10 @@ class PlaylistMusicServiceTest {
         val music = Music("title", "artist", "url")
         val playlistMusic = PlaylistMusic(playlist, music).apply { id = PLAYLIST_MUSIC_ID } // ID 설정
 
-        `when`(musicListRepository.findByPlaylistIdAndMusicId(PLAYLIST_ID, MUSIC_ID, MESSAGE))
+        `when`(musicListRepository.findByPlaylistIdAndMusicId(PLAYLIST_ID, MUSIC_ID, PLAYLIST_MESSAGE))
                 .thenReturn(playlistMusic)
         `when`(musicListRepository.deletePlaylistMusicById(PLAYLIST_MUSIC_ID))
-                .thenThrow(MmlBadRequestException(MESSAGE))
+                .thenThrow(MmlBadRequestException(PLAYLIST_MESSAGE))
 
         // when
         assertThrows<MmlBadRequestException> {
