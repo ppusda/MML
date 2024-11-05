@@ -39,7 +39,7 @@ class MusicServiceTest: BaseServiceTest() {
                 .thenReturn(page)
 
         // when
-        val musicsDTOs = musicService.getMusics(PAGE_NUMBER)
+        val musicsDTOs = musicService.getMusics(0)
 
         // then
         verify(musicListRepository).getMusicsForPage(pageable)

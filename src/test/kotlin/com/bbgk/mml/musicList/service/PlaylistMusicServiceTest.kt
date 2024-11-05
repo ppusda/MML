@@ -29,7 +29,7 @@ class PlaylistMusicServiceTest: BaseServiceTest() {
     @DisplayName("재생목록 내 음악을 추가합니다.")
     fun testAddMusicInPlaylist() {
         // given
-        val playlist = Playlist("name", OWNER)
+        val playlist = Playlist("name", owner)
         val music = Music("title", "artist", "url")
 
         `when`(musicListRepository.findPlayListById(any()))
@@ -68,7 +68,7 @@ class PlaylistMusicServiceTest: BaseServiceTest() {
     @DisplayName("재생목록 내 존재하지 않는 음악을 추가할 때 에러가 발생합니다.")
     fun testAddNotExistMusicInPlaylist() {
         // given
-        val playlist = Playlist("name", OWNER)
+        val playlist = Playlist("name", owner)
 
         `when`(musicListRepository.findPlayListById(any()))
                 .thenReturn(playlist)
@@ -89,7 +89,7 @@ class PlaylistMusicServiceTest: BaseServiceTest() {
     @DisplayName("재생목록 내 음악을 제거합니다.")
     fun testDeleteMusicInPlaylist() {
         // given
-        val playlist = Playlist("name", OWNER)
+        val playlist = Playlist("name", owner)
         val music = Music("title", "artist", "url")
         val playlistMusic = PlaylistMusic(playlist, music).apply { id = PLAYLIST_MUSIC_ID } // ID 설정
 
@@ -110,7 +110,7 @@ class PlaylistMusicServiceTest: BaseServiceTest() {
     @DisplayName("존재하지 않는 재생목록 내 음악을 제거할 때 에러가 발생합니다.")
     fun testDeleteMusicInNotExistPlaylist() {
         // given
-        val playlist = Playlist("name", OWNER)
+        val playlist = Playlist("name", owner)
         val music = Music("title", "artist", "url")
         val playlistMusic = PlaylistMusic(playlist, music).apply { id = PLAYLIST_MUSIC_ID } // ID 설정
 

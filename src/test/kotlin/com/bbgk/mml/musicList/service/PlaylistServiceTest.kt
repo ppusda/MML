@@ -30,7 +30,7 @@ class PlaylistServiceTest: BaseServiceTest() {
         // given
         val playlists = mutableListOf<Playlist>()
         for (i in 1..DATA_SIZE) {
-            val playlist = Playlist("$i", OWNER)
+            val playlist = Playlist("$i", owner)
             playlists.add(playlist)
         }
 
@@ -50,7 +50,7 @@ class PlaylistServiceTest: BaseServiceTest() {
     @DisplayName("재생목록을 아이디로 조회합니다.")
     fun testFindPlaylistById() {
         // given
-        val playlist = Playlist("name", OWNER)
+        val playlist = Playlist("name", owner)
 
         `when`(musicListRepository.findPlayListById(any()))
             .thenReturn(playlist)
@@ -67,7 +67,7 @@ class PlaylistServiceTest: BaseServiceTest() {
     @DisplayName("존재하지 않는 재생목록을 아이디로 조회할 때 에러가 발생합니다.")
     fun testFindNotExistPlaylistById() {
         // given
-        val playlist = Playlist("name", OWNER)
+        val playlist = Playlist("name", owner)
 
         `when`(musicListRepository.findPlayListById(any()))
                 .thenThrow(MmlBadRequestException("존재하지 않는 플레이리스트입니다."))
@@ -85,14 +85,14 @@ class PlaylistServiceTest: BaseServiceTest() {
     @DisplayName("재생목록 정보를 저장합니다.")
     fun testSavePlaylist() {
         // given
-        val playlistForm = PlaylistForm("title", OWNER)
-        val playlist = playlistForm.toEntity(OWNER)
+        val playlistForm = PlaylistForm("title", owner)
+        val playlist = playlistForm.toEntity(owner)
         val argumentCaptor = argumentCaptor<Playlist>()
 
         doNothing().`when`(musicListRepository).savePlaylist(any())
 
         // when
-        playlistService.savePlaylist(OWNER, playlistForm)
+        playlistService.savePlaylist(owner, playlistForm)
 
         // then
         verify(musicListRepository).savePlaylist(argumentCaptor.capture())
@@ -106,8 +106,8 @@ class PlaylistServiceTest: BaseServiceTest() {
     @DisplayName("재생목록 정보를 수정합니다.")
     fun testUpdatePlaylist() {
         // given
-        val playlistForm = PlaylistForm("updatedName", OWNER)
-        val existPlaylist = Playlist("name", OWNER)
+        val playlistForm = PlaylistForm("updatedName", owner)
+        val existPlaylist = Playlist("name", owner)
 
         `when`(musicListRepository.findPlayListById(any()))
                 .thenReturn(existPlaylist)
@@ -124,7 +124,7 @@ class PlaylistServiceTest: BaseServiceTest() {
     @DisplayName("존재하지 않는 재생목록을 수정하려고 할 때 예외가 발생합니다.")
     fun testUpdateNotExistPlaylist() {
         // given
-        val playlistForm = PlaylistForm("updatedName", OWNER)
+        val playlistForm = PlaylistForm("updatedName", owner)
 
         `when`(musicListRepository.findPlayListById(any()))
                 .thenThrow(MmlBadRequestException("존재하지 않는 재생목록입니다."))
@@ -143,7 +143,7 @@ class PlaylistServiceTest: BaseServiceTest() {
     @DisplayName("재생목록을 삭제합니다.")
     fun testDeletePlaylist() {
         // given
-        val playlist = Playlist("name", OWNER)
+        val playlist = Playlist("name", owner)
 
         `when`(musicListRepository.findPlayListById(any()))
                 .thenReturn(playlist)
