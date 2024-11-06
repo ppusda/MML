@@ -4,7 +4,6 @@ import com.bbgk.mml.domain.entity.Member
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.junit.jupiter.MockitoExtension
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.http.MediaType
@@ -14,9 +13,10 @@ import org.springframework.test.web.servlet.ResultMatcher
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 
+
 @ExtendWith(MockitoExtension::class)
 abstract class BaseControllerTest(
-        @Autowired private val mockMvc: MockMvc
+        private val mockMvc: MockMvc
 ) {
 
     // Object Mapper
@@ -30,8 +30,16 @@ abstract class BaseControllerTest(
 
     // Member Config
     protected var USER_ID = 1L
+    protected var PLAYLIST_ID = 1L
     protected var MUSIC_ID = 2L
     protected val member = Member("Test", "test")
+
+    // Message Config
+    protected val MESSAGE_REQUIRED = "필수 값입니다."
+    protected val MESSAGE_NOT_EXIST_MUSIC = "존재하지 않는 음악입니다."
+    protected val MESSAGE_NOT_EXIST_PLAYLIST = "존재하지 않는 플레이리스트입니다."
+    protected val MESSAGE_ALREADY_EXIST_PLAYLIST_MUSIC = "이미 재생목록 내 존재하는 음악입니다."
+    protected val MESSAGE_NOT_EXIST_PLAYLIST_MUSIC = "존재하지 않는 플레이리스트 내 음악입니다."
 
     // Path value Config
     protected val N = 1
@@ -45,56 +53,62 @@ abstract class BaseControllerTest(
                 .andReturn()
     }
 
-    protected fun performPost(uri: String, form: Any): MvcResult {
+    protected fun performPost(uri: String, form: Any, status: ResultMatcher): MvcResult {
         return mockMvc
                 .perform(MockMvcRequestBuilders.post(uri)
                         .content(objectMapper.writeValueAsString(form))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print())
+                .andExpect(status)
                 .andReturn()
     }
 
 
-    protected fun performPostWithId(uri: String, form: Any, name: String, id: Long): MvcResult {
+    protected fun performPostWithId(uri: String, form: Any, name: String, id: Long, status: ResultMatcher): MvcResult {
         return mockMvc
                 .perform(MockMvcRequestBuilders.post(uri)
                         .content(objectMapper.writeValueAsString(form))
                         .contentType(MediaType.APPLICATION_JSON)
                         .param(name, id.toString()))
                 .andDo(MockMvcResultHandlers.print())
+                .andExpect(status)
                 .andReturn()
     }
 
-    protected fun performPut(uri: String, form: Any): MvcResult {
+    protected fun performPut(uri: String, form: Any, status: ResultMatcher): MvcResult {
         return mockMvc
                 .perform(MockMvcRequestBuilders.put(uri)
                         .content(objectMapper.writeValueAsString(form))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print())
+                .andExpect(status)
                 .andReturn()
     }
 
-    protected fun performPatch(uri: String, form: Any): MvcResult {
+    protected fun performPatch(uri: String, form: Any, status: ResultMatcher): MvcResult {
         return mockMvc
                 .perform(MockMvcRequestBuilders.patch(uri)
                         .content(objectMapper.writeValueAsString(form))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print())
+                .andExpect(status)
                 .andReturn()
     }
 
-    protected fun performDelete(uri: String): MvcResult {
+    protected fun performDelete(uri: String, status: ResultMatcher): MvcResult {
         return mockMvc
                 .perform(MockMvcRequestBuilders.delete(uri))
                 .andDo(MockMvcResultHandlers.print())
+                .andExpect(status)
                 .andReturn()
     }
 
-    protected fun performDeleteWithId(uri: String, name: String, id: Long): MvcResult {
+    protected fun performDeleteWithId(uri: String, name: String, id: Long, status: ResultMatcher): MvcResult {
         return mockMvc
-                .perform(MockMvcRequestBuilders.post(uri)
+                .perform(MockMvcRequestBuilders.delete(uri)
                         .param(name, id.toString()))
                 .andDo(MockMvcResultHandlers.print())
+                .andExpect(status)
                 .andReturn()
     }
 

@@ -1,18 +1,24 @@
 package com.bbgk.mml.musicList.controller
 
 import com.bbgk.mml.BaseControllerTest
+import com.bbgk.mml.domain.entity.Music
+import com.bbgk.mml.domain.exception.MmlBadRequestException
+import com.bbgk.mml.musicList.dto.MusicDTO
 import com.bbgk.mml.musicList.dto.MusicForm
 import com.bbgk.mml.musicList.service.MusicService
-import org.assertj.core.api.Assertions
-import org.json.JSONObject
+import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import org.mockito.Mockito.`when`
+import org.mockito.kotlin.any
+import org.mockito.kotlin.verify
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
-import java.nio.charset.StandardCharsets
 
 @WebMvcTest(MusicController::class)
 class MusicControllerTest(
@@ -23,18 +29,28 @@ class MusicControllerTest(
     private lateinit var musicService: MusicService
 
     @Test
-    @DisplayName("Musics 조회")
+    @DisplayName("Musics 조회 요청")
     fun testGetMusics() {
         // given
         val uri = "/v1/musics?page=0"
 
+        val musicList = listOf(
+                Music("title1", "artist1", "url1"),
+                Music("title2", "artist2", "url2"),
+                Music("title3", "artist3", "url3"),
+        )
+
+        val musicDTOs = musicList.map { MusicDTO(it) }
+        val musics: Page<MusicDTO> = PageImpl(musicDTOs, pageable, DATA_SIZE.toLong())
+
+        `when`(musicService.getMusics(any()))
+                .thenReturn(musics)
+
         // when
-        val mvcResult = performGet(uri, MockMvcResultMatchers.status().isOk)
-        val contentAsString = mvcResult.response.getContentAsString(StandardCharsets.UTF_8)
-        val jsonObject = JSONObject(contentAsString)
+        performGet(uri, MockMvcResultMatchers.status().isOk)
 
         // then
-        Assertions.assertThat(jsonObject.optJSONArray("content").length()).isPositive()
+        verify(musicService).getMusics(any())
     }
 
     @Test
@@ -45,11 +61,10 @@ class MusicControllerTest(
         val musicForm = MusicForm("music", "artist", "url")
 
         // when
-        val mvcResult = performPost(uri, musicForm)
-        val response = mvcResult.response
+        performPost(uri, musicForm, MockMvcResultMatchers.status().isOk)
 
         // then
-        Assertions.assertThat(response.status).isEqualTo(200)
+        verify(musicService).saveMusic(any())
     }
 
     @Test
@@ -59,12 +74,8 @@ class MusicControllerTest(
         val uri = "/v1/musics-error"
         val musicForm = MusicForm("music", "artist", "url")
 
-        // when
-        val mvcResult = performPost(uri, musicForm)
-        val response = mvcResult.response
-
-        // then
-        Assertions.assertThat(response.status).isEqualTo(404)
+        // when, then
+        performPost(uri, musicForm, MockMvcResultMatchers.status().isNotFound)
     }
 
     @Test
@@ -75,11 +86,11 @@ class MusicControllerTest(
         val musicForm = MusicForm("", "artist", "url")
 
         // when
-        val mvcResult = performPost(uri, musicForm)
+        val mvcResult = performPost(uri, musicForm, MockMvcResultMatchers.status().isBadRequest)
         val response = mvcResult.response
 
         // then
-        Assertions.assertThat(response.status).isEqualTo(400)
+        assertThat(response.contentAsString).contains(MESSAGE_REQUIRED)
     }
 
     @Test
@@ -88,12 +99,12 @@ class MusicControllerTest(
         // given
         val uri = "/v1/musics/1"
         val musicForm = MusicForm("music", "artist", "url")
+
         // when
-        val mvcResult = performPut(uri, musicForm)
-        val response = mvcResult.response
+        performPut(uri, musicForm, MockMvcResultMatchers.status().isOk)
 
         // then
-        Assertions.assertThat(response.status).isEqualTo(200)
+        verify(musicService).updateMusic(any(), any())
     }
 
     @Test
@@ -103,27 +114,22 @@ class MusicControllerTest(
         val uri = "/v1/musics-error/1"
         val musicForm = MusicForm("music", "artist", "url")
 
-        // when
-        val mvcResult = performPut(uri, musicForm)
-        val response = mvcResult.response
-
-        // then
-        Assertions.assertThat(response.status).isEqualTo(404)
+        // when, then
+        performPut(uri, musicForm, MockMvcResultMatchers.status().isNotFound)
     }
 
     @Test
     @DisplayName("Music Put 요청 시 클라이언트 요청 오류")
     fun testPatchMusic_ServerError() {
         // given
-        val uri = "/v1/musics/10" // 10번 없음
+        val uri = "/v1/musics/1"
         val musicForm = MusicForm("music", "artist", "url")
 
-        // when
-        val mvcResult = performPut(uri, musicForm)
-        val response = mvcResult.response
+        `when`(musicService.updateMusic(any(), any()))
+                .thenThrow(MmlBadRequestException(MESSAGE_NOT_EXIST_MUSIC))
 
-        // then
-        Assertions.assertThat(response.status).isEqualTo(400)
+        // when, then
+        performPut(uri, musicForm, MockMvcResultMatchers.status().isBadRequest)
     }
 
     @Test
@@ -133,11 +139,10 @@ class MusicControllerTest(
         val uri = "/v1/musics/1"
 
         // when
-        val mvcResult = performDelete(uri)
-        val response = mvcResult.response
+        performDelete(uri, MockMvcResultMatchers.status().isOk)
 
         // then
-        Assertions.assertThat(response.status).isEqualTo(200)
+        verify(musicService).deleteMusic(any())
     }
 
     @Test
@@ -146,26 +151,21 @@ class MusicControllerTest(
         // given
         val uri = "/v1/musics-error/1"
 
-        // when
-        val mvcResult = performDelete(uri)
-        val response = mvcResult.response
-
-        // then
-        Assertions.assertThat(response.status).isEqualTo(404)
+        // when, then
+        performDelete(uri, MockMvcResultMatchers.status().isNotFound)
     }
 
     @Test
     @DisplayName("Music Delete 요청 시 클라이언트 요청 오류")
     fun testDeleteMusic_ServerError() {
         // given
-        val uri = "/v1/musics/5"
+        val uri = "/v1/musics/1"
 
-        // when
-        val mvcResult = performDelete(uri)
-        val response = mvcResult.response
+        `when`(musicService.deleteMusic(any()))
+                .thenThrow(MmlBadRequestException(MESSAGE_NOT_EXIST_MUSIC))
 
-        // then
-        Assertions.assertThat(response.status).isEqualTo(400)
+        // when, then
+        performDelete(uri, MockMvcResultMatchers.status().isBadRequest)
     }
 
 }

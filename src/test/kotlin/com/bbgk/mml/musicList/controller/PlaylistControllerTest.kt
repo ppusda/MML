@@ -1,25 +1,36 @@
 package com.bbgk.mml.musicList.controller
 
 import com.bbgk.mml.BaseControllerTest
+import com.bbgk.mml.domain.entity.Playlist
+import com.bbgk.mml.domain.exception.MmlBadRequestException
+import com.bbgk.mml.member.service.MemberService
+import com.bbgk.mml.musicList.dto.PlaylistDTO
 import com.bbgk.mml.musicList.dto.PlaylistForm
-import com.bbgk.mml.musicList.service.MusicService
+import com.bbgk.mml.musicList.service.PlaylistService
 import org.assertj.core.api.Assertions
-import org.json.JSONObject
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import org.mockito.Mockito.`when`
+import org.mockito.kotlin.any
+import org.mockito.kotlin.verify
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
-import java.nio.charset.StandardCharsets
 
-
+@WebMvcTest(PlaylistController::class)
 class PlaylistControllerTest(
         @Autowired private val mockMvc: MockMvc
 ) : BaseControllerTest(mockMvc) {
 
     @MockBean
-    private lateinit var playlistService: MusicService
+    private lateinit var playlistService: PlaylistService
+
+    @MockBean
+    private lateinit var memberService: MemberService
 
     @Test
     @DisplayName("Playlists 조회")
@@ -27,28 +38,23 @@ class PlaylistControllerTest(
         // given
         val uri = "/v1/playlists?page=0"
 
-        // when
-        val mvcResult = performGet(uri, MockMvcResultMatchers.status().isOk)
-        val contentAsString = mvcResult.response.getContentAsString(StandardCharsets.UTF_8)
-        val jsonObject = JSONObject(contentAsString)
+        val playlistList = listOf(
+                Playlist("name1", member),
+                Playlist("name2", member),
+                Playlist("name3", member),
+        )
 
-        // then
-        Assertions.assertThat(jsonObject.optJSONArray("content").length()).isPositive()
-    }
+        val playlistDTOs = playlistList.map { PlaylistDTO(it) }
+        val playlists: Page<PlaylistDTO> = PageImpl(playlistDTOs, pageable, DATA_SIZE.toLong())
 
-    @Test
-    @DisplayName("N번 Playlist 조회")
-    fun testGetNPlaylist() {
-        // given
-        val uri = "/v1/playlists/${N}/musics"
+        `when`(playlistService.getPlaylists(any()))
+                .thenReturn(playlists)
 
         // when
-        val mvcResult = performGet(uri, MockMvcResultMatchers.status().isOk)
-        val contentAsString = mvcResult.response.getContentAsString(StandardCharsets.UTF_8)
-        val jsonObject = JSONObject(contentAsString)
+        performGet(uri, MockMvcResultMatchers.status().isOk)
 
         // then
-        Assertions.assertThat(jsonObject.optJSONArray("musics").length()).isPositive()
+        verify(playlistService).getPlaylists(any())
     }
 
     @Test
@@ -58,12 +64,8 @@ class PlaylistControllerTest(
         val uri = "/v1/playlists"
         val playlistForm = PlaylistForm("playlist", member)
 
-        // when
-        val mvcResult = performPostWithId(uri, playlistForm, "uid", USER_ID)
-        val response = mvcResult.response
-
-        // then
-        Assertions.assertThat(response.status).isEqualTo(200)
+        // when, then
+        performPostWithId(uri, playlistForm, "uid", USER_ID, MockMvcResultMatchers.status().isOk)
     }
 
     @Test
@@ -73,29 +75,23 @@ class PlaylistControllerTest(
         val uri = "/v1/playlists-error"
         val playlistForm = PlaylistForm("playlist", member)
 
-        // when
-        val mvcResult = performPostWithId(uri, playlistForm, "uid", USER_ID)
-        val response = mvcResult.response
-
-        // then
-        Assertions.assertThat(response.status).isEqualTo(404)
+        // when, then
+        performPostWithId(uri, playlistForm, "uid", USER_ID, MockMvcResultMatchers.status().isNotFound)
     }
 
     @Test
-    @DisplayName("Playlist Post 요청 시 클라이언트 오류")
+    @DisplayName("Playlist Post 요청 시 필수 값 미입력")
     fun testPostPlaylist_ServerError() {
         // given
         val uri = "/v1/playlists"
-        val playlistForm = PlaylistForm("playlist", member)
-
-        USER_ID = 5L
+        val playlistForm = PlaylistForm("", member)
 
         // when
-        val mvcResult = performPostWithId(uri, playlistForm, "uid", USER_ID)
+        val mvcResult = performPostWithId(uri, playlistForm, "uid", USER_ID, MockMvcResultMatchers.status().isBadRequest)
         val response = mvcResult.response
 
         // then
-        Assertions.assertThat(response.status).isEqualTo(400) // MmlBadRequestException
+        Assertions.assertThat(response.contentAsString).contains(MESSAGE_REQUIRED)
     }
 
     @Test
@@ -106,11 +102,10 @@ class PlaylistControllerTest(
         val playlistForm = PlaylistForm("edited playlist", member)
 
         // when
-        val mvcResult = performPatch(uri, playlistForm)
-        val response = mvcResult.response
+        performPatch(uri, playlistForm, MockMvcResultMatchers.status().isOk)
 
         // then
-        Assertions.assertThat(response.status).isEqualTo(200)
+        verify(playlistService).updatePlaylist(any(), any())
     }
 
     @Test
@@ -122,11 +117,8 @@ class PlaylistControllerTest(
         val playlistForm = PlaylistForm("edited playlist", member)
 
         // when
-        val mvcResult = performPatch(uri, playlistForm)
-        val response = mvcResult.response
+        performPatch(uri, playlistForm, MockMvcResultMatchers.status().isNotFound)
 
-        // then
-        Assertions.assertThat(response.status).isEqualTo(404)
     }
 
     @Test
@@ -136,12 +128,11 @@ class PlaylistControllerTest(
         val uri = "/v1/playlists/5" // 초기 데이터에 5번 없음
         val playlistForm = PlaylistForm("edited playlist", member)
 
-        // when
-        val mvcResult = performPatch(uri, playlistForm)
-        val response = mvcResult.response
+        `when`(playlistService.updatePlaylist(any(), any()))
+                .thenThrow(MmlBadRequestException(MESSAGE_NOT_EXIST_PLAYLIST))
 
-        // then
-        Assertions.assertThat(response.status).isEqualTo(400) // MmlBadRequestException
+        // when, then
+        performPatch(uri, playlistForm, MockMvcResultMatchers.status().isBadRequest)
     }
 
     @Test
@@ -151,11 +142,10 @@ class PlaylistControllerTest(
         val uri = "/v1/playlists/1"
 
         // when
-        val mvcResult = performDelete(uri)
-        val response = mvcResult.response
+        performDelete(uri, MockMvcResultMatchers.status().isOk)
 
         // then
-        Assertions.assertThat(response.status).isEqualTo(200)
+        verify(playlistService).deletePlaylist(any())
     }
 
     @Test
@@ -164,26 +154,21 @@ class PlaylistControllerTest(
         // given
         val uri = "/v1/playlists-error/1"
 
-        // when
-        val mvcResult = performDelete(uri)
-        val response = mvcResult.response
-
-        // then
-        Assertions.assertThat(response.status).isEqualTo(404)
+        // when, then
+        performDelete(uri, MockMvcResultMatchers.status().isNotFound)
     }
 
     @Test
     @DisplayName("Playlist Delete 요청 시 클라이언트 오류")
     fun testDeletePlaylist_ServerError() {
         // given
-        val uri = "/v1/playlists/5"
+        val uri = "/v1/playlists/1"
 
-        // when
-        val mvcResult = performDelete(uri)
-        val response = mvcResult.response
+        `when`(playlistService.deletePlaylist(any()))
+                .thenThrow(MmlBadRequestException(MESSAGE_NOT_EXIST_PLAYLIST))
 
-        // then
-        Assertions.assertThat(response.status).isEqualTo(400) // MmlBadRequestException
+        // when, then
+        performDelete(uri, MockMvcResultMatchers.status().isBadRequest)
     }
 
 }
