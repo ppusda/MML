@@ -44,7 +44,6 @@ abstract class BaseControllerTest(
     // Path value Config
     protected val N = 1
 
-    // TODO: 아래 메서드들은 테스트 코드 작성하며 차차 수정해나갈 계획임.
     protected fun performGet(uri: String, status: ResultMatcher): MvcResult {
         return mockMvc
                 .perform(MockMvcRequestBuilders.get(uri))
