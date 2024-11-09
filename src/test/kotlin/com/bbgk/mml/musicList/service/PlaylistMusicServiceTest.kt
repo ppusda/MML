@@ -29,7 +29,7 @@ class PlaylistMusicServiceTest: BaseServiceTest() {
     @DisplayName("재생목록 내 음악을 추가합니다.")
     fun testAddMusicInPlaylist() {
         // given
-        val playlist = Playlist("name", owner)
+        val playlist = Playlist("name", member)
         val music = Music("title", "artist", "url")
 
         `when`(musicListRepository.findPlayListById(any()))
@@ -53,7 +53,7 @@ class PlaylistMusicServiceTest: BaseServiceTest() {
     fun testAddMusicInNotExistPlaylist() {
         // given
         `when`(musicListRepository.findPlayListById(any()))
-                .thenThrow(MmlBadRequestException("존재하지 않는 재생목록입니다."))
+                .thenThrow(MmlBadRequestException(MESSAGE_NOT_EXIST_PLAYLIST))
 
         // when
         assertThrows<MmlBadRequestException> {
@@ -68,12 +68,12 @@ class PlaylistMusicServiceTest: BaseServiceTest() {
     @DisplayName("재생목록 내 존재하지 않는 음악을 추가할 때 에러가 발생합니다.")
     fun testAddNotExistMusicInPlaylist() {
         // given
-        val playlist = Playlist("name", owner)
+        val playlist = Playlist("name", member)
 
         `when`(musicListRepository.findPlayListById(any()))
                 .thenReturn(playlist)
         `when`(musicListRepository.findMusicById(any()))
-                .thenThrow(MmlBadRequestException("존재하지 않는 재생목록입니다."))
+                .thenThrow(MmlBadRequestException(MESSAGE_NOT_EXIST_MUSIC))
 
         // when
         assertThrows<MmlBadRequestException> {
@@ -89,11 +89,11 @@ class PlaylistMusicServiceTest: BaseServiceTest() {
     @DisplayName("재생목록 내 음악을 제거합니다.")
     fun testDeleteMusicInPlaylist() {
         // given
-        val playlist = Playlist("name", owner)
+        val playlist = Playlist("name", member)
         val music = Music("title", "artist", "url")
         val playlistMusic = PlaylistMusic(playlist, music).apply { id = PLAYLIST_MUSIC_ID } // ID 설정
 
-        `when`(musicListRepository.findByPlaylistIdAndMusicId(PLAYLIST_ID, MUSIC_ID, PLAYLIST_MESSAGE))
+        `when`(musicListRepository.findByPlaylistIdAndMusicId(PLAYLIST_ID, MUSIC_ID, MESSAGE_NOT_EXIST_PLAYLIST_MUSIC))
                 .thenReturn(playlistMusic)
         doNothing().`when`(musicListRepository).deletePlaylistMusicById(PLAYLIST_MUSIC_ID)
 
@@ -110,14 +110,14 @@ class PlaylistMusicServiceTest: BaseServiceTest() {
     @DisplayName("존재하지 않는 재생목록 내 음악을 제거할 때 에러가 발생합니다.")
     fun testDeleteMusicInNotExistPlaylist() {
         // given
-        val playlist = Playlist("name", owner)
+        val playlist = Playlist("name", member)
         val music = Music("title", "artist", "url")
         val playlistMusic = PlaylistMusic(playlist, music).apply { id = PLAYLIST_MUSIC_ID } // ID 설정
 
-        `when`(musicListRepository.findByPlaylistIdAndMusicId(PLAYLIST_ID, MUSIC_ID, PLAYLIST_MESSAGE))
+        `when`(musicListRepository.findByPlaylistIdAndMusicId(PLAYLIST_ID, MUSIC_ID, MESSAGE_NOT_EXIST_PLAYLIST_MUSIC))
                 .thenReturn(playlistMusic)
         `when`(musicListRepository.deletePlaylistMusicById(PLAYLIST_MUSIC_ID))
-                .thenThrow(MmlBadRequestException(PLAYLIST_MESSAGE))
+                .thenThrow(MmlBadRequestException(MESSAGE_NOT_EXIST_PLAYLIST_MUSIC))
 
         // when
         assertThrows<MmlBadRequestException> {

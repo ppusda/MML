@@ -21,8 +21,10 @@ abstract class BaseServiceTest {
     protected val pageable: Pageable = PageRequest.of(PAGE_NUMBER, PAGE_SIZE)
 
     // Message Config
-    protected val PLAYLIST_MESSAGE = "존재하지 않는 플레이리스트 내 음악입니다."
+    protected val MESSAGE_NOT_EXIST_PLAYLIST_MUSIC = "존재하지 않는 플레이리스트 내 음악입니다."
+    protected val MESSAGE_NOT_EXIST_MUSIC = "존재하지 않는 음악입니다."
+    protected val MESSAGE_NOT_EXIST_PLAYLIST = "존재하지 않는 플레이리스트입니다."
 
     // Member Config
-    protected val owner = Member("testMember", "1234")
+    protected val member = Member("testMember", "1234")
 }

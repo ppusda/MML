@@ -2,17 +2,27 @@ package com.bbgk.mml.musicList.repository
 
 import com.bbgk.mml.BaseServiceTest
 import com.bbgk.mml.domain.entity.Music
+import com.bbgk.mml.domain.entity.Playlist
+import com.bbgk.mml.domain.entity.PlaylistMusic
+import com.bbgk.mml.domain.exception.MmlBadRequestException
 import com.bbgk.mml.domain.repository.MusicRepository
 import com.bbgk.mml.domain.repository.PlaylistMusicRepository
 import com.bbgk.mml.domain.repository.PlaylistRepository
 import org.assertj.core.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.mockito.InjectMocks
 import org.mockito.Mock
+
 import org.mockito.Mockito.`when`
+import org.mockito.kotlin.any
+import org.mockito.kotlin.argumentCaptor
+import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.verify
 import org.springframework.data.domain.PageImpl
+import java.util.Optional
 
 class MusicListRepositoryTest: BaseServiceTest() {
 
@@ -51,6 +61,219 @@ class MusicListRepositoryTest: BaseServiceTest() {
         verify(musicRepository).findAll(pageable)
         Assertions.assertThat(musicPage).hasSize(size)
     }
+
+    @Test
+    @DisplayName("음악 정보를 저장합니다.")
+    fun testSaveMusic() {
+        // given
+        val music = Music("title1", "artist1", "url1")
+        val argumentCaptor = argumentCaptor<Music>()
+
+        // when
+        musicListRepository.saveMusic(music)
+
+        // then
+        verify(musicRepository).save(argumentCaptor.capture())
+
+        val savedMusic = argumentCaptor.allValues[0]
+        Assertions.assertThat(savedMusic.title).isEqualTo(music.title)
+        Assertions.assertThat(savedMusic.artist).isEqualTo(music.artist)
+        Assertions.assertThat(savedMusic.url).isEqualTo(music.url)
+    }
+
+    @Test
+    @DisplayName("음악을 삭제합니다.")
+    fun testDeleteMusic() {
+        // given
+        doNothing().`when`(musicRepository).deleteById(any())
+
+        // when
+        musicListRepository.deleteMusicById(MUSIC_ID)
+
+        // then
+        verify(musicRepository).deleteById(MUSIC_ID)
+    }
+
+    @Test
+    @DisplayName("음악을 아이디로 검색합니다.")
+    fun testFindMusicById() {
+        // given
+        val music = Optional.of(Music("title1", "artist1", "url1"))
+
+        `when`(musicRepository.findById(any()))
+                .thenReturn(music)
+
+        // when
+        val findMusic = musicListRepository.findMusicById(MUSIC_ID)
+
+        // then
+        verify(musicRepository).findById(MUSIC_ID)
+
+
+        Assertions.assertThat(findMusic.title).isEqualTo(music.get().title)
+        Assertions.assertThat(findMusic.artist).isEqualTo(music.get().artist)
+        Assertions.assertThat(findMusic.url).isEqualTo(music.get().url)
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 음악을 아이디로 검색하여 에러가 발생합니다.")
+    fun testFindNotExistMusicById() {
+        // given
+        `when`(musicRepository.findById(MUSIC_ID))
+                .thenReturn(Optional.empty())
+
+        // when
+        val exception = assertThrows<MmlBadRequestException> {
+            musicListRepository.findMusicById(MUSIC_ID)
+        }
+
+        // then
+        assertEquals(MESSAGE_NOT_EXIST_MUSIC, exception.message)
+        verify(musicRepository).findById(MUSIC_ID)
+    }
+
+    @Test
+    @DisplayName("재생목록 목록을 페이지로 조회한다.")
+    fun testFindAllPlaylists() {
+        // given
+        val playlists: List<Playlist> = mutableListOf(
+                Playlist("name1", member),
+                Playlist("name2", member),
+                Playlist("name3", member)
+        )
+
+        val size = playlists.size
+        val page = PageImpl(playlists, pageable, size.toLong())
+
+        `when`(playlistRepository.findAll(pageable))
+                .thenReturn(page)
+
+        // when
+        val playlistPage = musicListRepository.getPlaylistsForPage(pageable)
+
+        // then
+        verify(playlistRepository).findAll(pageable)
+        Assertions.assertThat(playlistPage).hasSize(size)
+    }
+
+    @Test
+    @DisplayName("재생목록 정보를 저장합니다.")
+    fun testSavePlaylist() {
+        // given
+        val playlist = Playlist("name1", member)
+        val argumentCaptor = argumentCaptor<Playlist>()
+
+        // when
+        musicListRepository.savePlaylist(playlist)
+
+        // then
+        verify(playlistRepository).save(argumentCaptor.capture())
+
+        val savedPlaylist = argumentCaptor.allValues[0]
+        Assertions.assertThat(savedPlaylist.name).isEqualTo(playlist.name)
+    }
+
+    @Test
+    @DisplayName("재생목록을 삭제합니다.")
+    fun testDeletePlaylist() {
+        // given
+        doNothing().`when`(playlistRepository).deleteById(any())
+
+        // when
+        musicListRepository.deletePlaylistById(PLAYLIST_ID)
+
+        // then
+        verify(playlistRepository).deleteById(PLAYLIST_ID)
+    }
+
+    @Test
+    @DisplayName("재생목록을 아이디로 검색합니다.")
+    fun testFindPlaylistById() {
+        // given
+        val playlist = Optional.of(Playlist("name1", member))
+
+        `when`(playlistRepository.findById(any()))
+                .thenReturn(playlist)
+
+        // when
+        val findPlaylist = musicListRepository.findPlayListById(PLAYLIST_ID)
+
+        // then
+        verify(playlistRepository).findById(PLAYLIST_ID)
+
+
+        Assertions.assertThat(findPlaylist.name).isEqualTo(playlist.get().name)
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 재생목록을 아이디로 검색하여 에러가 발생합니다.")
+    fun testFindNotExistPlaylistById() {
+        // given
+        `when`(playlistRepository.findById(any()))
+                .thenReturn(Optional.empty())
+
+        // when
+        val exception = assertThrows<MmlBadRequestException> {
+            musicListRepository.findPlayListById(PLAYLIST_ID)
+        }
+
+        // then
+        assertEquals(MESSAGE_NOT_EXIST_PLAYLIST, exception.message)
+        verify(playlistRepository).findById(PLAYLIST_ID)
+    }
+
+    @Test
+    @DisplayName("재생목록 내 음악을 삭제합니다.")
+    fun testDeletePlaylistMusic() {
+        // given
+        doNothing().`when`(playlistMusicRepository).deleteById(any())
+
+        // when
+        musicListRepository.deletePlaylistMusicById(PLAYLIST_MUSIC_ID)
+
+        // then
+        verify(playlistMusicRepository).deleteById(PLAYLIST_MUSIC_ID)
+    }
+
+    @Test
+    @DisplayName("재생목록 내 음악을 아이디로 검색합니다.")
+    fun testFindPlaylistMusicById() {
+        // given
+        val music = Music("title1", "artist1", "url1")
+        val playlist = Playlist("name1", member)
+        val playlistMusic = Optional.of(PlaylistMusic(playlist, music))
+
+        `when`(playlistMusicRepository.findByPlaylistIdAndMusicId(any(), any()))
+                .thenReturn(playlistMusic)
+
+        // when
+        val findPlaylistMusic = musicListRepository.findByPlaylistIdAndMusicId(PLAYLIST_ID, MUSIC_ID, MESSAGE_NOT_EXIST_PLAYLIST_MUSIC)
+
+        // then
+        verify(playlistMusicRepository).findByPlaylistIdAndMusicId(PLAYLIST_ID, MUSIC_ID)
+
+
+        Assertions.assertThat(findPlaylistMusic.music).isEqualTo(playlistMusic.get().music)
+        Assertions.assertThat(findPlaylistMusic.playlist).isEqualTo(playlistMusic.get().playlist)
+    }
+
+    @Test
+    @DisplayName("재생목록 내 음악을 아이디로 검색합니다.")
+    fun testFindNotExistPlaylistMusicById() {
+        // given
+        `when`(playlistMusicRepository.findByPlaylistIdAndMusicId(any(), any()))
+                .thenReturn(Optional.empty())
+
+        // when
+        val exception = assertThrows<MmlBadRequestException> {
+            musicListRepository.findByPlaylistIdAndMusicId(PLAYLIST_ID, MUSIC_ID, MESSAGE_NOT_EXIST_PLAYLIST_MUSIC)
+        }
+
+        // then
+        assertEquals(MESSAGE_NOT_EXIST_PLAYLIST_MUSIC, exception.message)
+        verify(playlistMusicRepository).findByPlaylistIdAndMusicId(PLAYLIST_ID, MUSIC_ID)
+    }
+
 }
 
 /**
