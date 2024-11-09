@@ -11,13 +11,15 @@ class Member(
     @Id @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
+        private set
 
     var email: String = email
+        private set
 
     var password: String = password
+        private set
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     val playlists: MutableList<Playlist> = mutableListOf()
 
-    // DTO를 파라미터로 받는 생성자를 만들면 도메인이 애플리케이션에 종속됩니다
 }

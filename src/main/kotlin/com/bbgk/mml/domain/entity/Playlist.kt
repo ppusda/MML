@@ -12,8 +12,10 @@ class Playlist(
     @Column(name = "playlist_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
+        private set
 
     var name: String = name
+        private set
 
     @ManyToOne(targetEntity = Member::class, fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
