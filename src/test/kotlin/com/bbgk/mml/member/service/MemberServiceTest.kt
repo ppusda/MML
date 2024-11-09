@@ -1,5 +1,6 @@
 package com.bbgk.mml.member.service
 
+import com.bbgk.mml.BaseServiceTest
 import com.bbgk.mml.domain.entity.Member
 import com.bbgk.mml.domain.exception.MmlBadRequestException
 import com.bbgk.mml.domain.repository.MemberRepository
@@ -8,38 +9,26 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.ArgumentCaptor
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
-import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.never
 import org.mockito.kotlin.verify
 import org.springframework.data.domain.PageImpl
-import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Pageable
 import java.util.*
+import kotlin.test.assertEquals
 
 
-@ExtendWith(MockitoExtension::class)
-class MemberServiceTest {
+class MemberServiceTest: BaseServiceTest() {
 
     @InjectMocks
     lateinit var memberService: MemberService
 
     @Mock
     lateinit var memberRepository: MemberRepository
-
-    val MEMBER_ID = 1L
-    val DATA_SIZE = 5
-
-    val PAGE_NUMBER = 0
-    val PAGE_SIZE = 5
-
-    val pageable: Pageable = PageRequest.of(PAGE_NUMBER, PAGE_SIZE)
 
     @Test
     @DisplayName("회원 목록을 조회합니다.")
@@ -66,8 +55,6 @@ class MemberServiceTest {
     @DisplayName("회원을 아이디로 조회합니다.")
     fun testFindMemberById() {
         // given
-        val member = Member("test_1", "1")
-
         `when`(memberRepository.findById(any()))
                 .thenReturn(Optional.of(member))
 
@@ -88,11 +75,12 @@ class MemberServiceTest {
                 .thenReturn(Optional.empty())
 
         // when
-        assertThrows<MmlBadRequestException> {
+        val exception = assertThrows<MmlBadRequestException> {
             memberService.findMemberById(MEMBER_ID)
         }
 
         // then
+        assertEquals(MESSAGE_NOT_EXIST_MEMBER, exception.message)
         verify(memberRepository).findById(MEMBER_ID)
     }
 
@@ -100,7 +88,7 @@ class MemberServiceTest {
     @DisplayName("회원 정보를 저장합니다.")
     fun testAddMember() {
         // given
-        val memberForm = MemberForm("test_1", "1")
+        val memberForm = MemberForm("email1", "password1")
         val member = memberForm.toEntity()
         `when`(memberRepository.save(any())).thenReturn(member)
 
@@ -122,7 +110,6 @@ class MemberServiceTest {
     @DisplayName("회원 정보를 삭제합니다.")
     fun testDeleteMember() {
         // given
-        val member = Member("test_1", "1")
         `when`(memberRepository.findById(any()))
                 .thenReturn(Optional.of(member)) // findById로 검증을 진행하기에 Mock 설정
         doNothing().`when`(memberRepository).deleteById(MEMBER_ID)
@@ -142,11 +129,12 @@ class MemberServiceTest {
                 .thenReturn(Optional.empty()) // findById로 검증을 진행하기에 Mock 설정
 
         // when
-        assertThrows<MmlBadRequestException> {
+        val exception = assertThrows<MmlBadRequestException> {
             memberService.deleteMember(MEMBER_ID)
         }
 
         // then
+        assertEquals(MESSAGE_NOT_EXIST_MEMBER, exception.message)
         verify(memberRepository).findById(MEMBER_ID) // 호출되었는지 확인
         verify(memberRepository, never()).deleteById(MEMBER_ID) // 오류로 인해 호출되지 않아야 함
     }

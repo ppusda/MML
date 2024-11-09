@@ -7,6 +7,7 @@ import com.bbgk.mml.domain.entity.PlaylistMusic
 import com.bbgk.mml.domain.exception.MmlBadRequestException
 import com.bbgk.mml.musicList.repository.MusicListRepository
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -15,6 +16,7 @@ import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doNothing
+import org.mockito.kotlin.never
 import org.mockito.kotlin.verify
 
 class PlaylistMusicServiceTest: BaseServiceTest() {
@@ -56,11 +58,12 @@ class PlaylistMusicServiceTest: BaseServiceTest() {
                 .thenThrow(MmlBadRequestException(MESSAGE_NOT_EXIST_PLAYLIST))
 
         // when
-        assertThrows<MmlBadRequestException> {
+        val exception = assertThrows<MmlBadRequestException> {
             playlistMusicService.addMusicInPlaylist(PLAYLIST_ID, MUSIC_ID)
         }
 
         // then
+        assertEquals(MESSAGE_NOT_EXIST_PLAYLIST, exception.message)
         verify(musicListRepository).findPlayListById(any())
     }
 
@@ -76,11 +79,12 @@ class PlaylistMusicServiceTest: BaseServiceTest() {
                 .thenThrow(MmlBadRequestException(MESSAGE_NOT_EXIST_MUSIC))
 
         // when
-        assertThrows<MmlBadRequestException> {
+        val exception = assertThrows<MmlBadRequestException> {
             playlistMusicService.addMusicInPlaylist(PLAYLIST_ID, MUSIC_ID)
         }
 
         // then
+        assertEquals(MESSAGE_NOT_EXIST_MUSIC, exception.message)
         verify(musicListRepository).findPlayListById(any())
         verify(musicListRepository).findMusicById(any())
     }
@@ -91,11 +95,16 @@ class PlaylistMusicServiceTest: BaseServiceTest() {
         // given
         val playlist = Playlist("name", member)
         val music = Music("title", "artist", "url")
-        val playlistMusic = PlaylistMusic(playlist, music).apply { id = PLAYLIST_MUSIC_ID } // ID 설정
+        val playlistMusic = PlaylistMusic(playlist, music)
 
-        `when`(musicListRepository.findByPlaylistIdAndMusicId(PLAYLIST_ID, MUSIC_ID, MESSAGE_NOT_EXIST_PLAYLIST_MUSIC))
+        // 리플렉션을 사용해 id 필드에 값을 설정
+        val idField = PlaylistMusic::class.java.getDeclaredField("id")
+        idField.isAccessible = true
+        idField.set(playlistMusic, PLAYLIST_MUSIC_ID)
+
+        `when`(musicListRepository.findByPlaylistIdAndMusicId(any(), any(), any()))
                 .thenReturn(playlistMusic)
-        doNothing().`when`(musicListRepository).deletePlaylistMusicById(PLAYLIST_MUSIC_ID)
+        doNothing().`when`(musicListRepository).deletePlaylistMusicById(any())
 
         // when
         playlistMusicService.deleteMusicInPlaylist(PLAYLIST_ID, MUSIC_ID)
@@ -110,22 +119,17 @@ class PlaylistMusicServiceTest: BaseServiceTest() {
     @DisplayName("존재하지 않는 재생목록 내 음악을 제거할 때 에러가 발생합니다.")
     fun testDeleteMusicInNotExistPlaylist() {
         // given
-        val playlist = Playlist("name", member)
-        val music = Music("title", "artist", "url")
-        val playlistMusic = PlaylistMusic(playlist, music).apply { id = PLAYLIST_MUSIC_ID } // ID 설정
-
-        `when`(musicListRepository.findByPlaylistIdAndMusicId(PLAYLIST_ID, MUSIC_ID, MESSAGE_NOT_EXIST_PLAYLIST_MUSIC))
-                .thenReturn(playlistMusic)
-        `when`(musicListRepository.deletePlaylistMusicById(PLAYLIST_MUSIC_ID))
+        `when`(musicListRepository.findByPlaylistIdAndMusicId(any(), any(), any()))
                 .thenThrow(MmlBadRequestException(MESSAGE_NOT_EXIST_PLAYLIST_MUSIC))
 
         // when
-        assertThrows<MmlBadRequestException> {
+        val exception = assertThrows<MmlBadRequestException> {
             playlistMusicService.deleteMusicInPlaylist(PLAYLIST_ID, MUSIC_ID)
         }
 
         // then
-        verify(musicListRepository).deletePlaylistMusicById(PLAYLIST_MUSIC_ID)
+        assertEquals(MESSAGE_NOT_EXIST_PLAYLIST_MUSIC, exception.message)
+        verify(musicListRepository, never()).deletePlaylistMusicById(PLAYLIST_MUSIC_ID)
     }
 
 }

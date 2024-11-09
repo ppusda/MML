@@ -6,6 +6,7 @@ import com.bbgk.mml.domain.exception.MmlBadRequestException
 import com.bbgk.mml.musicList.dto.PlaylistForm
 import com.bbgk.mml.musicList.repository.MusicListRepository
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -70,14 +71,15 @@ class PlaylistServiceTest: BaseServiceTest() {
         val playlist = Playlist("name", member)
 
         `when`(musicListRepository.findPlayListById(any()))
-                .thenThrow(MmlBadRequestException("존재하지 않는 플레이리스트입니다."))
+                .thenThrow(MmlBadRequestException(MESSAGE_NOT_EXIST_PLAYLIST))
 
         // when
-        assertThrows<MmlBadRequestException> {
+        val exception = assertThrows<MmlBadRequestException> {
             playlistService.findPlaylistById(PLAYLIST_ID)
         }
 
         // then
+        assertEquals(MESSAGE_NOT_EXIST_PLAYLIST, exception.message)
         verify(musicListRepository).findPlayListById(PLAYLIST_ID)
     }
 
@@ -127,14 +129,15 @@ class PlaylistServiceTest: BaseServiceTest() {
         val playlistForm = PlaylistForm("updatedName", member)
 
         `when`(musicListRepository.findPlayListById(any()))
-                .thenThrow(MmlBadRequestException("존재하지 않는 재생목록입니다."))
+                .thenThrow(MmlBadRequestException(MESSAGE_NOT_EXIST_PLAYLIST))
 
         // when
-        assertThrows<MmlBadRequestException> {
+        val exception = assertThrows<MmlBadRequestException> {
             playlistService.updatePlaylist(PLAYLIST_ID, playlistForm)
         }
 
         // then
+        assertEquals(MESSAGE_NOT_EXIST_PLAYLIST, exception.message)
         verify(musicListRepository).findPlayListById(PLAYLIST_ID)
     }
 
@@ -161,14 +164,15 @@ class PlaylistServiceTest: BaseServiceTest() {
     fun testDeleteNotExistMusic() {
         // given
         `when`(musicListRepository.findPlayListById(any()))
-                .thenThrow(MmlBadRequestException("존재하지 않는 재생목록입니다."))
+                .thenThrow(MmlBadRequestException(MESSAGE_NOT_EXIST_PLAYLIST))
 
         // when
-        assertThrows<MmlBadRequestException> {
+        val exception = assertThrows<MmlBadRequestException> {
             playlistService.deletePlaylist(PLAYLIST_ID)
         }
 
         // then
+        assertEquals(MESSAGE_NOT_EXIST_PLAYLIST, exception.message)
         verify(musicListRepository).findPlayListById(PLAYLIST_ID)
         verify(musicListRepository, never()).deletePlaylistById(any())
     }
