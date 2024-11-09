@@ -6,6 +6,7 @@ import com.bbgk.mml.domain.exception.MmlBadRequestException
 import com.bbgk.mml.musicList.dto.MusicForm
 import com.bbgk.mml.musicList.repository.MusicListRepository
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -75,7 +76,6 @@ class MusicServiceTest: BaseServiceTest() {
         // given
         val musicForm = MusicForm("updatedTitle", "updatedArtist", "updatedUrl")
         val existingMusic = Music("title", "artist", "url")
-        val argumentCaptor = argumentCaptor<Music>()
 
         `when`(musicListRepository.findMusicById(MUSIC_ID))
                 .thenReturn(existingMusic)
@@ -84,14 +84,9 @@ class MusicServiceTest: BaseServiceTest() {
         musicService.updateMusic(MUSIC_ID, musicForm)
 
         // then
-        verify(musicListRepository).saveMusic(argumentCaptor.capture()) // saveMusic 메서드가 호출되었는지 확인
-
-        // 캡처한 객체 검증
-        val updatedMusic = argumentCaptor.allValues[0]
-        assertThat(updatedMusic.id).isEqualTo(MUSIC_ID)
-        assertThat(updatedMusic.title).isEqualTo(musicForm.title)
-        assertThat(updatedMusic.artist).isEqualTo(musicForm.artist)
-        assertThat(updatedMusic.url).isEqualTo(musicForm.url)
+        assertThat(existingMusic.title).isEqualTo(musicForm.title)
+        assertThat(existingMusic.artist).isEqualTo(musicForm.artist)
+        assertThat(existingMusic.url).isEqualTo(musicForm.url)
     }
 
     @Test
@@ -104,11 +99,12 @@ class MusicServiceTest: BaseServiceTest() {
                 .thenThrow(MmlBadRequestException("존재하지 않는 음악입니다."))
 
         // when
-        assertThrows<MmlBadRequestException> {
+        val exception = assertThrows<MmlBadRequestException> {
             musicService.updateMusic(MUSIC_ID, musicForm)
         }
 
         // then
+        assertEquals(MESSAGE_NOT_EXIST_MUSIC, exception.message)
         verify(musicListRepository).findMusicById(MUSIC_ID)
         verify(musicListRepository, never()).saveMusic(any())
     }
@@ -135,14 +131,15 @@ class MusicServiceTest: BaseServiceTest() {
     fun testDeleteNotExistMusic() {
         // given
         `when`(musicListRepository.findMusicById(any()))
-                .thenThrow(MmlBadRequestException("존재하지 않는 음악입니다."))
+                .thenThrow(MmlBadRequestException(MESSAGE_NOT_EXIST_MUSIC))
 
         // when
-        assertThrows<MmlBadRequestException> {
+        val exception = assertThrows<MmlBadRequestException> {
             musicService.deleteMusic(MUSIC_ID)
         }
 
         // then
+        assertEquals(MESSAGE_NOT_EXIST_MUSIC, exception.message)
         verify(musicListRepository).findMusicById(MUSIC_ID)
         verify(musicListRepository, never()).deleteMusicById(any())
     }

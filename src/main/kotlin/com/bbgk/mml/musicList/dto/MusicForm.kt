@@ -17,10 +17,4 @@ data class MusicForm(
                 url = this.url
         )
     }
-
-    fun toEntity(id: Long): Music {
-        val music = this.toEntity()
-        music.id = id
-        return music
-    }
 }

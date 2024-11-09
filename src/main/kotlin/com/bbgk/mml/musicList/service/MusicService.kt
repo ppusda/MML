@@ -52,9 +52,12 @@ class MusicService(
      */
     @Transactional
     fun updateMusic(id: Long, form: MusicForm) {
-        musicListRepository.findMusicById(id)
-        val music = form.toEntity(id)
-        musicListRepository.saveMusic(music)
+        val music = musicListRepository.findMusicById(id)
+        music.update(
+                title = form.title,
+                artist = form.artist,
+                url = form.url
+        )
     }
 
     /**
