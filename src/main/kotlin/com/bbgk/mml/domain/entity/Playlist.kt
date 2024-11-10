@@ -30,8 +30,8 @@ class Playlist(
         }
     }
 
-    fun update(name: String?) {
-        if (name != null) {
+    fun update(name: String) {
+        if (name.isNotBlank()) {
             this.name = name
         }
     }
