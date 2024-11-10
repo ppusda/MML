@@ -1,6 +1,6 @@
 package com.bbgk.mml.member.controller
 
-import com.bbgk.mml.member.dto.MemberDTO
+import com.bbgk.mml.domain.dto.MemberDTO
 import com.bbgk.mml.member.service.MemberService
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.data.domain.Page

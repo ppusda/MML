@@ -2,7 +2,7 @@ package com.bbgk.mml.member.controller
 
 import com.bbgk.mml.BaseControllerTest
 import com.bbgk.mml.domain.entity.Member
-import com.bbgk.mml.member.dto.MemberDTO
+import com.bbgk.mml.domain.dto.MemberDTO
 import com.bbgk.mml.member.service.MemberService
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test

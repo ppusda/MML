@@ -3,7 +3,7 @@ package com.bbgk.mml.member.service
 import com.bbgk.mml.domain.entity.Member
 import com.bbgk.mml.domain.exception.MmlBadRequestException
 import com.bbgk.mml.domain.repository.MemberRepository
-import com.bbgk.mml.member.dto.MemberDTO
+import com.bbgk.mml.domain.dto.MemberDTO
 import com.bbgk.mml.member.dto.MemberForm
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
