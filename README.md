@@ -584,7 +584,7 @@
 
 <details>
   
-  <summary>테스트 코드 추가하기 (테스트 커버리지 100% 달성, 단위 테스트 작성)</summary>
+  <summary>테스트 커버리지 100% 달성하기(단위 테스트 위주로 작성)</summary>
 
   커밋 내용 => 
 
@@ -625,14 +625,51 @@
         <a href="https://github.com/ppusda/MML/commit/180c71b5e50d18213a905dbed0796bf9f9c13c87">refactor: 테스트 커버리지 100% 달성하기 - BaseControllerTest 기본 설정 클래스 추가 (WebMvcTest)</a><br>
         <a href="https://github.com/ppusda/MML/commit/fe41a1304758edb71cfa365ce06eb93e8d8eb804">fix: 테스트 커버리지 100% 달성하기 - BaseServiceTest 접근제어자 및 명명규칙 준수</a><br>
       </td>
+    </tr>
+    <tr>
+      <th>11/07 목</th>
+      <td>
+        <a href="https://github.com/ppusda/MML/commit/d70df0f630503433bc389eb73ad7cce19dfc41c7">fix: 테스트 커버리지 100% 달성하기 - 기존 테스트에 변경사항 적용</a><br>
+      </td>
+    </tr>
+    <tr>
+      <th>11/08 금</th>
+      <td>
+        <a href="https://github.com/ppusda/MML/commit/34943fc9320bf86181fe9c3f7ea5d5f858b943aa">feat: 테스트 커버리지 100% 달성하기 - BaseRepositoryTest 기본 설정 클래스 추가</a><br>
+      </td>
+    </tr>
+    <tr>
+      <th>11/09 토</th>
+      <td>
+        <a href="https://github.com/ppusda/MML/commit/08c7162eb1d0c5510dd27d85cd002a551514d9b7">feat: 테스트 커버리지 100% 달성하기 - PlaylistMusicRepository / Custom 메서드 테스트</a><br>
+        <a href="https://github.com/ppusda/MML/commit/fa228241d65ab7942e6304a8f13954ff9148f33e">feat: 테스트 커버리지 100% 달성하기 - 주석 정리</a><br>
+      </td>
+    </tr>
+    <tr>
+      <th>11/10 일</th>
+      <td>
+        <a href="https://github.com/ppusda/MML/commit/73cc3f2c6f0ddd846fb4c1c550dd11ba4cf4367d">feat: 테스트 커버리지 100% 달성하기 - PlaylistMusicRepository 테스트 작성</a><br>
+        <a href="https://github.com/ppusda/MML/commit/85f77232b6faba52caecbd5efbd5fe355c71df10">fix: 테스트 커버리지 100% 달성하기 - Entity 미사용 Setter 제거</a><br>
+        <a href="https://github.com/ppusda/MML/commit/3a40d028f5d70ffdc9b23b00fe120b9405dcec15">fix: 테스트 커버리지 100% 달성하기 - 테스트 공통 사항 적용 및 Excpetion 검증</a><br>
+        <a href="https://github.com/ppusda/MML/commit/896d0ba606d75cbf947c2868c6a1ae844c6dcc0b">fix: 테스트 커버리지 100% 달성하기 - 업데이트 로직 수정</a><br>
+      </td>
+    </tr>
+    <tr>
+      <th>11/11 월</th>
+      <td>
+        <a href="https://github.com/ppusda/MML/commit/2b5aa1bda3ef92780e5cd420a74ee96b9c0aa535">feat: 테스트 커버리지 100% 달성하기 - ApiResponse, Custom Exception 테스트 작성</a><br>
+        <a href="https://github.com/ppusda/MML/commit/45ee651bd9765a886f0cbc54c1220a1836752dd9">feat: 테스트 커버리지 100% 달성하기 - DTO 테스트 작성 (+ Member DTO 경로 수정)</a><br>
+        <a href="https://github.com/ppusda/MML/commit/1ea4ea631fec800ecfdda5e8a4fbe8807e1364db">feat: 테스트 커버리지 100% 달성하기 - MmlApplication main @generated로 제외</a><br>
+        <a href="https://github.com/ppusda/MML/commit/0d265a8f4a67a763bb9bfb93939d9551b7277bd1">feat: 테스트 커버리지 100% 달성하기 - Entity 내 수정 메서드 테스트 작성</a><br>
+      </td>
     </tr> 
   </table>
 
   ### 테스트 커버리지 - 초기
   ![테스트 커버리지 - 초기](https://github.com/user-attachments/assets/faa7f62b-2e4a-4bbf-b5db-5de2c0a70992)
 
-  ### 테스트 커버리지 - 기존 테스트 변경사항 수정 후
-  ![테스트 커버리지 - 기존 테스트 변경사항 수정 후](https://github.com/user-attachments/assets/18df3306-3e98-435f-9e2d-d0cd380a7de8)
+  ### 테스트 커버리지 - 기존 테스트 변경사항 적용 후
+  ![테스트 커버리지 - 기존 테스트 변경사항 적용 후](https://github.com/user-attachments/assets/18df3306-3e98-435f-9e2d-d0cd380a7de8)
 
   ### 테스트 커버리지 - 멤버 추가 후
   ![테스트 커버리지 - 멤버 추가 후](https://github.com/user-attachments/assets/ee94586d-2ca0-4f77-b56c-f17d2bf8d3e3)
@@ -640,6 +677,47 @@
   ### 테스트 커버리지 - 서비스 추가 후
   ![테스트 커버리지 - 서비스 추가 후](https://github.com/user-attachments/assets/f57c968f-cd41-429b-aa82-0a5c42435858)
 
+  ### 테스트 커버리지 - 컨트롤러 변경사항 적용 후
+  ![테스트 커버리지 - 컨트롤러 변경 후](https://github.com/user-attachments/assets/0ecb68d6-cee0-49da-9bba-b34a1312e9a4)
+
+  ### 테스트 커버리지 - 리포지토리 추가 후
+  ![테스트 커버리지 - 리포지토리 추가 후](https://github.com/user-attachments/assets/aadd245e-d5f2-42c1-937c-c094952e3b61)
+
+  ### 테스트 커버리지 - 미사용 Setter 제거 및 Exception 검증 로직 등 변경 후
+  ![테스트 커버리지 - 미사용 Setter 제거 및 Exception 검증 등 변경사항 적용 후](https://github.com/user-attachments/assets/af9a9f6f-7a98-447a-9cf3-0bd7768fe15a)
+
+  ### 테스트 커버리지 - Controller Advice, Custom Excpetion 테스트 추가 후
+  ![테스트 커버리지 - Controller Advice, Custom Excpetion 테스트 추가 후](https://github.com/user-attachments/assets/a5b87d2a-7593-4a1e-91b2-278c8a65ffb8)
+
+  ### 테스트 커버리지 - DTO 테스트 추가 후
+  ![테스트 커버리지 - DTO 테스트 작성](https://github.com/user-attachments/assets/5a6d8a76-f348-4ade-88e1-0924a21ace91)
+
+  ### 테스트 커버리지 - Entity 내 메서드 테스트 추가 및 메인 메서드 제외 후
+  ![테스트 커버리지 - Entity 메서드 테스트와 Main 메서드 제외](https://github.com/user-attachments/assets/a859e185-8451-4aec-93b4-6f43f863da47)
+
+  ### 후기
+  꽤 오랜시간을 투자해서 JaCoCo 테스트 커버리지 100%를 달성하게 되었다. <br>
+  **총 84개의 테스트와 24개의 파일**을 만들었으며 코치님께서 말씀하셨던 커버리지 100%를 달성해보면 배우는 것이 있을 것이라는 말에 공감하게 되었다.
+  
+  **먼저 테스트 코드가 필요한 Controller, Service, Repository에 대해 테스트 작성 흐름을 알게 되었다.** <br>
+  이 부분이 솔직히 정말 의미있다고 생각하며, 앞으로 어렵게만 느껴졌던 테스트 코드 작성에 대한 부담감을 덜 수 있을것 같다.
+
+  **두번째로는 여러 분기에 대한 처리의 중요성을 알게 되었다.** <br>
+  테스트 커버리지 100%를 목표로 채워나가다 보니 사용한 적 없는 조건문이나 고려해야하는 예외 상황들을 많이 보게 되었다. <br>
+  이런 부분에 대한 작성을 실제로 하다 보니 예상치 못한 부분에서 발생할 수 있는 상황을 좀 더 생각해 볼 수 있었고, 불필요한 코드들을 처리할 수 있었던 것 같다.
+
+  **마지막으로 테스트 코드의 중요성을 다시 한 번 깨닫게 되었다.** <br>
+  테스트 코드를 작성해보면서 실제로 잘못 구현한 부분도 발견했으며, 위에서 언급했던 것 처럼 불필요한 부분이나 어색한 부분들을 고칠 수 있었다. <br>
+  이러한 자잘한 실수들이 실무에서는 큰 영향을 미칠 수 있으니 테스트 코드가 얼마나 중요한 지 알 수 있었던 것 같다.
+
+  ### 마치며
+  일주일이 넘는 시간동안 테스트 코드를 작성해보면서 여러 생각들이 들었다. <br>
+  작은 프로젝트임에도 불구하고 작성해야 할 테스트는 많았고 관련 지식도 부족했기에 생각보다 힘들었고 시간이 꽤나 소요되었다. <br>
+  그래도 매일 새벽까지 테스트를 작성하며 테스트 커버리지를 올려나가는 순간들은 재밌었고 무엇보다 의미있는 작업이라는 것을 많이 느끼게 되었다.
+
+  [코치님께서 추천해주셨던 영상](https://www.youtube.com/watch?v=jdlBu2vFv58)에서도 나왔던 것 처럼 테스트 커버리지 100%를 달성한 순간에 "아 이렇게 해도 모든 상황을 검증할 수는 없겠구나" 라는 생각이 들었고
+  그렇기에 테스트 커버리지 100% 달성은 좋은 경험이었고 앞으로도 최대한 버그가 없도록 좋은 테스트 코드를 열심히 작성하며 개발을 해나가야겠다고 다짐하게되었다.
+  
 </details>
 
 ## 📑 참고
@@ -667,7 +745,7 @@
   
   - [X] Restful 하도록 API 수정하기 (10/30 수)
   - [x] 읽기 좋은 코드로 수정하기 (주석, 메서드 네이밍 수정, 퍼사드 패턴 적용) (10/31 목 ~ 11/01 금)
-  - [ ] 테스트 코드 추가하기 (테스트 커버리지 100% 달성, 단위 테스트 작성) (11/02 토 ~ 진행 중)
+  - [x] 테스트 커버리지 100% 달성하기 (단위 테스트 위주로 작성) (11/02 토 ~ 11/11 월)
   - [ ] UI 추가하기
   - [ ] 더미 데이터 추가하기
 
