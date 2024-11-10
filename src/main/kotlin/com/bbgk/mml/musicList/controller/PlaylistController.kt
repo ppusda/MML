@@ -3,7 +3,7 @@ package com.bbgk.mml.musicList.controller
 import com.bbgk.mml.domain.data.ApiResponse
 import com.bbgk.mml.domain.exception.MmlBadRequestException
 import com.bbgk.mml.member.service.MemberService
-import com.bbgk.mml.musicList.dto.PlaylistDTO
+import com.bbgk.mml.domain.dto.PlaylistDTO
 import com.bbgk.mml.musicList.dto.PlaylistForm
 import com.bbgk.mml.musicList.service.PlaylistService
 import io.swagger.v3.oas.annotations.Operation

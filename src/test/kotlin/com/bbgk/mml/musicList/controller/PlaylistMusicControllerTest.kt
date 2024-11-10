@@ -4,7 +4,7 @@ import com.bbgk.mml.BaseControllerTest
 import com.bbgk.mml.domain.entity.Playlist
 import com.bbgk.mml.domain.exception.MmlBadRequestException
 import com.bbgk.mml.member.service.MemberService
-import com.bbgk.mml.musicList.dto.PlaylistDTO
+import com.bbgk.mml.domain.dto.PlaylistDTO
 import com.bbgk.mml.musicList.dto.PlaylistForm
 import com.bbgk.mml.musicList.service.PlaylistMusicService
 import com.bbgk.mml.musicList.service.PlaylistService

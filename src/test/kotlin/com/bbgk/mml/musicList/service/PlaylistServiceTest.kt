@@ -68,8 +68,6 @@ class PlaylistServiceTest: BaseServiceTest() {
     @DisplayName("존재하지 않는 재생목록을 아이디로 조회할 때 에러가 발생합니다.")
     fun testFindNotExistPlaylistById() {
         // given
-        val playlist = Playlist("name", member)
-
         `when`(musicListRepository.findPlayListById(any()))
                 .thenThrow(MmlBadRequestException(MESSAGE_NOT_EXIST_PLAYLIST))
 

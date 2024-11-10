@@ -2,7 +2,7 @@ package com.bbgk.mml.musicList.service
 
 import com.bbgk.mml.domain.entity.Member
 import com.bbgk.mml.domain.exception.MmlBadRequestException
-import com.bbgk.mml.musicList.dto.PlaylistDTO
+import com.bbgk.mml.domain.dto.PlaylistDTO
 import com.bbgk.mml.musicList.dto.PlaylistForm
 import com.bbgk.mml.musicList.repository.MusicListRepository
 import org.springframework.data.domain.Page

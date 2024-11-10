@@ -1,4 +1,4 @@
-package com.bbgk.mml.musicList.dto
+package com.bbgk.mml.domain.dto
 
 import com.bbgk.mml.domain.entity.Music
 
@@ -13,3 +13,5 @@ data class MusicDTO(
             url = music.url
     )
 }
+
+// 해당 DTO가 Application 쪽 보다는 Domain 쪽에 걸맞은 보여 경로 수정

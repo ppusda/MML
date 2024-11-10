@@ -3,7 +3,7 @@ package com.bbgk.mml.musicList.controller
 import com.bbgk.mml.BaseControllerTest
 import com.bbgk.mml.domain.entity.Music
 import com.bbgk.mml.domain.exception.MmlBadRequestException
-import com.bbgk.mml.musicList.dto.MusicDTO
+import com.bbgk.mml.domain.dto.MusicDTO
 import com.bbgk.mml.musicList.dto.MusicForm
 import com.bbgk.mml.musicList.service.MusicService
 import org.assertj.core.api.Assertions.*

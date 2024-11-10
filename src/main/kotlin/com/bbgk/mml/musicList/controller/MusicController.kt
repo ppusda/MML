@@ -1,7 +1,7 @@
 package com.bbgk.mml.musicList.controller
 
 import com.bbgk.mml.domain.data.ApiResponse
-import com.bbgk.mml.musicList.dto.MusicDTO
+import com.bbgk.mml.domain.dto.MusicDTO
 import com.bbgk.mml.musicList.dto.MusicForm
 import com.bbgk.mml.musicList.service.MusicService
 import io.swagger.v3.oas.annotations.Operation
