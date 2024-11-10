@@ -22,8 +22,8 @@ class ApiControllerAdvice {
     fun handleException(e: MethodArgumentNotValidException): ResponseEntity<String> {
         log.info(e.message, e)
 
-        val fieldError = e.bindingResult.fieldErrors[0]
-        val message = "[${e.fieldError?.field} / ${fieldError.defaultMessage}]"
+        val fieldErrors = e.bindingResult.fieldErrors
+        val message = "[${fieldErrors[0].field} / ${fieldErrors[0].defaultMessage}]"
 
         return ResponseEntity.badRequest().body(message)
     }
