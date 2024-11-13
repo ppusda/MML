@@ -9,7 +9,7 @@
         <div th:replace="~{fragments/fragment-header :: header}"></div>
 
         <!-- Section-->
-        <div th:replace="~{fragments/fragment-section :: section}"></div>
+        <div th:replace="~{fragments/fragment-section :: section(playlists = ${playlists})}"></div>
 
         <!-- Footer-->
         <div th:replace="~{fragments/fragment-footer :: footer}"></div>

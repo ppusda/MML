@@ -1,39 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-<section class="py-5" th:fragment="section">
+<section class="py-5" th:fragment="section(playlists)">
   <div class="container px-4 px-lg-5 mt-5">
     <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-      <div class="col mb-5">
-        <div class="card h-100">
-          <div class="card">
-            <ul class="list-group list-group-flush">
-              <li class="d-flex list-group-item justify-content-between">
-                AJR - Bummerland
-                <a href="https://www.youtube.com/watch?v=7Kuwwta_Mms"><i class="bi bi-play-fill"></i></a>
-              </li>
-              <li class="d-flex list-group-item justify-content-between">
-                AJR - Way Less Sad
-                <a href="https://www.youtube.com/watch?v=VlVhUbGa2pg"><i class="bi bi-play-fill"></i></a>
-              </li>
-              <li class="d-flex list-group-item justify-content-between">
-                AJR - The DJ Is Crying For Help
-                <a href="https://www.youtube.com/watch?v=8L98ODoZ0kE"><i class="bi bi-play-fill"></i></a>
-              </li>
-            </ul>
-          </div>
-          <div class="card-body p-2">
-            <div class="text-center">
-              <!--Playlist name-->
-              <h5 class="fw-bolder">AJR Playlist</h5>
-              <a class="text-white-50">ppusda</a>
-            </div>
-          </div>
-          <!-- Product actions-->
-          <div class="card-footer p-2 pt-0 border-top-0 bg-transparent">
-            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">링크로 복사하기</a></div>
-          </div>
-        </div>
+      <div class="col mb-5" th:each="playlist: ${playlists}">
+        <div th:replace="~{fragments/fragment-card :: card(${playlist})}"></div>
       </div>
     </div>
   </div>
