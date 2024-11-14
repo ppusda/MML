@@ -4,9 +4,18 @@
   <div class="card h-100" th:fragment="card(playlist)">
     <div class="card">
       <ul class="list-group list-group-flush">
-        <li class="d-flex list-group-item justify-content-between" th:each="music: ${playlist.musics}">
+        <li class="d-flex list-group-item justify-content-between align-items-center" th:each="music: ${playlist.musics}">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-music-note-beamed" viewBox="0 0 16 16">
+            <path d="M6 13c0 1.105-1.12 2-2.5 2S1 14.105 1 13s1.12-2 2.5-2 2.5.896 2.5 2m9-2c0 1.105-1.12 2-2.5 2s-2.5-.895-2.5-2 1.12-2 2.5-2 2.5.895 2.5 2"/>
+            <path fill-rule="evenodd" d="M14 11V2h1v9zM6 3v10H5V3z"/>
+            <path d="M5 2.905a1 1 0 0 1 .9-.995l8-.8a1 1 0 0 1 1.1.995V3L5 4z"/>
+          </svg>
           <span th:text="${music.artist} + ' - ' + ${music.title}"></span>
-          <a th:href="${music.url}"><i class="bi bi-play-fill"></i></a>
+          <a th:href="${music.url}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
+              <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393"/>
+            </svg>
+          </a>
         </li>
       </ul>
     </div>
