@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="kr">
+    <div th:replace="~{fragments/fragment-head :: head}"></div>
+    <body>
+        <!-- Navigation-->
+        <div th:replace="~{fragments/fragment-nav :: nav}"></div>
+
+        <!-- Header-->
+        <div th:replace="~{fragments/fragment-header :: header}"></div>
+
+        <!-- Playlist Creation Section -->
+        <section class="py-5">
+            <div class="container px-4 px-lg-5 my-5 d-flex justify-content-center">
+                <div class="w-50">
+                    <h2 class="text-center mb-4">재생목록 생성</h2>
+                    <form>
+                        <div class="mb-3">
+                            <label for="playlistTitle" class="form-label">재생목록 제목</label>
+                            <input type="text" class="form-control" id="playlistTitle" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="musicSearch" class="form-label">음악 검색</label>
+                            <input type="text" class="form-control" id="musicSearch" placeholder="음악 제목 또는 아티스트" oninput="searchMusic()">
+                        </div>
+                        <div class="list-group" id="searchResults" style="display: none;">
+                            <!-- 검색 결과가 여기에 추가됩니다 -->
+                        </div>
+                    </form>
+
+                    <button type="button" class="btn btn-outline-success w-100 mt-4" data-bs-toggle="modal" data-bs-target="#addMusicModal">직접 음악 추가</button>
+
+                    <h5 class="mt-4">추가된 음악 목록</h5>
+                    <ul class="list-group" id="resultList">
+                        <!-- 추가된 음악 목록이 여기에 표시됩니다 -->
+                    </ul>
+
+                    <button type="submit" class="btn btn-outline-dark w-100 mt-3">재생목록 생성</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Add Music Modal -->
+        <div class="modal fade" id="addMusicModal" tabindex="-1" aria-labelledby="addMusicModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addMusicModalLabel">직접 음악 추가</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="newMusicTitle" class="form-label">곡 제목</label>
+                            <input type="text" class="form-control" id="newMusicTitle" placeholder="곡 제목" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newMusicArtist" class="form-label">아티스트</label>
+                            <input type="text" class="form-control" id="newMusicArtist" placeholder="아티스트" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                        <button type="button" class="btn btn-primary" onclick="addMusic()">추가</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer-->
+        <div th:replace="~{fragments/fragment-footer :: footer}"></div>
+
+
+        <script>
+            const musicList = [];
+
+            function searchMusic() {
+                const query = document.getElementById('musicSearch').value;
+                const searchResults = document.getElementById('searchResults');
+                searchResults.innerHTML = ''; // 이전 결과 지우기
+
+                if (query.length > 0) {
+                    // 예시로 더미 데이터 사용
+                    const results = [
+                        { title: '곡 1', artist: '아티스트 1' },
+                        { title: '곡 2', artist: '아티스트 2' },
+                        { title: '곡 3', artist: '아티스트 3' }
+                    ].filter(music => music.title.includes(query) || music.artist.includes(query));
+
+                    results.forEach(result => {
+                        const li = document.createElement('button');
+                        li.className = 'list-group-item list-group-item-action';
+                        li.textContent = `${result.title} - ${result.artist}`;
+                        li.onclick = function() {
+                            addMusicFromSearch(result);
+                        };
+                        searchResults.appendChild(li);
+                    });
+
+                    searchResults.style.display = results.length > 0 ? 'block' : 'none';
+                } else {
+                    searchResults.style.display = 'none';
+                }
+            }
+
+            function addMusicFromSearch(music) {
+                musicList.push(music);
+                updateResultList();
+                document.getElementById('musicSearch').value = ''; // 검색창 초기화
+                document.getElementById('searchResults').innerHTML = ''; // 검색 결과 초기화
+                document.getElementById('searchResults').style.display = 'none'; // 검색 결과 숨기기
+            }
+
+            function addMusic() {
+                const title = document.getElementById('newMusicTitle').value;
+                const artist = document.getElementById('newMusicArtist').value;
+
+                if (title && artist) {
+                    const newMusic = { title: title, artist: artist };
+                    musicList.push(newMusic);
+                    updateResultList();
+                    alert(`${title} - ${artist}가 재생목록에 추가되었습니다.`);
+                    document.getElementById('newMusicTitle').value = ''; // 입력 필드 초기화
+                    document.getElementById('newMusicArtist').value = ''; // 입력 필드 초기화
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('addMusicModal'));
+                    modal.hide(); // 모달 닫기
+                } else {
+                    alert('곡 제목과 아티스트를 모두 입력해 주세요.');
+                }
+            }
+
+            function updateResultList() {
+                const resultList = document.getElementById('resultList');
+                resultList.innerHTML = ''; // 목록 초기화
+
+                musicList.forEach(music => {
+                    const li = document.createElement('li');
+                    li.className = 'list-group-item';
+                    li.textContent = `${music.title} - ${music.artist}`;
+                    resultList.appendChild(li);
+                });
+            }
+        </script>
+    </body>
+</html>

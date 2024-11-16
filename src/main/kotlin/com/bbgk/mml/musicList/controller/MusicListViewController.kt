@@ -17,4 +17,9 @@ class MusicListViewController(
 
         return "index"
     }
+
+    @GetMapping("/playlist")
+    fun addPlaylist(model: Model): String {
+        return "playlist"
+    }
 }
