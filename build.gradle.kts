@@ -38,11 +38,19 @@ dependencies {
 	runtimeOnly("com.h2database:h2")
 	runtimeOnly("com.mysql:mysql-connector-j")
 	annotationProcessor("org.projectlombok:lombok")
+
+	// TEST
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	testImplementation ("org.mockito.kotlin:mockito-kotlin:5.4.0") // Test 진행 시 any(), ArgumentCaptor에 null 문제가 발생하여 추가
 	// Kotlin 버전의 Mockito, https://github.com/mockito/mockito-kotlin?tab=readme-ov-file
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+	// JDSL
+	val jdslVersion = "3.5.3"
+	implementation("com.linecorp.kotlin-jdsl:jpql-dsl:$jdslVersion")
+	implementation("com.linecorp.kotlin-jdsl:jpql-render:$jdslVersion")
+	implementation("com.linecorp.kotlin-jdsl:spring-data-jpa-support:$jdslVersion")
 }
 
 kotlin {
