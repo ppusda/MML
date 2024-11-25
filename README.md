@@ -722,6 +722,75 @@
 
 </details>
 
+<details>
+  
+  <summary>간단한 UI 추가하기</summary>
+
+  커밋 내용 => 
+
+  <table>
+    <tr>
+      <th>11/12 화</th>
+      <td>
+        <a href="https://github.com/ppusda/MML/commit/b8c0b615a93c1bfc751acf56e1f26ecb9d228617">feat: 간단한 UI 추가하기 - 부트스트랩 템플릿</a><br>
+      </td>
+    </tr> 
+    <tr>
+      <th>11/13 수</th>
+      <td>
+        <a href="https://github.com/ppusda/MML/commit/ee55a10389e055cfc7d644254618db5b144c79c8">feat: 간단한 UI 추가하기 - Fragment 분리, 기본 구조 설정</a><br>
+        <a href="https://github.com/ppusda/MML/commit/1211213eaee2fb26ad1d938c4fff8b49b3a1a96c">test: 간단한 UI 추가하기 - MusicListViewController 테스트 작성</a><br>
+      </td>
+    </tr>
+    <tr>
+      <th>11/14 목</th>
+      <td>
+        <a href="https://github.com/ppusda/MML/commit/5743afde27188946aaef850abe49fad661a9b99d">feat: 간단한 UI 추가하기 - 템플릿 수정 (MusicList)</a><br>
+      </td>
+    </tr>
+    <tr>
+      <th>11/15 금</th>
+      <td>
+        <a href="https://github.com/ppusda/MML/commit/9e5c8d4985a36d002477dcc0a0853ce8541e0eec">feat: 간단한 UI 추가하기 - 로그인 페이지 추가</a><br>
+        <a href="https://github.com/ppusda/MML/commit/39ee42769646933344c5c4036206b781e729f70b">fix: 간단한 UI 추가하기 - card 내 아이콘 svg로 수정</a><br>
+      </td>
+    </tr> 
+    <tr>
+      <th>11/16 토</th>
+      <td>
+        <a href="https://github.com/ppusda/MML/commit/71b0ebe6784ccced0db36775dabde875fee4ee4f">feat: 간단한 UI 추가하기 - 음악/플레이리스트 페이지 추가</a><br>
+      </td>
+    </tr>
+    <tr>
+      <th>11/17 일</th>
+      <td>
+        <a href="https://github.com/ppusda/MML/commit/7e944abf88e9f35e7ba621bd8027cc0d259276d1">test: 간단한 UI 추가하기 - MusicListViewController, MemberViewControllerTest</a><br>
+      </td>
+    </tr> 
+  </table>
+
+  ### 메인화면
+  ![Main](https://github.com/user-attachments/assets/f9176912-7204-4b27-8a57-59d5928e1104)
+
+  ### 로그인화면
+  ![Login](https://github.com/user-attachments/assets/330f052a-480f-41a0-b80c-33e71921a8cb)
+
+  ### 재생목록 생성 화면
+  ![Playlist](https://github.com/user-attachments/assets/1a1baa73-2d3f-45b4-ab67-3d0ddb8a132c)
+
+  ### 후기
+  크게 어려운 작업은 아니었지만 기존 기능에 대한 화면만 구현할지 새 기능들을 추가해서 구현할지에 대해서 고민이 조금 되었다.<br>
+  결과적으로는 구현하기로 마음을 먹었으며 UI 자체는 더 추가할 부분이 없을 것 같아 일단락하려고 한다.<br>
+  <br>
+  향후 추가할 기능은 아래와 같다.<br>
+    - 음악 검색 (Kotlin JDSL)<br>
+    - Github 로그인<br>
+    - 재생목록 템플릿 제공<br>
+  <br>
+  새로운 프로젝트를 진행하게 되어서 당장은 힘들겠지만 차근차근 해나가보려고한다.
+  
+</details>
+
 ## 📑 참고
 본 프로젝트는 [인프런 워밍업 클럽 스터디 2기 - 백엔드 프로젝트 (Kotlin, Spring Boot)](https://www.inflearn.com/course/offline/warmup-club-2-be-bk) 의 서브 미션을 위한 프로젝트입니다.
 
@@ -748,7 +817,7 @@
   - [X] Restful 하도록 API 수정하기 (10/30 수)
   - [x] 읽기 좋은 코드로 수정하기 (주석, 메서드 네이밍 수정, 퍼사드 패턴 적용) (10/31 목 ~ 11/01 금)
   - [x] 테스트 커버리지 100% 달성하기 (단위 테스트 위주로 작성) (11/02 토 ~ 11/11 월)
-  - [ ] UI 추가하기
+  - [x] 간단한 UI 추가하기 (Thymeleaf) (11/12 화 ~ 11/17 일)
   - [ ] 더미 데이터 추가하기
 
 </details>
