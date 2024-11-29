@@ -7,6 +7,7 @@ import com.bbgk.mml.domain.dto.PlaylistDTO
 import com.bbgk.mml.musicList.dto.PlaylistForm
 import com.bbgk.mml.musicList.service.PlaylistService
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.data.domain.Page
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*
  */
 @RestController
 @RequestMapping("/v1/playlists")
+@Tag(name = "Playlist", description = "재생목록과 관련된 REST API를 제공하는 컨트롤러 입니다.")
 class PlaylistController(
     val playlistService: PlaylistService,
     val memberService: MemberService

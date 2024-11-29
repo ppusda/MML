@@ -3,6 +3,7 @@ package com.bbgk.mml.member.controller
 import com.bbgk.mml.domain.dto.MemberDTO
 import com.bbgk.mml.member.service.MemberService
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.data.domain.Page
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController
  */
 @RestController
 @RequestMapping("/v1/members")
+@Tag(name = "Member", description = "회원과 관련된 REST API를 제공하는 컨트롤러 입니다.")
 class MemberController(
         private val memberService: MemberService
 ) {

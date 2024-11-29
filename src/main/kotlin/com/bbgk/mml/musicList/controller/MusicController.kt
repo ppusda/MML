@@ -5,6 +5,7 @@ import com.bbgk.mml.domain.dto.MusicDTO
 import com.bbgk.mml.musicList.dto.MusicForm
 import com.bbgk.mml.musicList.service.MusicService
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.data.domain.Page
 import org.springframework.data.jpa.repository.Query
 import org.springframework.http.ResponseEntity
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*
  * @property musicService 음악 서비스
  */
 @RestController
+@Tag(name = "Music", description = "음악과 관련된 REST API를 제공하는 컨트롤러 입니다.")
 class MusicController(
         val musicService: MusicService
 ) {
