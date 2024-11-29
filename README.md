@@ -12,6 +12,7 @@
 - zulu JDK 17
 - Spring Data JPA
 - MySQL
+- Kotlin JDSL
 
 ## 🔗 ERD
 
@@ -791,6 +792,46 @@
   
 </details>
 
+<details>
+  
+  <summary>더미 데이터 추가하기</summary>
+
+  커밋 내용 => 
+
+  <table>
+    <tr>
+      <th>11/30 토</th>
+      <td>
+        <a href="https://github.com/ppusda/MML/commit/6752ae3537d4e8b7be3eb0f1767288c50b2e4cc0">feat: 더미 데이터 추가하기</a><br>
+      </td>
+    </tr> 
+  </table>
+  
+</details>
+
+<details>
+  
+  <summary>Swagger 적용해보기</summary>
+
+  커밋 내용 => 
+
+  <table>
+    <tr>
+      <th>11/30 토</th>
+      <td>
+        <a href="https://github.com/ppusda/MML/commit/4af77796d6d0b9c6c2d4181de9924b29b3654940">feat: Swagger 추가 및 설정</a><br>
+      </td>
+    </tr> 
+  </table>
+
+  ### Swagger UI
+  /swagger-ui/index.html
+
+  ![SwaggerUI](https://github.com/user-attachments/assets/62ffb88b-d690-44d3-b3f4-03a22c7d4809)
+
+  
+</details>
+
 ## 📑 참고
 본 프로젝트는 [인프런 워밍업 클럽 스터디 2기 - 백엔드 프로젝트 (Kotlin, Spring Boot)](https://www.inflearn.com/course/offline/warmup-club-2-be-bk) 의 서브 미션을 위한 프로젝트입니다.
 
@@ -803,7 +844,7 @@
   - [x] [미션 3] REST API 설계하기(~10/8 화)
   - [x] [미션 4] 조회 REST API 만들기(~10/15 화)
   - [x] [미션 5] 삽입, 수정, 삭제 REST API 만들기(~10/21 월)
-  - [ ] [자체 미션] 이후 고도화
+  - [ ] [자체 미션] 이후 고도화 (진행 중)
 
 </details>
 
@@ -818,6 +859,12 @@
   - [x] 읽기 좋은 코드로 수정하기 (주석, 메서드 네이밍 수정, 퍼사드 패턴 적용) (10/31 목 ~ 11/01 금)
   - [x] 테스트 커버리지 100% 달성하기 (단위 테스트 위주로 작성) (11/02 토 ~ 11/11 월)
   - [x] 간단한 UI 추가하기 (Thymeleaf) (11/12 화 ~ 11/17 일)
-  - [ ] 더미 데이터 추가하기
+  - [x] 더미 데이터 추가하기 (11/30 토)
+  - [x] Swagger 적용 (11/30 토)
+
+  추가 기능 구현 계획
+  - [x] 음악 검색 (Kotlin JDSL) (11/30 토)
+  - [ ] Github 로그인
+  - [ ] 재생목록 템플릿 제공
 
 </details>
