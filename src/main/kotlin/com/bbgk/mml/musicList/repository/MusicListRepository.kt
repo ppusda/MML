@@ -140,4 +140,22 @@ class MusicListRepository( // 퍼사드 패턴 적용, 간단한 DB 기능 분�
             throw MmlBadRequestException(message)
         }
     }
+
+    /**
+     * 키워드로 음악을 검색합니다.
+     *
+     * @param keyword 검색 키워드
+     * @return 검색된 음악 목록
+     */
+    @Transactional(readOnly = true)
+    fun searchMusics(keyword: String): List<Music> {
+        return musicRepository.findAll{
+            select(entity(Music::class))
+                .from(entity(Music::class))
+                .whereOr(
+                    path(Music::title).like("%${keyword}%"),
+                    path(Music::artist).like("%${keyword}%"),
+                )
+        }.filterNotNull()
+    }
 }

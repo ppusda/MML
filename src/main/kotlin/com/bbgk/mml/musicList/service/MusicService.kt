@@ -33,6 +33,17 @@ class MusicService(
     }
 
     /**
+     * 음악을 검색합니다.
+     * @param keyword 입력된 검색어
+     * @return 검색어에 조회된 음악 목록
+     */
+    @Transactional(readOnly = true)
+    fun searchMusics(keyword: String): List<MusicDTO> {
+        val musics = musicListRepository.searchMusics(keyword)
+        return musics.map { MusicDTO(it) }
+    }
+
+    /**
      * 입력받은 음악 정보를 저장합니다.
      *
      * @param form 저장할 음악 정보
