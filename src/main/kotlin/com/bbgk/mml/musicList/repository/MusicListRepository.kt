@@ -149,13 +149,6 @@ class MusicListRepository( // 퍼사드 패턴 적용, 간단한 DB 기능 분�
      */
     @Transactional(readOnly = true)
     fun searchMusics(keyword: String): List<Music> {
-        return musicRepository.findAll{
-            select(entity(Music::class))
-                .from(entity(Music::class))
-                .whereOr(
-                    path(Music::title).like("%${keyword}%"),
-                    path(Music::artist).like("%${keyword}%"),
-                )
-        }.filterNotNull()
+        return musicRepository.findMusicsByKeyword(keyword);
     }
 }
