@@ -48,79 +48,6 @@
 
 </details>
 
-<details>
-  
-  <summary><code>POST /members</code> - 회원 가입</summary>
-
-  **Request**
-  ```json
-  {
-    "email" : "ppusda@naver.com",
-    "password" : "1234",
-    "passwordCheck" : "1234"
-  }
-  ```
-
-  **Response**e
-  ```json
-  {}
-  ```
-
-</details>
-
-<details>
-  
-  <summary><code>DELETE /members/{n}</code> - n번 회원 탈퇴</summary>
-
-  **Request**
-  ```json
-  {}
-  ```
-
-  **Response**
-  ```json
-  {}
-  ```
-
-</details>
-
-### User-Sign
-
-<details>
-  
-  <summary><code>POST /members/signs</code> - 회원 로그인</summary>
-
-  **Request**
-  ```json
-  {
-    "email" : "ppusda@naver.com",
-    "password" : "1234"
-  }
-  ```
-
-  **Response**
-  ```json
-  {}
-  ```
-
-</details>
-
-<details>
-  
-  <summary><code>DELETE /members/signs</code> - 회원 로그아웃</summary>
-
-  **Request**
-  ```json
-  {}
-  ```
-
-  **Response**
-  ```json
-  {}
-  ```
-
-</details>
-
 ### Music
 <details>
   
@@ -864,7 +791,6 @@
 
   추가 기능 구현 계획
   - [x] 음악 검색 (Kotlin JDSL) (11/30 토)
-  - [ ] Github 로그인
   - [ ] 재생목록 템플릿 제공
 
 </details>
