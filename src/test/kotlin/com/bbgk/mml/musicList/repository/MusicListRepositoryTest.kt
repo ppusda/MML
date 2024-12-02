@@ -15,14 +15,13 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.InjectMocks
 import org.mockito.Mock
-
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.verify
 import org.springframework.data.domain.PageImpl
-import java.util.Optional
+import java.util.*
 
 class MusicListRepositoryTest: BaseServiceTest() {
 
@@ -113,6 +112,32 @@ class MusicListRepositoryTest: BaseServiceTest() {
         Assertions.assertThat(findMusic.title).isEqualTo(music.get().title)
         Assertions.assertThat(findMusic.artist).isEqualTo(music.get().artist)
         Assertions.assertThat(findMusic.url).isEqualTo(music.get().url)
+    }
+
+    @Test
+    @DisplayName("음악을 키워드로 검색합니다.")
+    fun testFindMusicsByKeyword() {
+        // given
+        val title = "title"
+
+        val musics = listOf(
+            Music("title1", "artist1", "url1"),
+            Music("title2", "artist2", "url2"),
+            Music("title3", "artist3", "url3")
+        )
+
+        `when`(musicRepository.findMusicsByKeyword(any()))
+            .thenReturn(musics)
+
+        // when
+        val findMusics = musicListRepository.searchMusics(title)
+
+        // then
+        verify(musicRepository).findMusicsByKeyword(any())
+
+        for (findMusic in findMusics) {
+            Assertions.assertThat(findMusic.title).contains(title)
+        }
     }
 
     @Test

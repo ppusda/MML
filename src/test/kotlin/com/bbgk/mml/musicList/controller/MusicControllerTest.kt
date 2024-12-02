@@ -54,6 +54,30 @@ class MusicControllerTest(
     }
 
     @Test
+    @DisplayName("키워드로 음악 검색 요청을 보낸다")
+    fun testSearchMusics() {
+        // given
+        val uri = "/v2/musics?keyword=title"
+
+        val musics = listOf(
+            Music("title1", "artist1", "url1"),
+            Music("title2", "artist2", "url2"),
+            Music("title3", "artist3", "url3"),
+        )
+        val musicDTOs = musics.map { MusicDTO(it) }
+
+
+        `when`(musicService.searchMusics(any()))
+            .thenReturn(musicDTOs)
+
+        // when
+        performGet(uri, MockMvcResultMatchers.status().isOk)
+
+        // then
+        verify(musicService).searchMusics(any())
+    }
+
+    @Test
     @DisplayName("Music Post 요청 시 생성 성공")
     fun testPostMusic_Success() {
         // given

@@ -9,9 +9,7 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 
 @DataJpaTest
-@Import(
-    KotlinJdslAutoConfiguration::class,
-)
+@Import(KotlinJdslAutoConfiguration::class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 abstract class BaseRepositoryTest {
 

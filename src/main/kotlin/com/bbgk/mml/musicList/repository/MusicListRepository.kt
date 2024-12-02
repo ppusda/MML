@@ -4,6 +4,7 @@ import com.bbgk.mml.domain.entity.Music
 import com.bbgk.mml.domain.entity.Playlist
 import com.bbgk.mml.domain.entity.PlaylistMusic
 import com.bbgk.mml.domain.exception.MmlBadRequestException
+import com.bbgk.mml.domain.repository.CustomMusicRepository
 import com.bbgk.mml.domain.repository.MusicRepository
 import com.bbgk.mml.domain.repository.PlaylistMusicRepository
 import com.bbgk.mml.domain.repository.PlaylistRepository
@@ -23,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional
 class MusicListRepository( // 퍼사드 패턴 적용, 간단한 DB 기능 분리
         private val musicRepository: MusicRepository,
         private val playlistRepository: PlaylistRepository,
-        private val playlistMusicRepository: PlaylistMusicRepository
+        private val playlistMusicRepository: PlaylistMusicRepository,
 ) {
 
     /**
@@ -149,6 +150,6 @@ class MusicListRepository( // 퍼사드 패턴 적용, 간단한 DB 기능 분�
      */
     @Transactional(readOnly = true)
     fun searchMusics(keyword: String): List<Music> {
-        return musicRepository.findMusicsByKeyword(keyword);
+        return musicRepository.findMusicsByKeyword(keyword)
     }
 }

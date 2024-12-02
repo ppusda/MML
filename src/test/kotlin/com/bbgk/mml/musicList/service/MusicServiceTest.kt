@@ -48,6 +48,27 @@ class MusicServiceTest: BaseServiceTest() {
     }
 
     @Test
+    @DisplayName("키워드로 음악을 검색합니다.")
+    fun testSearchMusics() {
+        // given
+        val musics = mutableListOf<Music>()
+        for (i in 1..DATA_SIZE) {
+            val music = Music("TITLE_${i}", "ARTIST_${i}", "URL_${i}")
+            musics.add(music)
+        }
+
+        `when`(musicListRepository.searchMusics(any()))
+            .thenReturn(musics)
+
+        // when
+        val searchedMusics = musicService.searchMusics("TITLE")
+
+        // then
+        verify(musicListRepository).searchMusics(any())
+        assertThat(searchedMusics).hasSize(DATA_SIZE)
+    }
+
+    @Test
     @DisplayName("음악 정보를 저장합니다.")
     fun testSaveMusic() {
         // given
