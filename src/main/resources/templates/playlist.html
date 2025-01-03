@@ -22,19 +22,23 @@
                             <label for="musicSearch" class="form-label">음악 검색</label>
                             <input type="text" class="form-control" id="musicSearch" placeholder="음악 제목 또는 아티스트" oninput="searchMusic()">
                         </div>
-                        <div class="list-group" id="searchResults" style="display: none;">
-                            <!-- 검색 결과가 여기에 추가됩니다 -->
-                        </div>
+                        <div class="list-group" id="searchResults" style="display: none;"></div>
                     </form>
 
                     <button type="button" class="btn btn-outline-success w-100 mt-4" data-bs-toggle="modal" data-bs-target="#addMusicModal">직접 음악 추가</button>
 
                     <h5 class="mt-4">추가된 음악 목록</h5>
-                    <ul class="list-group" id="resultList">
-                        <!-- 추가된 음악 목록이 여기에 표시됩니다 -->
-                    </ul>
+                    <ul class="list-group" id="resultList"></ul>
 
-                    <button type="submit" class="btn btn-outline-dark w-100 mt-3">재생목록 생성</button>
+                    <hr class="hr"/>
+
+                    <div class="mt-3">
+                        <div class="d-flex">
+                            <input type="text" class="form-control me-2" id="username" placeholder="ID" required>
+                            <input type="password" class="form-control ms-2" id="password" placeholder="PASSWORD" required>
+                        </div>
+                        <button type="submit" class="btn btn-outline-dark w-100 mt-3">재생목록 생성</button>
+                    </div>
                 </div>
             </div>
         </section>
@@ -56,6 +60,10 @@
                             <label for="newMusicArtist" class="form-label">아티스트</label>
                             <input type="text" class="form-control" id="newMusicArtist" placeholder="아티스트" required>
                         </div>
+                        <div class="mb-3">
+                            <label for="newMusicUrl" class="form-label">URL</label>
+                            <input type="text" class="form-control" id="newMusicUrl" placeholder="URL" required>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
@@ -72,30 +80,38 @@
         <script>
             const musicList = [];
 
-            function searchMusic() {
+            async function searchMusic() {
                 const query = document.getElementById('musicSearch').value;
                 const searchResults = document.getElementById('searchResults');
                 searchResults.innerHTML = ''; // 이전 결과 지우기
 
                 if (query.length > 0) {
-                    // 예시로 더미 데이터 사용
-                    const results = [
-                        { title: '곡 1', artist: '아티스트 1' },
-                        { title: '곡 2', artist: '아티스트 2' },
-                        { title: '곡 3', artist: '아티스트 3' }
-                    ].filter(music => music.title.includes(query) || music.artist.includes(query));
+                    try {
+                        const response = await fetch(`/v2/musics?keyword=${encodeURIComponent(query)}`);
+                        if (!response.ok) {
+                            throw new Error('음악 검색에 실패했습니다.');
+                        }
+                        const results = await response.json();
 
-                    results.forEach(result => {
-                        const li = document.createElement('button');
-                        li.className = 'list-group-item list-group-item-action';
-                        li.textContent = `${result.title} - ${result.artist}`;
-                        li.onclick = function() {
-                            addMusicFromSearch(result);
-                        };
-                        searchResults.appendChild(li);
-                    });
+                        if (results.length > 0) {
+                            results.forEach(result => {
+                                const li = document.createElement('button');
+                                li.className = 'list-group-item list-group-item-action';
+                                li.textContent = `${result.title} - ${result.artist}`;
+                                li.onclick = function () {
+                                    addMusicFromSearch(result);
+                                };
+                                searchResults.appendChild(li);
+                            });
 
-                    searchResults.style.display = results.length > 0 ? 'block' : 'none';
+                            searchResults.style.display = 'block';
+                        } else {
+                            searchResults.style.display = 'none';
+                        }
+                    } catch (error) {
+                        console.error(error);
+                        alert('음악 검색 중 오류가 발생했습니다.');
+                    }
                 } else {
                     searchResults.style.display = 'none';
                 }
@@ -139,5 +155,6 @@
                 });
             }
         </script>
+
     </body>
 </html>
