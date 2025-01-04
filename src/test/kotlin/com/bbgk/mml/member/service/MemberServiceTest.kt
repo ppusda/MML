@@ -5,6 +5,7 @@ import com.bbgk.mml.domain.entity.Member
 import com.bbgk.mml.domain.exception.MmlBadRequestException
 import com.bbgk.mml.domain.repository.MemberRepository
 import com.bbgk.mml.member.dto.MemberForm
+import com.bbgk.mml.member.dto.MemberLoginResponse
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -137,6 +138,82 @@ class MemberServiceTest: BaseServiceTest() {
         assertEquals(MESSAGE_NOT_EXIST_MEMBER, exception.message)
         verify(memberRepository).findById(MEMBER_ID) // 호출되었는지 확인
         verify(memberRepository, never()).deleteById(MEMBER_ID) // 오류로 인해 호출되지 않아야 함
+    }
+
+    @Test
+    fun `회원 정보를 이메일로 검색합니다`() {
+        // given
+        `when`(memberRepository.findByEmail(any()))
+            .thenReturn(Optional.of(member))
+
+        // when
+        memberService.findMemberByEmail(EMAIL)
+
+        // then
+        verify(memberRepository).findByEmail(any())
+        assertThat(memberForm.email).isEqualTo(member.email)
+    }
+
+    @Test
+    fun `존재하지 않는 회원 정보를 이메일로 검색할 때 예외가 발생합니다`() {
+        // given
+        `when`(memberRepository.findByEmail(any()))
+            .thenReturn(Optional.empty())
+
+        // when
+        val exception = assertThrows<MmlBadRequestException> {
+            memberService.findMemberByEmail("wrong email")
+        }
+
+        // then
+        assertEquals(MESSAGE_NOT_EXIST_MEMBER, exception.message)
+    }
+
+    @Test
+    fun `회원 정보를 얻기 위해 로그인 합니다`() {
+        // given
+        `when`(memberRepository.findByEmail(any()))
+            .thenReturn(Optional.of(member))
+
+        // when
+        val loginResponse: MemberLoginResponse = memberService.loginMember(memberForm)
+
+        // then
+        verify(memberRepository).findByEmail(any())
+        assertThat(loginResponse.email).isEqualTo(EMAIL)
+    }
+
+    @Test
+    fun `회원 정보를 얻기 위해 로그인 하지만 회원이 없어서 새로 생성됩니다`() {
+        // given
+        `when`(memberRepository.findByEmail(any()))
+            .thenReturn(Optional.empty()) // 회원 정보가 없는 상태를 모의
+
+        `when`(memberRepository.save(any()))
+            .thenReturn(member) // 새로 저장되는 회원을 모의
+
+        // when
+        val loginResponse: MemberLoginResponse = memberService.loginMember(MemberForm(EMAIL, PASSWORD))
+
+        // then
+        verify(memberRepository).findByEmail(any()) // 이메일 조회 호출 검증
+        verify(memberRepository).save(any()) // 새 회원 저장 호출 검증
+        assertThat(loginResponse.email).isEqualTo(EMAIL) // 반환된 회원 정보 확인
+    }
+
+    @Test
+    fun `회원 정보를 얻기 위해 로그인 하지만 비밀번호가 일치하지 않습니다`() {
+        // given
+        `when`(memberRepository.findByEmail(any()))
+            .thenReturn(Optional.of(member))
+
+        // when
+        val exception = assertThrows<MmlBadRequestException> {
+            memberService.loginMember(MemberForm(EMAIL, "wrong password"))
+        }
+
+        // then
+        assertEquals(MESSAGE_NOT_VALIDATE_PASSWORD, exception.message)
     }
 
 }

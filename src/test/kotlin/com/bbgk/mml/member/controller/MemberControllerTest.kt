@@ -3,6 +3,8 @@ package com.bbgk.mml.member.controller
 import com.bbgk.mml.BaseControllerTest
 import com.bbgk.mml.domain.entity.Member
 import com.bbgk.mml.domain.dto.MemberDTO
+import com.bbgk.mml.member.dto.MemberForm
+import com.bbgk.mml.member.dto.MemberLoginResponse
 import com.bbgk.mml.member.service.MemberService
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -48,6 +50,24 @@ class MemberControllerTest(
 
         // then
         verify(memberService).getMembers(any())
+    }
+
+    @Test
+    fun `재생목록 생성 시 필요한 회원 로그인`() {
+        // given
+        val uri = "/v1/members"
+
+        val form = MemberForm(member.email, member.password)
+        val memberLoginResponse = MemberLoginResponse(member)
+
+        `when`(memberService.loginMember(any()))
+            .thenReturn(memberLoginResponse)
+
+        // when
+        performPost(uri, form, MockMvcResultMatchers.status().isOk)
+
+        // then
+        verify(memberService).loginMember(any())
     }
 
 }

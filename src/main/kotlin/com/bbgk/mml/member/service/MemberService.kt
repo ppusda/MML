@@ -93,14 +93,13 @@ class MemberService(
      */
     @Transactional
     fun loginMember(memberForm: MemberForm): MemberLoginResponse {
-        var member: Member
-
-        try {
-            member = findMemberByEmail(memberForm.email)
-            validatePassword(member, memberForm.password)
+        val member: Member = try {
+            findMemberByEmail(memberForm.email)
         } catch (e: MmlBadRequestException) {
-            member = saveMember(memberForm)
+            saveMember(memberForm)
         }
+
+        validatePassword(member, memberForm.password)
 
         return MemberLoginResponse(member)
     }
@@ -112,7 +111,7 @@ class MemberService(
      * @param password 입력된 회원의 비밀번호
      * @throws MmlBadRequestException 비밀번호가 일치하지 않을 시 발생
      */
-    fun validatePassword(member: Member, password: String) {
+    private fun validatePassword(member: Member, password: String) {
         if (member.password != password) throw MmlBadRequestException("비밀번호가 일치하지 않습니다.")
     }
 

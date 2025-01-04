@@ -1,6 +1,7 @@
 package com.bbgk.mml
 
 import com.bbgk.mml.domain.entity.Member
+import com.bbgk.mml.member.dto.MemberForm
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.junit.jupiter.MockitoExtension
 import org.springframework.data.domain.PageRequest
@@ -26,7 +27,12 @@ abstract class BaseServiceTest {
     protected val MESSAGE_NOT_EXIST_PLAYLIST_MUSIC = "존재하지 않는 재생목록 내 음악입니다."
     protected val MESSAGE_NOT_EXIST_MUSIC = "존재하지 않는 음악입니다."
     protected val MESSAGE_NOT_EXIST_PLAYLIST = "존재하지 않는 플레이리스트입니다."
+    protected val MESSAGE_NOT_VALIDATE_PASSWORD = "비밀번호가 일치하지 않습니다."
 
     // Member Config
-    protected val member = Member("email1", "1234")
+    protected val EMAIL = "test@test.com"
+    protected val PASSWORD = "test"
+
+    protected val member = Member(EMAIL, PASSWORD)
+    protected val memberForm = MemberForm(EMAIL, PASSWORD)
 }
