@@ -272,7 +272,7 @@ class MusicListRepositoryTest: BaseServiceTest() {
                 .thenReturn(playlistMusic)
 
         // when
-        val findPlaylistMusic = musicListRepository.findByPlaylistIdAndMusicId(PLAYLIST_ID, MUSIC_ID, MESSAGE_NOT_EXIST_PLAYLIST_MUSIC)
+        val findPlaylistMusic = musicListRepository.findByPlaylistIdAndMusicId(PLAYLIST_ID, MUSIC_ID)
 
         // then
         verify(playlistMusicRepository).findByPlaylistIdAndMusicId(PLAYLIST_ID, MUSIC_ID)
@@ -291,7 +291,7 @@ class MusicListRepositoryTest: BaseServiceTest() {
 
         // when
         val exception = assertThrows<MmlBadRequestException> {
-            musicListRepository.findByPlaylistIdAndMusicId(PLAYLIST_ID, MUSIC_ID, MESSAGE_NOT_EXIST_PLAYLIST_MUSIC)
+            musicListRepository.findByPlaylistIdAndMusicId(PLAYLIST_ID, MUSIC_ID)
         }
 
         // then

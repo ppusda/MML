@@ -102,7 +102,7 @@ class PlaylistMusicServiceTest: BaseServiceTest() {
         idField.isAccessible = true
         idField.set(playlistMusic, PLAYLIST_MUSIC_ID)
 
-        `when`(musicListRepository.findByPlaylistIdAndMusicId(any(), any(), any()))
+        `when`(musicListRepository.findByPlaylistIdAndMusicId(any(), any()))
                 .thenReturn(playlistMusic)
         doNothing().`when`(musicListRepository).deletePlaylistMusicById(any())
 
@@ -119,7 +119,7 @@ class PlaylistMusicServiceTest: BaseServiceTest() {
     @DisplayName("존재하지 않는 재생목록 내 음악을 제거할 때 에러가 발생합니다.")
     fun testDeleteMusicInNotExistPlaylist() {
         // given
-        `when`(musicListRepository.findByPlaylistIdAndMusicId(any(), any(), any()))
+        `when`(musicListRepository.findByPlaylistIdAndMusicId(any(), any()))
                 .thenThrow(MmlBadRequestException(MESSAGE_NOT_EXIST_PLAYLIST_MUSIC))
 
         // when

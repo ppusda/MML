@@ -62,7 +62,7 @@ class PlaylistControllerTest(
     fun testPostPlaylist_Success() {
         // given
         val uri = "/v1/playlists"
-        val playlistForm = PlaylistForm("playlist", member)
+        val playlistForm = PlaylistForm("playlist")
 
         // when, then
         performPostWithId(uri, playlistForm, "uid", USER_ID, MockMvcResultMatchers.status().isOk)
@@ -73,7 +73,7 @@ class PlaylistControllerTest(
     fun testPostPlaylist_NotFound() {
         // given
         val uri = "/v1/playlists-error"
-        val playlistForm = PlaylistForm("playlist", member)
+        val playlistForm = PlaylistForm("playlist")
 
         // when, then
         performPostWithId(uri, playlistForm, "uid", USER_ID, MockMvcResultMatchers.status().isNotFound)
@@ -84,7 +84,7 @@ class PlaylistControllerTest(
     fun testPostPlaylist_ServerError() {
         // given
         val uri = "/v1/playlists"
-        val playlistForm = PlaylistForm("", member)
+        val playlistForm = PlaylistForm("")
 
         // when
         val mvcResult = performPostWithId(uri, playlistForm, "uid", USER_ID, MockMvcResultMatchers.status().isBadRequest)
@@ -99,7 +99,7 @@ class PlaylistControllerTest(
     fun testPatchPlaylist_Success() {
         // given
         val uri = "/v1/playlists/1"
-        val playlistForm = PlaylistForm("edited playlist", member)
+        val playlistForm = PlaylistForm("edited playlist")
 
         // when
         performPatch(uri, playlistForm, MockMvcResultMatchers.status().isOk)
@@ -114,7 +114,7 @@ class PlaylistControllerTest(
         // given
         val uri = "/v1/playlists-error/1"
 
-        val playlistForm = PlaylistForm("edited playlist", member)
+        val playlistForm = PlaylistForm("edited playlist")
 
         // when
         performPatch(uri, playlistForm, MockMvcResultMatchers.status().isNotFound)
@@ -126,7 +126,7 @@ class PlaylistControllerTest(
     fun testPatchPlaylist_ServerError() {
         // given
         val uri = "/v1/playlists/5" // 초기 데이터에 5번 없음
-        val playlistForm = PlaylistForm("edited playlist", member)
+        val playlistForm = PlaylistForm("edited playlist")
 
         `when`(playlistService.updatePlaylist(any(), any()))
                 .thenThrow(MmlBadRequestException(MESSAGE_NOT_EXIST_PLAYLIST))

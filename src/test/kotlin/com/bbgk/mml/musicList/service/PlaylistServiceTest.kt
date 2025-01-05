@@ -85,8 +85,7 @@ class PlaylistServiceTest: BaseServiceTest() {
     @DisplayName("재생목록 정보를 저장합니다.")
     fun testSavePlaylist() {
         // given
-        val playlistForm = PlaylistForm("title", member)
-        val playlist = playlistForm.toEntity(member)
+        val playlistForm = PlaylistForm("title")
         val argumentCaptor = argumentCaptor<Playlist>()
 
         doNothing().`when`(musicListRepository).savePlaylist(any())
@@ -99,14 +98,14 @@ class PlaylistServiceTest: BaseServiceTest() {
 
         // 캡처한 객체 검증
         val savedPlaylist = argumentCaptor.allValues[0]
-        assertThat(savedPlaylist.name).isEqualTo(playlist.name)
+        assertThat(savedPlaylist.name).isEqualTo(playlistForm.name)
     }
 
     @Test
     @DisplayName("재생목록 정보를 수정합니다.")
     fun testUpdatePlaylist() {
         // given
-        val playlistForm = PlaylistForm("updatedName", member)
+        val playlistForm = PlaylistForm("updatedName")
         val existPlaylist = Playlist("name", member)
 
         `when`(musicListRepository.findPlayListById(any()))
@@ -123,7 +122,7 @@ class PlaylistServiceTest: BaseServiceTest() {
     @DisplayName("재생목록 정보를 수정할 때 name이 비어있을 경우 기존의 값을 유지합니다.")
     fun testDoNotUpdatePlaylist() {
         // given
-        val playlistForm = PlaylistForm("", member)
+        val playlistForm = PlaylistForm("")
         val existPlaylist = Playlist("name", member)
 
         `when`(musicListRepository.findPlayListById(any()))
@@ -140,7 +139,7 @@ class PlaylistServiceTest: BaseServiceTest() {
     @DisplayName("존재하지 않는 재생목록을 수정하려고 할 때 예외가 발생합니다.")
     fun testUpdateNotExistPlaylist() {
         // given
-        val playlistForm = PlaylistForm("updatedName", member)
+        val playlistForm = PlaylistForm("updatedName")
 
         `when`(musicListRepository.findPlayListById(any()))
                 .thenThrow(MmlBadRequestException(MESSAGE_NOT_EXIST_PLAYLIST))

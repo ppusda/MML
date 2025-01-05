@@ -58,7 +58,7 @@ class PlaylistMusicControllerTest(
     fun testPostPlaylistMusic_Success() {
         // given
         val uri = "/v1/playlists/1/musics"
-        val playlistForm = PlaylistForm("playlist", member)
+        val playlistForm = PlaylistForm("playlist")
 
         // when
         performPostWithId(uri, playlistForm, "musicId", MUSIC_ID, MockMvcResultMatchers.status().isOk)
@@ -72,7 +72,7 @@ class PlaylistMusicControllerTest(
     fun testPostPlaylist_NotFound() {
         // given
         val uri = "/v1/playlists/1/musics-error"
-        val playlistForm = PlaylistForm("playlist", member)
+        val playlistForm = PlaylistForm("playlist")
 
         // when, then
         performPostWithId(uri, playlistForm, "musicId", MUSIC_ID, MockMvcResultMatchers.status().isNotFound)
@@ -83,7 +83,7 @@ class PlaylistMusicControllerTest(
     fun testPostPlaylist_ServerError() {
         // given
         val uri = "/v1/playlists/1/musics"
-        val playlistForm = PlaylistForm("playlist", member)
+        val playlistForm = PlaylistForm("playlist")
 
         `when`(playlistMusicService.addMusicInPlaylist(any(), any()))
                 .thenThrow(MmlBadRequestException(MESSAGE_ALREADY_EXIST_PLAYLIST_MUSIC))

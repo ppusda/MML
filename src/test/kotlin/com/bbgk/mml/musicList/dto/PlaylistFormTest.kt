@@ -10,10 +10,9 @@ class PlaylistFormTest {
     fun `PlaylistForm 테스트`() {
         // given
         val member = Member(email = "email", password = "password")
-        val playlistForm = PlaylistForm(name = "name", owner = member)
+        val playlistForm = PlaylistForm(name = "name")
 
         // when, then
         assertEquals("name", playlistForm.name)
-        assertEquals(member, playlistForm.owner)
     }
 }
