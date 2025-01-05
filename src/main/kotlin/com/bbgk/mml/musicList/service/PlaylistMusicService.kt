@@ -1,5 +1,7 @@
 package com.bbgk.mml.musicList.service
 
+import com.bbgk.mml.domain.entity.Music
+import com.bbgk.mml.domain.entity.Playlist
 import com.bbgk.mml.domain.entity.PlaylistMusic
 import com.bbgk.mml.domain.exception.MmlBadRequestException
 import com.bbgk.mml.musicList.repository.MusicListRepository
@@ -28,18 +30,19 @@ class PlaylistMusicService(
         val playlist = musicListRepository.findPlayListById(playlistId)
         val music = musicListRepository.findMusicById(musicId)
 
-        musicListRepository.findByPlaylistIdAndMusicId(
-                playlistId = playlistId,
-                musicId = musicId,
-                message = "이미 재생목록 내 존재하는 음악입니다."
-        ) // 중복 체크
+        validatePlaylistMusic(playlist, music)
 
-        val playlistMusic = mutableListOf<PlaylistMusic>(
+        val playlistMusic = mutableListOf (
             PlaylistMusic(playlist, music)
         )
 
         playlist.addMusics(playlistMusic)
-        // playlistMusicRepository.save(playlistMusic[0]), 영속성 전이로 스킵
+    }
+
+    private fun validatePlaylistMusic(playlist: Playlist, music: Music) {
+        if (playlist.playlistMusics.map { it.music }.equals(music)) {
+            throw MmlBadRequestException("이미 재생목록 내 존재하는 음악입니다.")
+        }
     }
 
     /**
@@ -53,8 +56,7 @@ class PlaylistMusicService(
     fun deleteMusicInPlaylist(playlistId: Long, musicId: Long) {
         val playlistMusic = musicListRepository.findByPlaylistIdAndMusicId(
                 playlistId = playlistId,
-                musicId = musicId,
-                message = "존재하지 않는 플레이리스트 내 음악입니다."
+                musicId = musicId
         )
 
         musicListRepository.deletePlaylistMusicById(playlistMusic.id!!)

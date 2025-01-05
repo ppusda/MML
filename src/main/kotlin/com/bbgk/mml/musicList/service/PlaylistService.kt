@@ -3,6 +3,8 @@ package com.bbgk.mml.musicList.service
 import com.bbgk.mml.domain.entity.Member
 import com.bbgk.mml.domain.exception.MmlBadRequestException
 import com.bbgk.mml.domain.dto.PlaylistDTO
+import com.bbgk.mml.domain.entity.Playlist
+import com.bbgk.mml.musicList.dto.PlaylistCreateResponse
 import com.bbgk.mml.musicList.dto.PlaylistForm
 import com.bbgk.mml.musicList.repository.MusicListRepository
 import org.springframework.data.domain.Page
@@ -41,9 +43,9 @@ class PlaylistService(
      * @param form 저장할 재생목록 정보
      */
     @Transactional
-    fun savePlaylist(owner: Member, form: PlaylistForm) {
-        val playlist = form.toEntity(owner)
-        musicListRepository.savePlaylist(playlist)
+    fun savePlaylist(owner: Member, form: PlaylistForm): PlaylistCreateResponse {
+        val playlist = Playlist(form.name, owner)
+        return PlaylistCreateResponse.of(musicListRepository.savePlaylist(playlist))
     }
 
     /**

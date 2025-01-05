@@ -6,8 +6,8 @@ import com.bbgk.mml.member.dto.MemberLoginResponse
 import com.bbgk.mml.member.service.MemberService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
-import jakarta.validation.Valid
 import org.springframework.data.domain.Page
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
 /**
@@ -42,7 +42,7 @@ class MemberController(
      */
     @PostMapping
     @Operation(summary = "회원 로그인", description = "재생목록 생성 시 필요한 회원 정보를 반환합니다.")
-    fun loginMember(@RequestBody @Valid form: MemberForm): MemberLoginResponse {
+    fun loginMember(@RequestBody @Validated form: MemberForm): MemberLoginResponse {
         return memberService.loginMember(form)
     }
 }

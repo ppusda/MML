@@ -89,8 +89,8 @@ class MusicListRepository( // 퍼사드 패턴 적용, 간단한 DB 기능 분�
      * @param playlist 저장할 재생목록
      */
     @Transactional
-    fun savePlaylist(playlist: Playlist) {
-        playlistRepository.save(playlist)
+    fun savePlaylist(playlist: Playlist): Playlist {
+        return playlistRepository.save(playlist)
     }
 
     /**
@@ -136,9 +136,9 @@ class MusicListRepository( // 퍼사드 패턴 적용, 간단한 DB 기능 분�
      * @throws MmlBadRequestException 재생목록 내 존재하지 않는 음악을 검색했을 때 발생
      */
     @Transactional(readOnly = true)
-    fun findByPlaylistIdAndMusicId(playlistId: Long, musicId: Long, message: String): PlaylistMusic {
+    fun findByPlaylistIdAndMusicId(playlistId: Long, musicId: Long): PlaylistMusic {
         return playlistMusicRepository.findByPlaylistIdAndMusicId(playlistId, musicId).orElseThrow {
-            throw MmlBadRequestException(message)
+            throw MmlBadRequestException("존재하지 않는 플레이리스트 내 음악입니다.")
         }
     }
 

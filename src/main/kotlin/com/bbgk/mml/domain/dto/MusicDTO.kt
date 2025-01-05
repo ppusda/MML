@@ -3,11 +3,13 @@ package com.bbgk.mml.domain.dto
 import com.bbgk.mml.domain.entity.Music
 
 data class MusicDTO(
+        val id: Long?,
         val title: String,
         val artist: String,
         val url: String
 ) {
     constructor(music: Music) : this (
+            id = music.id,
             title = music.title,
             artist = music.artist,
             url = music.url

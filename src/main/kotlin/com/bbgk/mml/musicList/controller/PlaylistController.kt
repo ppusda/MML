@@ -1,9 +1,9 @@
 package com.bbgk.mml.musicList.controller
 
 import com.bbgk.mml.domain.data.ApiResponse
+import com.bbgk.mml.domain.dto.PlaylistDTO
 import com.bbgk.mml.domain.exception.MmlBadRequestException
 import com.bbgk.mml.member.service.MemberService
-import com.bbgk.mml.domain.dto.PlaylistDTO
 import com.bbgk.mml.musicList.dto.PlaylistForm
 import com.bbgk.mml.musicList.service.PlaylistService
 import io.swagger.v3.oas.annotations.Operation
@@ -50,8 +50,7 @@ class PlaylistController(
     @Operation(summary = "재생목록 생성", description = "입력받은 재생목록 정보로 재생목록을 생성합니다.")
     fun createPlaylist(@RequestBody @Validated playlistForm: PlaylistForm, @RequestParam uid: Long): ResponseEntity<Any> {
         val owner = memberService.findMemberById(uid)
-        playlistService.savePlaylist(owner, playlistForm)
-        return ApiResponse.successCreate()
+        return ApiResponse.successCreate(playlistService.savePlaylist(owner, playlistForm))
     }
 
     /**
