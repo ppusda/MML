@@ -9,8 +9,124 @@
         <div th:replace="~{fragments/fragment-header :: header}"></div>
 
         <!-- Section-->
-        <div th:replace="~{fragments/fragment-section :: section(playlists = ${playlists})}"></div>
+        <section class="py-5" th:fragment="section(playlists)">
+            <div class="container px-4 px-lg-5 mt-5">
+                <div id="playlist-container" class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                    <div class="col mb-5" th:each="playlist: ${playlists}">
+                        <div th:replace="~{fragments/fragment-card :: card(${playlist})}"></div>
+                    </div>
+                </div>
+                <!-- Loading Spinner -->
+                <div id="loading-spinner" class="text-center d-none">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <!-- Intersection Observer Target -->
+                <div id="observer-target"></div>
+            </div>
 
+            <script th:inline="javascript">
+                let currentPage = 0;
+                let isLoading = false;
+                let hasMore = true;
+
+                // Intersection Observer 설정
+                const options = {
+                    root: null,
+                    rootMargin: '20px',
+                    threshold: 1.0
+                };
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting && !isLoading && hasMore) {
+                            loadMorePlaylists();
+                        }
+                    });
+                }, options);
+
+                // observer target 요소 관찰 시작
+                const target = document.getElementById('observer-target');
+                observer.observe(target);
+
+                function loadMorePlaylists() {
+                    if (isLoading) return;
+
+                    isLoading = true;
+                    currentPage++;
+
+                    const spinner = document.getElementById('loading-spinner');
+                    spinner.classList.remove('d-none');
+
+                    fetch(`/v1/playlists?page=${currentPage}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            const container = document.getElementById('playlist-container');
+
+                            // 현재 페이지의 데이터 처리
+                            if (data.content && data.content.length > 0) {
+                                data.content.forEach(playlist => {
+                                    const cardHtml = createPlaylistCard(playlist);
+
+                                    const div = document.createElement('div');
+                                    div.className = 'col mb-5';
+                                    div.innerHTML = cardHtml;
+                                    container.appendChild(div);
+                                });
+                            }
+
+                            // 마지막 페이지 체크
+                            if (data.last || data.content.length === 0) {
+                                hasMore = false;
+                                observer.unobserve(target);
+                            }
+
+                            isLoading = false;
+                            spinner.classList.add('d-none');
+                        })
+                        .catch(error => {
+                            isLoading = false;
+                            spinner.classList.add('d-none');
+                        });
+                }
+
+                // createPlaylistCard 함수도 수정
+                function createPlaylistCard(playlist) {
+                    return `
+    <div class="card h-100">
+        <div class="card">
+            <ul class="list-group list-group-flush">
+                ${playlist.musics ? playlist.musics.map(music => `
+                    <li class="d-flex list-group-item justify-content-between align-items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-music-note-beamed" viewBox="0 0 16 16">
+                            <path d="M6 13c0 1.105-1.12 2-2.5 2S1 14.105 1 13s1.12-2 2.5-2 2.5.896 2.5 2m9-2c0 1.105-1.12 2-2.5 2s-2.5-.895-2.5-2 1.12-2 2.5-2 2.5.895 2.5 2"/>
+                            <path fill-rule="evenodd" d="M14 11V2h1v9zM6 3v10H5V3z"/>
+                            <path d="M5 2.905a1 1 0 0 1 .9-.995l8-.8a1 1 0 0 1 1.1.995V3L5 4z"/>
+                        </svg>
+                        <span>${music.artist} - ${music.title}</span>
+                        <a href="${music.url}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
+                                <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393"/>
+                            </svg>
+                        </a>
+                    </li>
+                `).join('') : ''}
+            </ul>
+        </div>
+        <div class="card-body py-4 px-2 d-flex flex-column justify-content-center">
+            <div class="text-center">
+                <h5 class="fw-bolder">${playlist.name || ''}</h5>
+                <a class="text-black-50">${playlist.ownerEmail || ''}</a>
+            </div>
+        </div>
+        <div class="card-footer p-2 pt-0 border-top-0 bg-transparent">
+            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">링크로 복사하기</a></div>
+        </div>
+    </div>`;
+                }
+            </script>
+        </section>
         <!-- Footer-->
         <div th:replace="~{fragments/fragment-footer :: footer}"></div>
     </body>
