@@ -30,7 +30,7 @@ class PlaylistService(
      */
     @Transactional(readOnly = true)
     fun getPlaylists(page: Int): Page<PlaylistDTO> {
-        val pageable = PageRequest.of(page, 5)
+        val pageable = PageRequest.of(page, 4)
         val playlists = musicListRepository.getPlaylistsForPage(pageable)
 
         return playlists.map { PlaylistDTO(it) }
