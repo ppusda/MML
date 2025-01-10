@@ -1,104 +1,151 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="kr">
-    <div th:replace="~{fragments/fragment-head :: head}"></div>
-    <body>
-        <!-- Navigation-->
-        <div th:replace="~{fragments/fragment-nav :: nav}"></div>
+<div th:replace="~{fragments/fragment-head :: head}"></div>
+<body>
+<!-- Navigation-->
+<div th:replace="~{fragments/fragment-nav :: nav}"></div>
 
-        <!-- Header-->
-        <div th:replace="~{fragments/fragment-header :: header}"></div>
+<!-- Header-->
+<div th:replace="~{fragments/fragment-header :: header}"></div>
 
-        <!-- Section-->
-        <section class="py-5" th:fragment="section(playlists)">
-            <div class="container px-4 px-lg-5 mt-5">
-                <div id="playlist-container" class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                    <div class="col mb-5" th:each="playlist: ${playlists}">
-                        <div th:replace="~{fragments/fragment-card :: card(${playlist})}"></div>
-                    </div>
-                </div>
-                <!-- Loading Spinner -->
-                <div id="loading-spinner" class="text-center d-none">
-                    <div class="spinner-border" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                </div>
-                <!-- Intersection Observer Target -->
-                <div id="observer-target"></div>
+<!-- Section-->
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div id="playlist-container" class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+        </div>
+        <!-- Loading Spinner -->
+        <div id="loading-spinner" class="text-center d-none">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
             </div>
+        </div>
+        <!-- Intersection Observer Target -->
+        <div id="observer-target" style="height: 1px;"></div>
+    </div>
 
-            <script th:inline="javascript">
-                let currentPage = 0;
-                let isLoading = false;
-                let hasMore = true;
+    <script th:inline="javascript">
+        let currentPage = -1;
+        let isLoading = false;
+        let hasMore = true;
 
-                // Intersection Observer 설정
-                const options = {
-                    root: null,
-                    rootMargin: '20px',
-                    threshold: 1.0
-                };
+        const options = {
+            root: null,
+            rootMargin: '0px',  // rootMargin을 0으로 설정
+            threshold: 0
+        };
 
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting && !isLoading && hasMore) {
-                            loadMorePlaylists();
-                        }
-                    });
-                }, options);
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Page loaded');
+            // 첫 페이지만 로드
+            loadMorePlaylists();
+        });
 
-                // observer target 요소 관찰 시작
-                const target = document.getElementById('observer-target');
-                observer.observe(target);
+        function moveObserverTarget() {
+            const target = document.getElementById('observer-target');
+            const container = document.getElementById('playlist-container');
+            if (target && container) {
+                // target을 container 끝에서 충분히 떨어지게 배치
+                target.style.marginTop = '30px';  // 여백 추가
+                container.parentNode.insertBefore(target, container.nextSibling);
+                console.log('Moved observer target');
+            }
+        }
 
-                function loadMorePlaylists() {
-                    if (isLoading) return;
+        function setupObserver() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    console.log('Intersection detected:', entry.isIntersecting, 'ratio:', entry.intersectionRatio);
+                    // 이전 로드가 완료되고, 더 로드할 데이터가 있을 때만 다음 페이지 로드
+                    if (entry.isIntersecting && !isLoading && hasMore && currentPage > -1) {
+                        console.log('Loading next page...');
+                        loadMorePlaylists();
+                    }
+                });
+            }, options);
 
-                    isLoading = true;
-                    currentPage++;
+            let target = document.getElementById('observer-target');
+            if (target) {
+                target.remove();
+            }
 
-                    const spinner = document.getElementById('loading-spinner');
-                    spinner.classList.remove('d-none');
+            target = document.createElement('div');
+            target.id = 'observer-target';
+            target.style.height = '20px';
+            target.style.width = '100%';
+            target.style.marginTop = '50px';  // 여백 추가
 
-                    fetch(`/v1/playlists?page=${currentPage}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            const container = document.getElementById('playlist-container');
+            const container = document.getElementById('playlist-container');
+            container.parentNode.insertBefore(target, container.nextSibling);
 
-                            // 현재 페이지의 데이터 처리
-                            if (data.content && data.content.length > 0) {
-                                data.content.forEach(playlist => {
-                                    const cardHtml = createPlaylistCard(playlist);
+            console.log('Starting to observe target');
+            observer.observe(target);
+        }
 
-                                    const div = document.createElement('div');
-                                    div.className = 'col mb-5';
-                                    div.innerHTML = cardHtml;
-                                    container.appendChild(div);
-                                });
-                            }
+        function loadMorePlaylists() {
+            if (isLoading || !hasMore) {
+                console.log('Skip loading - isLoading:', isLoading, 'hasMore:', hasMore);
+                return;
+            }
 
-                            // 마지막 페이지 체크
-                            if (data.last || data.content.length === 0) {
-                                hasMore = false;
-                                observer.unobserve(target);
-                            }
+            isLoading = true;
+            currentPage++;
+            console.log('Loading page:', currentPage);
 
-                            isLoading = false;
-                            spinner.classList.add('d-none');
-                        })
-                        .catch(error => {
-                            isLoading = false;
-                            spinner.classList.add('d-none');
+            const spinner = document.getElementById('loading-spinner');
+            spinner.classList.remove('d-none');
+
+            fetch(`/v1/playlists?page=${currentPage}`)
+                .then(response => response.json())
+                .then(data => {
+                    const container = document.getElementById('playlist-container');
+                    console.log('Received data:', data);
+
+                    if (data.content && data.content.length > 0) {
+                        data.content.forEach(playlist => {
+                            const cardHtml = createPlaylistCard(playlist);
+                            const div = document.createElement('div');
+                            div.className = 'col mb-5';
+                            div.innerHTML = cardHtml;
+                            container.appendChild(div);
                         });
-                }
+                        console.log('Added items:', data.content.length);
 
-                // createPlaylistCard 함수도 수정
-                function createPlaylistCard(playlist) {
-                    return `
+                        // 첫 페이지 로드 후 observer 설정
+                        if (currentPage === 0) {
+                            setupObserver();
+                        } else {
+                            moveObserverTarget();
+                        }
+                    }
+
+                    if (data.last || data.content.length === 0) {
+                        hasMore = false;
+                        console.log('No more pages to load');
+                    }
+
+                    isLoading = false;
+                    spinner.classList.add('d-none');
+                })
+                .catch(error => {
+                    console.error('Error loading data:', error);
+                    isLoading = false;
+                    spinner.classList.add('d-none');
+                });
+        }
+
+        // createPlaylistCard 함수는 이전과 동일
+        function createPlaylistCard(playlist) {
+            const cardId = `playlist-${playlist.id || Math.random().toString(36).substr(2, 9)}`;
+
+            return `
     <div class="card h-100">
-        <div class="card">
+        <div class="card" id="${cardId}">
             <ul class="list-group list-group-flush">
                 ${playlist.musics ? playlist.musics.map(music => `
-                    <li class="d-flex list-group-item justify-content-between align-items-center">
+                    <li class="d-flex list-group-item justify-content-between align-items-center"
+                        data-artist="${music.artist}"
+                        data-title="${music.title}"
+                        data-url="${music.url}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-music-note-beamed" viewBox="0 0 16 16">
                             <path d="M6 13c0 1.105-1.12 2-2.5 2S1 14.105 1 13s1.12-2 2.5-2 2.5.896 2.5 2m9-2c0 1.105-1.12 2-2.5 2s-2.5-.895-2.5-2 1.12-2 2.5-2 2.5.895 2.5 2"/>
                             <path fill-rule="evenodd" d="M14 11V2h1v9zM6 3v10H5V3z"/>
@@ -121,13 +168,71 @@
             </div>
         </div>
         <div class="card-footer p-2 pt-0 border-top-0 bg-transparent">
-            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">링크로 복사하기</a></div>
+            <div class="text-center d-flex gap-2 justify-content-center">
+                <button class="btn btn-outline-dark mt-auto copy-md-btn"
+                        onclick="copyPlaylistAsMarkdown('${cardId}', '${playlist.name || '플레이리스트'}')">
+                    클릭하여 복사하기
+                </button>
+            </div>
         </div>
     </div>`;
+        }
+
+        // copyPlaylistAsMarkdown 함수는 이전과 동일
+        function copyPlaylistAsMarkdown(cardId, playlistName) {
+            try {
+                const cardElement = document.getElementById(cardId);
+                if (!cardElement) {
+                    throw new Error('카드 엘리먼트를 찾을 수 없습니다.');
                 }
-            </script>
-        </section>
-        <!-- Footer-->
-        <div th:replace="~{fragments/fragment-footer :: footer}"></div>
-    </body>
+
+                const musicElements = cardElement.querySelectorAll('.list-group-item');
+                if (!musicElements.length) {
+                    throw new Error('음악 목록을 찾을 수 없습니다.');
+                }
+
+                let markdown = `## ${playlistName} 🎵\n\n`;
+
+                musicElements.forEach(musicElement => {
+                    try {
+                        const artist = musicElement.dataset.artist;
+                        const title = musicElement.dataset.title;
+                        const url = musicElement.dataset.url;
+
+                        if (artist && title && url) {
+                            markdown += `- 🎵 [${artist} - ${title}](${url}) ▶️\n`;
+                        }
+                    } catch (err) {
+                        console.error('음악 정보 처리 중 오류:', err);
+                    }
+                });
+
+                navigator.clipboard.writeText(markdown)
+                    .then(() => {
+                        const button = cardElement.querySelector('.copy-md-btn');
+                        if (button) {
+                            const originalText = 'Markdown';
+                            button.textContent = '복사 완료!';
+                            button.disabled = true;
+
+                            setTimeout(() => {
+                                button.textContent = originalText;
+                                button.disabled = false;
+                            }, 3000);
+                        }
+                    })
+                    .catch(err => {
+                        console.error('클립보드 복사 실패:', err);
+                        alert('클립보드 복사에 실패했습니다.');
+                    });
+            } catch (err) {
+                console.error('Markdown 변환 중 오류:', err);
+                alert('Markdown 변환 중 오류가 발생했습니다.');
+            }
+        }
+    </script>
+</section>
+<!-- Footer-->
+<div th:replace="~{fragments/fragment-footer :: footer}"></div>
+</body>
 </html>
