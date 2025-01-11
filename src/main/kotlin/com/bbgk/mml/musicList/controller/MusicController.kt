@@ -56,8 +56,7 @@ class MusicController(
     @PostMapping("/v1/musics")
     @Operation(summary = "음악 등록", description = "입력받은 음악 정보를 등록합니다.")
     fun saveMusic(@RequestBody @Validated musicForm: MusicForm): ResponseEntity<Any> {
-        musicService.saveMusic(musicForm)
-        return ApiResponse.successCreate()
+        return ApiResponse.successCreate(musicService.saveMusic(musicForm))
     }
 
     /**

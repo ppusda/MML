@@ -49,9 +49,9 @@ class MusicService(
      * @param form 저장할 음악 정보
      */
     @Transactional
-    fun saveMusic(form: MusicForm) {
+    fun saveMusic(form: MusicForm): MusicDTO {
         val music = form.toEntity()
-        musicListRepository.saveMusic(music)
+        return MusicDTO(musicListRepository.saveMusic(music))
     }
 
     /**

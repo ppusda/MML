@@ -44,8 +44,8 @@ class MusicListRepository( // 퍼사드 패턴 적용, 간단한 DB 기능 분�
      * @param music 저장할 음악
      */
     @Transactional
-    fun saveMusic(music: Music) {
-        musicRepository.save(music)
+    fun saveMusic(music: Music): Music {
+        return musicRepository.save(music)
     }
 
     /**
