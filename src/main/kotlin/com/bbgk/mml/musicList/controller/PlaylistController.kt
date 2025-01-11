@@ -43,7 +43,7 @@ class PlaylistController(
      * 입력받은 재생목록 정보로 재생목록을 생성합니다.
      *
      * @param playlistForm 재생목록 정보 폼
-     * @return 200: 데이터가 저장되었습니다.
+     * @return 저장된 재생목록 정보
      * @throws MmlBadRequestException 존재하지 않는 사용자로 접근했을 때 발생
      */
     @PostMapping

@@ -51,7 +51,7 @@ class MusicController(
      * 입력받은 음악 정보를 등록합니다.
      *
      * @param musicForm 음악 정보 폼
-     * @return 200: 데이터가 저장되었습니다.
+     * @return 저장된 음악 정보
      */
     @PostMapping("/v1/musics")
     @Operation(summary = "음악 등록", description = "입력받은 음악 정보를 등록합니다.")
