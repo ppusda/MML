@@ -189,7 +189,7 @@
                     }
 
                     try {
-                        // 1. 플레이리스트 생성
+                        // 플레이리스트 생성
                         const playlistResponse = await fetch(`/v1/playlists?uid=${uid}`, {
                             method: 'POST',
                             headers: {
@@ -205,13 +205,13 @@
                         const playlistData = await playlistResponse.json();
                         const playlistId = playlistData.id;
 
-                        // 2. 플레이리스트에 음악 추가
+                        // 플레이리스트에 음악 추가
                         for (const music of musicList) {
                             await addMusicToPlaylist(playlistId, music.id);
                         }
 
                         alert('재생목록과 음악이 성공적으로 추가되었습니다.');
-                        window.history.back();
+                        window.location.href = "/";
                     } catch (error) {
                         console.error(error);
                         alert('재생목록 생성 또는 음악 추가 중 오류가 발생했습니다.');
