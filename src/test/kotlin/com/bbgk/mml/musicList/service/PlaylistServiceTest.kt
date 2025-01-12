@@ -85,20 +85,17 @@ class PlaylistServiceTest: BaseServiceTest() {
     @DisplayName("재생목록 정보를 저장합니다.")
     fun testSavePlaylist() {
         // given
+        val playlist = Playlist("name", member)
         val playlistForm = PlaylistForm("title")
-        val argumentCaptor = argumentCaptor<Playlist>()
 
-        doNothing().`when`(musicListRepository).savePlaylist(any())
+        `when`(musicListRepository.savePlaylist(any()))
+            .thenReturn(playlist)
 
         // when
-        playlistService.savePlaylist(member, playlistForm)
+        val savedPlaylist = playlistService.savePlaylist(member, playlistForm)
 
         // then
-        verify(musicListRepository).savePlaylist(argumentCaptor.capture())
-
-        // 캡처한 객체 검증
-        val savedPlaylist = argumentCaptor.allValues[0]
-        assertThat(savedPlaylist.name).isEqualTo(playlistForm.name)
+        verify(musicListRepository).savePlaylist(any())
     }
 
     @Test

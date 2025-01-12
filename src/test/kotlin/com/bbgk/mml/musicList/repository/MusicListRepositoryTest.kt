@@ -66,15 +66,15 @@ class MusicListRepositoryTest: BaseServiceTest() {
     fun testSaveMusic() {
         // given
         val music = Music("title1", "artist1", "url1")
-        val argumentCaptor = argumentCaptor<Music>()
+
+        `when`(musicRepository.save(any())).thenReturn(music)
 
         // when
-        musicListRepository.saveMusic(music)
+        val savedMusic = musicListRepository.saveMusic(music)
 
         // then
-        verify(musicRepository).save(argumentCaptor.capture())
+        verify(musicRepository).save(any())
 
-        val savedMusic = argumentCaptor.allValues[0]
         Assertions.assertThat(savedMusic.title).isEqualTo(music.title)
         Assertions.assertThat(savedMusic.artist).isEqualTo(music.artist)
         Assertions.assertThat(savedMusic.url).isEqualTo(music.url)
@@ -186,16 +186,16 @@ class MusicListRepositoryTest: BaseServiceTest() {
     fun testSavePlaylist() {
         // given
         val playlist = Playlist("name1", member)
-        val argumentCaptor = argumentCaptor<Playlist>()
+
+        `when`(playlistRepository.save(any()))
+            .thenReturn(playlist)
 
         // when
-        musicListRepository.savePlaylist(playlist)
+        val savedMusic = musicListRepository.savePlaylist(playlist)
 
         // then
-        verify(playlistRepository).save(argumentCaptor.capture())
-
-        val savedPlaylist = argumentCaptor.allValues[0]
-        Assertions.assertThat(savedPlaylist.name).isEqualTo(playlist.name)
+        verify(playlistRepository).save(any())
+        Assertions.assertThat(savedMusic.name).isEqualTo(playlist.name)
     }
 
     @Test

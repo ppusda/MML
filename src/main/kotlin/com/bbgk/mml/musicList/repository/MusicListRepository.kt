@@ -138,7 +138,7 @@ class MusicListRepository( // 퍼사드 패턴 적용, 간단한 DB 기능 분�
     @Transactional(readOnly = true)
     fun findByPlaylistIdAndMusicId(playlistId: Long, musicId: Long): PlaylistMusic {
         return playlistMusicRepository.findByPlaylistIdAndMusicId(playlistId, musicId).orElseThrow {
-            throw MmlBadRequestException("존재하지 않는 플레이리스트 내 음악입니다.")
+            throw MmlBadRequestException("존재하지 않는 재생목록 내 음악입니다.")
         }
     }
 

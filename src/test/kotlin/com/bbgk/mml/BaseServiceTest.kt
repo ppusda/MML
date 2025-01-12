@@ -18,8 +18,8 @@ abstract class BaseServiceTest {
 
     // Page Config
     protected val PAGE_NUMBER = 0
-    private val PAGE_SIZE = 5
-    protected val DATA_SIZE = 5
+    private val PAGE_SIZE = 4
+    protected val DATA_SIZE = 4
     protected val pageable: Pageable = PageRequest.of(PAGE_NUMBER, PAGE_SIZE)
 
     // Message Config

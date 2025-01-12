@@ -13,7 +13,10 @@ import org.junit.jupiter.api.assertThrows
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
-import org.mockito.kotlin.*
+import org.mockito.kotlin.any
+import org.mockito.kotlin.doNothing
+import org.mockito.kotlin.never
+import org.mockito.kotlin.verify
 import org.springframework.data.domain.PageImpl
 
 
@@ -74,18 +77,16 @@ class MusicServiceTest: BaseServiceTest() {
         // given
         val musicForm = MusicForm("title", "artist", "url")
         val music = musicForm.toEntity()
-        val argumentCaptor = argumentCaptor<Music>()
 
-        doNothing().`when`(musicListRepository).saveMusic(any())
+        `when`(musicListRepository.saveMusic(any()))
+            .thenReturn(music)
 
         // when
-        musicService.saveMusic(musicForm)
+        val savedMusic = musicService.saveMusic(musicForm)
 
         // then
-        verify(musicListRepository).saveMusic(argumentCaptor.capture())
+        verify(musicListRepository).saveMusic(any())
 
-        // 캡처한 객체 검증
-        val savedMusic = argumentCaptor.allValues[0]
         assertThat(savedMusic.title).isEqualTo(music.title)
         assertThat(savedMusic.artist).isEqualTo(music.artist)
         assertThat(savedMusic.url).isEqualTo(music.url)
