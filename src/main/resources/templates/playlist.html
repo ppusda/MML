@@ -158,8 +158,7 @@
                             throw new Error('음악 등록에 실패했습니다.');
                         }
 
-                        const newMusic = { title, artist }; // 등록 후 UI에 추가할 데이터
-                        musicList.push(newMusic);
+                        musicList.push(await response.json());
                         updateResultList();
                         alert(`${title} - ${artist}가 재생목록에 추가되었습니다.`);
                         document.getElementById('newMusicTitle').value = '';
