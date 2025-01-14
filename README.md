@@ -5,7 +5,25 @@
 
 ## 📝 기능 소개
 1. 자신만의 음악 플레이리스트를 생성하여 음악을 추가, 삭제 가능
-2. 회원 별로 음악 플레이리스트를 저장하여 공유 가능
+
+<table>
+  <tr>
+    <th><h3>메인 페이지</h3></th>
+    <th><h3>재생목록 추가 페이지</h3></th>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/6e25f848-287b-4901-bac4-f43b3421f76f"/></td>
+    <td><img src="https://github.com/user-attachments/assets/62f71394-35f7-406f-b3d1-d85a7de63331"/></td>
+  </tr>
+</table>
+
+2. 음악 플레이리스트를 저장하여 공유 가능
+```
+## 혁오 노래 모음 🎵
+
+- 🎵 [혁오 - Gang Gang Schiele](https://www.youtube.com/watch?v=Xjk3w7NcZAU) ▶️
+- 🎵 [혁오 - 멋진헛간 Remix](https://www.youtube.com/watch?v=3DpL4UcCdWk) ▶️
+```
 
 ## 🛠 기술 스택
 - Spring Boot 3.3.4 / Kotlin
@@ -23,7 +41,7 @@
 ### User
 <details>
   
-  <summary><code>GET /members</code> - 회원 조회</summary>
+  <summary><code>GET /v1/members</code> - 회원 조회</summary>
 
   **Request**
   ```json
@@ -48,10 +66,32 @@
 
 </details>
 
+<details>
+  
+  <summary><code>POST /v1/members</code> - 로그인</summary>
+
+  **Request**
+  ```json
+  {
+    "email": "string",
+    "password": "string"
+  }
+  ```
+
+  **Response**
+  ```json
+  {
+    "id": 1,
+    "email": "ppusda@naver.com"
+  }
+  ```
+
+</details>
+
 ### Music
 <details>
   
-  <summary><code>GET /musics</code> - 음악 조회</summary>
+  <summary><code>GET /v1/musics</code> - 음악 조회</summary>
 
   **Request**
   ```json
@@ -82,7 +122,36 @@
 
 <details>
   
-  <summary><code>POST /musics</code> - 음악 등록</summary>
+  <summary><code>GET /v2/musics</code> - 음악 검색</summary>
+
+  **Request** <br>
+  `/v2/musics?keyword="혁오"`
+
+  **Response**
+  ```json
+  {
+    "musicResponse" : [
+      {
+        "id" : 1,
+        "title" : "Gang Gang Schiele",
+        "artist" : "혁오",
+        "url" : "https://www.youtube.com/watch?v=WB4547-tSJA",
+      },
+      {
+        "id" : 2,
+        "title" : "멋진헛간 Remix",
+        "artist" : "혁오",
+        "url" : "https://www.youtube.com/watch?v=3DpL4UcCdWk"
+      }
+    ]
+  }
+  ```
+
+</details>
+
+<details>
+  
+  <summary><code>POST /v1/musics</code> - 음악 등록</summary>
 
   **Request**
   ```json
@@ -95,14 +164,19 @@
 
   **Response**
   ```json
-  {}
+  {
+    "id" : 1,
+    "title" : "Gang Gang Schiele",
+    "artist" : "혁오",
+    "url" : "https://www.youtube.com/watch?v=WB4547-tSJA",
+  }
   ```
 
 </details>
 
 <details>
   
-  <summary><code>PATCH /musics/{n}</code> - n번 음악 정보 수정</summary>
+  <summary><code>PUT /v1/musics/{n}</code> - n번 음악 정보 수정</summary>
 
   **Request**
   ```json
@@ -122,7 +196,7 @@
 
 <details>
   
-  <summary><code>DELETE /musics/{n}</code> - n번 음악 삭제</summary>
+  <summary><code>DELETE /v1/musics/{n}</code> - n번 음악 삭제</summary>
 
   **Request**
   ```json
@@ -140,7 +214,7 @@
 
 <details>
   
-  <summary><code>GET /playlists</code> - 플레이리스트 조회</summary>
+  <summary><code>GET /v1/playlists</code> - 플레이리스트 조회</summary>
 
   **Request**
   ```json
@@ -169,7 +243,7 @@
 
 <details>
   
-  <summary><code>POST /playlists</code> - 플레이리스트 생성</summary>
+  <summary><code>POST /v1/playlists</code> - 플레이리스트 생성</summary>
 
   **Request**
   ```json
@@ -180,14 +254,16 @@
 
   **Response**
   ```json
-  {}
+  {
+    "id" : 1
+  }
   ```
 
 </details>
 
 <details>
   
-  <summary><code>PATCH /playlists/{n}</code> - n번 플레이리스트 정보 수정</summary>
+  <summary><code>PATCH /v1/playlists/{n}</code> - n번 플레이리스트 정보 수정</summary>
 
   **Request**
   ```json
@@ -205,7 +281,7 @@
 
 <details>
   
-  <summary><code>DELETE /playlists/{n}</code> - n번 플레이리스트 삭제</summary>
+  <summary><code>DELETE /v1/playlists/{n}</code> - n번 플레이리스트 삭제</summary>
 
   **Request**
   ```json
@@ -223,7 +299,7 @@
 
 <details>
   
-  <summary><code>GET /playlists/{n}/musics</code> - n번 플레이리스트 조회</summary>
+  <summary><code>GET /v1/playlists/{n}/musics</code> - n번 플레이리스트 조회</summary>
 
   **Request**
   ```json
@@ -258,7 +334,7 @@
 
 <details>
   
-  <summary><code>POST /playlists/{n}/musics</code> - n번 플레이리스트에 음악 추가</summary>
+  <summary><code>POST /v1/playlists/{n}/musics</code> - n번 플레이리스트에 음악 추가</summary>
 
   **Request**
   ```json
@@ -274,7 +350,7 @@
 
 <details>
   
-  <summary><code>DELETE /playlists/{n}/musics</code> - n번 플레이리스트에 음악 삭제</summary>
+  <summary><code>DELETE /v1/playlists/{n}/musics</code> - n번 플레이리스트에 음악 삭제</summary>
 
   **Request**
   ```json
@@ -771,7 +847,7 @@
   - [x] [미션 3] REST API 설계하기(~10/8 화)
   - [x] [미션 4] 조회 REST API 만들기(~10/15 화)
   - [x] [미션 5] 삽입, 수정, 삭제 REST API 만들기(~10/21 월)
-  - [ ] [자체 미션] 이후 고도화 (진행 중)
+  - [x] [자체 미션] 이후 고도화 (~ 01/12 일) 
 
 </details>
 
@@ -780,7 +856,7 @@
   <summary>📑 고도화 계획</summary>
 
   코드 리뷰 => [코드 리뷰](https://github.com/ppusda/MML/pull/1)
-  코드 리뷰 해주신 내용을 고려하여 코드를 수정하고, 고도화를 진행해보려고 합니다.
+  코드 리뷰 해주신 내용을 고려하여 코드를 수정하고, 고도화를 진행해보았습니다.
   
   - [X] Restful 하도록 API 수정하기 (10/30 수)
   - [x] 읽기 좋은 코드로 수정하기 (주석, 메서드 네이밍 수정, 퍼사드 패턴 적용) (10/31 목 ~ 11/01 금)
@@ -791,6 +867,6 @@
 
   추가 기능 구현 계획
   - [x] 음악 검색 (Kotlin JDSL) (11/30 토)
-  - [ ] 재생목록 템플릿 제공
+  - [x] 재생목록 템플릿 제공 (01/12 일)
 
 </details>
