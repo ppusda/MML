@@ -2,6 +2,7 @@ package com.bbgk.mml.musicList.service
 
 import com.bbgk.mml.domain.exception.MmlBadRequestException
 import com.bbgk.mml.domain.dto.MusicDTO
+import com.bbgk.mml.domain.util.PageUtils.Companion.getDefaultPageable
 import com.bbgk.mml.musicList.dto.MusicForm
 import com.bbgk.mml.musicList.repository.MusicListRepository
 import org.springframework.data.domain.Page
@@ -27,8 +28,7 @@ class MusicService(
      */
     @Transactional(readOnly = true)
     fun getMusics(page: Int): Page<MusicDTO> {
-        val pageable = PageRequest.of(page, 5);
-        val musics = musicListRepository.getMusicsForPage(pageable)
+        val musics = musicListRepository.getMusicsForPage(getDefaultPageable(page))
         return musics.map { MusicDTO(it) }
     }
 

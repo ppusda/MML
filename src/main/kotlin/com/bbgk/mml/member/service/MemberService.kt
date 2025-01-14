@@ -4,6 +4,7 @@ import com.bbgk.mml.domain.dto.MemberDTO
 import com.bbgk.mml.domain.entity.Member
 import com.bbgk.mml.domain.exception.MmlBadRequestException
 import com.bbgk.mml.domain.repository.MemberRepository
+import com.bbgk.mml.domain.util.PageUtils.Companion.getDefaultPageable
 import com.bbgk.mml.member.dto.MemberForm
 import com.bbgk.mml.member.dto.MemberLoginResponse
 import org.springframework.data.domain.Page
@@ -29,8 +30,7 @@ class MemberService(
      */
     @Transactional(readOnly = true)
     fun getMembers(page: Int): Page<MemberDTO> {
-        val pageable = PageRequest.of(page, 5)
-        val members = memberRepository.findAll(pageable)
+        val members = memberRepository.findAll(getDefaultPageable(page))
         return members.map { MemberDTO(it) }
     }
 

@@ -4,6 +4,7 @@ import com.bbgk.mml.domain.entity.Member
 import com.bbgk.mml.domain.exception.MmlBadRequestException
 import com.bbgk.mml.domain.dto.PlaylistDTO
 import com.bbgk.mml.domain.entity.Playlist
+import com.bbgk.mml.domain.util.PageUtils.Companion.getDefaultPageable
 import com.bbgk.mml.musicList.dto.PlaylistCreateResponse
 import com.bbgk.mml.musicList.dto.PlaylistForm
 import com.bbgk.mml.musicList.repository.MusicListRepository
@@ -30,9 +31,7 @@ class PlaylistService(
      */
     @Transactional(readOnly = true)
     fun getPlaylists(page: Int): Page<PlaylistDTO> {
-        val pageable = PageRequest.of(page, 4)
-        val playlists = musicListRepository.getPlaylistsForPage(pageable)
-
+        val playlists = musicListRepository.getPlaylistsForPage(getDefaultPageable(page))
         return playlists.map { PlaylistDTO(it) }
     }
 
