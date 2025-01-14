@@ -8,6 +8,7 @@ import com.bbgk.mml.domain.dto.PlaylistDTO
 import com.bbgk.mml.musicList.dto.PlaylistForm
 import com.bbgk.mml.musicList.service.PlaylistService
 import org.assertj.core.api.Assertions
+import org.hamcrest.Matchers.hasSize
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
@@ -19,6 +20,8 @@ import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
 @WebMvcTest(PlaylistController::class)
@@ -50,10 +53,13 @@ class PlaylistControllerTest(
         `when`(playlistService.getPlaylists(any()))
                 .thenReturn(playlists)
 
-        // when
-        performGet(uri, MockMvcResultMatchers.status().isOk)
+        // when, then
+        mockMvc.perform(MockMvcRequestBuilders.get(uri))
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.content", hasSize<Any>(3)))
+            .andReturn()
 
-        // then
         verify(playlistService).getPlaylists(any())
     }
 

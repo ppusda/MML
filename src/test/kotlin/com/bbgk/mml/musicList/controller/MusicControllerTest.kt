@@ -7,6 +7,7 @@ import com.bbgk.mml.domain.dto.MusicDTO
 import com.bbgk.mml.musicList.dto.MusicForm
 import com.bbgk.mml.musicList.service.MusicService
 import org.assertj.core.api.Assertions.*
+import org.hamcrest.Matchers.hasSize
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
@@ -18,6 +19,8 @@ import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
 @WebMvcTest(MusicController::class)
@@ -46,10 +49,13 @@ class MusicControllerTest(
         `when`(musicService.getMusics(any()))
                 .thenReturn(musics)
 
-        // when
-        performGet(uri, MockMvcResultMatchers.status().isOk)
+        // when, then
+        mockMvc.perform(MockMvcRequestBuilders.get(uri))
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize<Any>(3)))
+            .andReturn()
 
-        // then
         verify(musicService).getMusics(any())
     }
 
@@ -57,8 +63,11 @@ class MusicControllerTest(
     @DisplayName("키워드로 음악 검색 요청을 보낸다")
     fun testSearchMusics() {
         // given
-        val uri = "/v2/musics?keyword=title"
+        val keyword = "title"
+        val uri = "/v2/musics?keyword=$keyword"
 
+
+        // 더미 데이터 생성
         val musics = listOf(
             Music("title1", "artist1", "url1"),
             Music("title2", "artist2", "url2"),
@@ -66,15 +75,18 @@ class MusicControllerTest(
         )
         val musicDTOs = musics.map { MusicDTO(it) }
 
-
+        // Controller 내 비즈니스 로직이 실행되었을 때, 반환될 데이터 설정
         `when`(musicService.searchMusics(any()))
             .thenReturn(musicDTOs)
 
-        // when
-        performGet(uri, MockMvcResultMatchers.status().isOk)
+        // when, then
+        mockMvc.perform(MockMvcRequestBuilders.get(uri))
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize<Any>(3)))
+            .andReturn()
 
-        // then
-        verify(musicService).searchMusics(any())
+        verify(musicService).searchMusics(keyword) // 실행되었는지 검증
     }
 
     @Test
