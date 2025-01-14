@@ -53,7 +53,7 @@ class MusicControllerTest(
         mockMvc.perform(MockMvcRequestBuilders.get(uri))
             .andDo(MockMvcResultHandlers.print())
             .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize<Any>(3)))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.content", hasSize<Any>(3)))
             .andReturn()
 
         verify(musicService).getMusics(any())
