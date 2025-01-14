@@ -68,7 +68,7 @@ class PlaylistMusicServiceTest: BaseServiceTest() {
     }
 
     @Test
-    @DisplayName("재생목록 내 존재하지 않는 음악을 추가할 때 에러가 발생합니다.")
+    @DisplayName("재생목록 내에 존재하지 않는 음악을 추가할 때 에러가 발생합니다.")
     fun testAddNotExistMusicInPlaylist() {
         // given
         val playlist = Playlist("name", member)
@@ -87,6 +87,26 @@ class PlaylistMusicServiceTest: BaseServiceTest() {
         assertEquals(MESSAGE_NOT_EXIST_MUSIC, exception.message)
         verify(musicListRepository).findPlayListById(any())
         verify(musicListRepository).findMusicById(any())
+    }
+
+    @Test
+    @DisplayName("재생목록 내에 이미 존재하는 음악을 추가할 때 에러가 발생합니다.")
+    fun testAddAlreadyExistMusicInPlaylist() {
+        // given
+        val playlist = Playlist("name", member)
+        val music = Music("title", "artist", "url")
+        val existingPlaylistMusic = PlaylistMusic(playlist, music)
+        playlist.addMusics(mutableListOf(existingPlaylistMusic))
+
+        `when`(musicListRepository.findPlayListById(PLAYLIST_ID)).thenReturn(playlist)
+        `when`(musicListRepository.findMusicById(MUSIC_ID)).thenReturn(music)
+
+        // when & then
+        assertThrows<MmlBadRequestException> {
+            playlistMusicService.addMusicInPlaylist(PLAYLIST_ID, MUSIC_ID)
+        }.also { exception ->
+            assertEquals(MESSAGE_ALREADY_EXIST_MUSIC, exception.message)
+        }
     }
 
     @Test

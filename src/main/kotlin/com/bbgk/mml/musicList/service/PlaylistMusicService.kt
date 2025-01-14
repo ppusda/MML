@@ -40,7 +40,7 @@ class PlaylistMusicService(
     }
 
     private fun validatePlaylistMusic(playlist: Playlist, music: Music) {
-        if (playlist.playlistMusics.map { it.music }.equals(music)) {
+        if (playlist.playlistMusics.any { it.music == music }) {
             throw MmlBadRequestException("이미 재생목록 내 존재하는 음악입니다.")
         }
     }

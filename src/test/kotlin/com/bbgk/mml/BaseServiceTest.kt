@@ -26,6 +26,7 @@ abstract class BaseServiceTest {
     protected val MESSAGE_NOT_EXIST_MEMBER = "존재하지 않는 사용자입니다."
     protected val MESSAGE_NOT_EXIST_PLAYLIST_MUSIC = "존재하지 않는 재생목록 내 음악입니다."
     protected val MESSAGE_NOT_EXIST_MUSIC = "존재하지 않는 음악입니다."
+    protected val MESSAGE_ALREADY_EXIST_MUSIC = "이미 재생목록 내 존재하는 음악입니다."
     protected val MESSAGE_NOT_EXIST_PLAYLIST = "존재하지 않는 플레이리스트입니다."
     protected val MESSAGE_NOT_VALIDATE_PASSWORD = "비밀번호가 일치하지 않습니다."
 
