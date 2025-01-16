@@ -2,8 +2,11 @@ package com.bbgk.mml.member.service
 
 import com.bbgk.mml.BaseServiceTest
 import com.bbgk.mml.domain.entity.Member
+import com.bbgk.mml.domain.exception.MemberExceptionMessage.NOT_EXIST_MEMBER
+import com.bbgk.mml.domain.exception.MemberExceptionMessage.NOT_VALIDATE_PASSWORD
 import com.bbgk.mml.domain.exception.MmlBadRequestException
 import com.bbgk.mml.domain.repository.MemberRepository
+import com.bbgk.mml.domain.util.PageUtils.Companion.PAGE_SIZE
 import com.bbgk.mml.member.dto.MemberForm
 import com.bbgk.mml.member.dto.MemberLoginResponse
 import org.assertj.core.api.Assertions.assertThat
@@ -41,11 +44,11 @@ class MemberServiceTest: BaseServiceTest() {
             members.add(member)
         }
 
-        val page = PageImpl(members, pageable, DATA_SIZE.toLong())
+        val page = PageImpl(members, pageable, PAGE_SIZE.toLong())
         `when`(memberRepository.findAll(pageable)).thenReturn(page)
 
         // when
-        val memberDTOs = memberService.getMembers(PAGE_NUMBER)
+        val memberDTOs = memberService.getMembers(PAGE)
 
         // then
         assertThat(memberDTOs).hasSize(DATA_SIZE)
@@ -81,7 +84,7 @@ class MemberServiceTest: BaseServiceTest() {
         }
 
         // then
-        assertEquals(MESSAGE_NOT_EXIST_MEMBER, exception.message)
+        assertEquals(NOT_EXIST_MEMBER.message, exception.message)
         verify(memberRepository).findById(MEMBER_ID)
     }
 
@@ -135,7 +138,7 @@ class MemberServiceTest: BaseServiceTest() {
         }
 
         // then
-        assertEquals(MESSAGE_NOT_EXIST_MEMBER, exception.message)
+        assertEquals(NOT_EXIST_MEMBER.message, exception.message)
         verify(memberRepository).findById(MEMBER_ID) // 호출되었는지 확인
         verify(memberRepository, never()).deleteById(MEMBER_ID) // 오류로 인해 호출되지 않아야 함
     }
@@ -166,7 +169,7 @@ class MemberServiceTest: BaseServiceTest() {
         }
 
         // then
-        assertEquals(MESSAGE_NOT_EXIST_MEMBER, exception.message)
+        assertEquals(NOT_EXIST_MEMBER.message, exception.message)
     }
 
     @Test
@@ -209,11 +212,11 @@ class MemberServiceTest: BaseServiceTest() {
 
         // when
         val exception = assertThrows<MmlBadRequestException> {
-            memberService.loginMember(MemberForm(EMAIL, "wrong password"))
+            memberService.loginMember(MemberForm(EMAIL, "WRONG PASSWORD"))
         }
 
         // then
-        assertEquals(MESSAGE_NOT_VALIDATE_PASSWORD, exception.message)
+        assertEquals(NOT_VALIDATE_PASSWORD.message, exception.message)
     }
 
 }

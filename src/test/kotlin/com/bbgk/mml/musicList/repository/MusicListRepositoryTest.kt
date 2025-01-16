@@ -5,6 +5,8 @@ import com.bbgk.mml.domain.entity.Music
 import com.bbgk.mml.domain.entity.Playlist
 import com.bbgk.mml.domain.entity.PlaylistMusic
 import com.bbgk.mml.domain.exception.MmlBadRequestException
+import com.bbgk.mml.domain.exception.MusicListExceptionMessage
+import com.bbgk.mml.domain.exception.MusicListExceptionMessage.*
 import com.bbgk.mml.domain.repository.MusicRepository
 import com.bbgk.mml.domain.repository.PlaylistMusicRepository
 import com.bbgk.mml.domain.repository.PlaylistRepository
@@ -17,7 +19,6 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
-import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.verify
 import org.springframework.data.domain.PageImpl
@@ -153,7 +154,7 @@ class MusicListRepositoryTest: BaseServiceTest() {
         }
 
         // then
-        assertEquals(MESSAGE_NOT_EXIST_MUSIC, exception.message)
+        assertEquals(NOT_EXIST_MUSIC.message, exception.message)
         verify(musicRepository).findById(MUSIC_ID)
     }
 
@@ -243,7 +244,7 @@ class MusicListRepositoryTest: BaseServiceTest() {
         }
 
         // then
-        assertEquals(MESSAGE_NOT_EXIST_PLAYLIST, exception.message)
+        assertEquals(NOT_EXIST_PLAYLIST.message, exception.message)
         verify(playlistRepository).findById(PLAYLIST_ID)
     }
 
@@ -295,7 +296,7 @@ class MusicListRepositoryTest: BaseServiceTest() {
         }
 
         // then
-        assertEquals(MESSAGE_NOT_EXIST_PLAYLIST_MUSIC, exception.message)
+        assertEquals(NOT_EXIST_PLAYLIST_MUSIC.message, exception.message)
         verify(playlistMusicRepository).findByPlaylistIdAndMusicId(PLAYLIST_ID, MUSIC_ID)
     }
 

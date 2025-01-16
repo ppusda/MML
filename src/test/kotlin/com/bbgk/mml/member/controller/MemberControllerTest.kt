@@ -3,6 +3,7 @@ package com.bbgk.mml.member.controller
 import com.bbgk.mml.BaseControllerTest
 import com.bbgk.mml.domain.entity.Member
 import com.bbgk.mml.domain.dto.MemberDTO
+import com.bbgk.mml.domain.util.PageUtils
 import com.bbgk.mml.member.dto.MemberForm
 import com.bbgk.mml.member.dto.MemberLoginResponse
 import com.bbgk.mml.member.service.MemberService
@@ -34,16 +35,10 @@ class MemberControllerTest(
     @DisplayName("Members 조회")
     fun testGetMembers() {
         // given
-        val uri = "/v1/members?page=0"
-
-        val memberList = listOf(
-                Member("test1", "test1"),
-                Member("test2", "test2"),
-                Member("test3", "test3"),
-        )
+        val uri = "/v1/members?page=$PAGE"
 
         val memberDTOs = memberList.map { MemberDTO(it) }
-        val members: Page<MemberDTO> = PageImpl(memberDTOs, pageable, DATA_SIZE.toLong())
+        val members: Page<MemberDTO> = PageImpl(memberDTOs, pageable, PageUtils.PAGE_SIZE.toLong())
 
         `when`(memberService.getMembers(any()))
                 .thenReturn(members)

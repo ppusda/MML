@@ -4,6 +4,7 @@ import com.bbgk.mml.BaseControllerTest
 import com.bbgk.mml.domain.dto.MusicDTO
 import com.bbgk.mml.domain.dto.PlaylistDTO
 import com.bbgk.mml.domain.entity.Music
+import com.bbgk.mml.domain.util.PageUtils
 import com.bbgk.mml.musicList.service.PlaylistService
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
@@ -37,7 +38,7 @@ class MusicListViewControllerTest(
                 PlaylistDTO("name", "email", musicList.map { MusicDTO(it) })
         )
 
-        val playlists: Page<PlaylistDTO> = PageImpl(playlistDTOs, pageable, DATA_SIZE.toLong())
+        val playlists: Page<PlaylistDTO> = PageImpl(playlistDTOs, pageable, PageUtils.PAGE_SIZE.toLong())
 
         `when`(playlistService.getPlaylists(0)).thenReturn(playlists)
 

@@ -5,6 +5,8 @@ import com.bbgk.mml.domain.entity.Music
 import com.bbgk.mml.domain.entity.Playlist
 import com.bbgk.mml.domain.entity.PlaylistMusic
 import com.bbgk.mml.domain.exception.MmlBadRequestException
+import com.bbgk.mml.domain.exception.MusicListExceptionMessage
+import com.bbgk.mml.domain.exception.MusicListExceptionMessage.*
 import com.bbgk.mml.musicList.repository.MusicListRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -55,7 +57,7 @@ class PlaylistMusicServiceTest: BaseServiceTest() {
     fun testAddMusicInNotExistPlaylist() {
         // given
         `when`(musicListRepository.findPlayListById(any()))
-                .thenThrow(MmlBadRequestException(MESSAGE_NOT_EXIST_PLAYLIST))
+                .thenThrow(MmlBadRequestException(NOT_EXIST_PLAYLIST.message))
 
         // when
         val exception = assertThrows<MmlBadRequestException> {
@@ -63,7 +65,7 @@ class PlaylistMusicServiceTest: BaseServiceTest() {
         }
 
         // then
-        assertEquals(MESSAGE_NOT_EXIST_PLAYLIST, exception.message)
+        assertEquals(NOT_EXIST_PLAYLIST.message, exception.message)
         verify(musicListRepository).findPlayListById(any())
     }
 
@@ -76,7 +78,7 @@ class PlaylistMusicServiceTest: BaseServiceTest() {
         `when`(musicListRepository.findPlayListById(any()))
                 .thenReturn(playlist)
         `when`(musicListRepository.findMusicById(any()))
-                .thenThrow(MmlBadRequestException(MESSAGE_NOT_EXIST_MUSIC))
+                .thenThrow(MmlBadRequestException(NOT_EXIST_MUSIC.message))
 
         // when
         val exception = assertThrows<MmlBadRequestException> {
@@ -84,7 +86,7 @@ class PlaylistMusicServiceTest: BaseServiceTest() {
         }
 
         // then
-        assertEquals(MESSAGE_NOT_EXIST_MUSIC, exception.message)
+        assertEquals(NOT_EXIST_MUSIC.message, exception.message)
         verify(musicListRepository).findPlayListById(any())
         verify(musicListRepository).findMusicById(any())
     }
@@ -105,7 +107,7 @@ class PlaylistMusicServiceTest: BaseServiceTest() {
         assertThrows<MmlBadRequestException> {
             playlistMusicService.addMusicInPlaylist(PLAYLIST_ID, MUSIC_ID)
         }.also { exception ->
-            assertEquals(MESSAGE_ALREADY_EXIST_MUSIC, exception.message)
+            assertEquals(ALREADY_EXIST_PLAYLIST_MUSIC.message, exception.message)
         }
     }
 
@@ -140,7 +142,7 @@ class PlaylistMusicServiceTest: BaseServiceTest() {
     fun testDeleteMusicInNotExistPlaylist() {
         // given
         `when`(musicListRepository.findByPlaylistIdAndMusicId(any(), any()))
-                .thenThrow(MmlBadRequestException(MESSAGE_NOT_EXIST_PLAYLIST_MUSIC))
+                .thenThrow(MmlBadRequestException(NOT_EXIST_PLAYLIST_MUSIC.message))
 
         // when
         val exception = assertThrows<MmlBadRequestException> {
@@ -148,7 +150,7 @@ class PlaylistMusicServiceTest: BaseServiceTest() {
         }
 
         // then
-        assertEquals(MESSAGE_NOT_EXIST_PLAYLIST_MUSIC, exception.message)
+        assertEquals(NOT_EXIST_PLAYLIST_MUSIC.message, exception.message)
         verify(musicListRepository, never()).deletePlaylistMusicById(PLAYLIST_MUSIC_ID)
     }
 

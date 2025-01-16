@@ -9,7 +9,7 @@ class PageUtils {
     }
 
     companion object {
-        private const val PAGE_SIZE = 4
+        const val PAGE_SIZE = 4
 
         fun getDefaultPageable(page: Int): Pageable {
             return PageRequest.of(page, PAGE_SIZE)

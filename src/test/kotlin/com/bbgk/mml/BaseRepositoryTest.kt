@@ -1,11 +1,11 @@
 package com.bbgk.mml
 
 import com.bbgk.mml.domain.entity.Member
+import com.bbgk.mml.domain.util.PageUtils
 import com.linecorp.kotlinjdsl.support.spring.data.jpa.autoconfigure.KotlinJdslAutoConfiguration
 import org.junit.jupiter.api.TestInstance
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.context.annotation.Import
-import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 
 @DataJpaTest
@@ -19,10 +19,8 @@ abstract class BaseRepositoryTest {
     protected val PLAYLIST_MUSIC_ID = 1L
 
     // Page Config
-    private val PAGE_NUMBER = 0
-    private val PAGE_SIZE = 5
-    protected val DATA_SIZE = 5
-    protected val pageable: Pageable = PageRequest.of(PAGE_NUMBER, PAGE_SIZE)
+    protected val PAGE = 0
+    protected val pageable: Pageable = PageUtils.getDefaultPageable(PAGE)
 
     // Member Config
     protected val member = Member("testMember", "1234")

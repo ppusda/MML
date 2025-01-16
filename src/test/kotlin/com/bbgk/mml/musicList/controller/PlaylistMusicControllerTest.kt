@@ -5,6 +5,9 @@ import com.bbgk.mml.domain.entity.Playlist
 import com.bbgk.mml.domain.exception.MmlBadRequestException
 import com.bbgk.mml.member.service.MemberService
 import com.bbgk.mml.domain.dto.PlaylistDTO
+import com.bbgk.mml.domain.exception.MusicListExceptionMessage
+import com.bbgk.mml.domain.exception.MusicListExceptionMessage.ALREADY_EXIST_PLAYLIST_MUSIC
+import com.bbgk.mml.domain.exception.MusicListExceptionMessage.NOT_EXIST_PLAYLIST_MUSIC
 import com.bbgk.mml.musicList.dto.PlaylistForm
 import com.bbgk.mml.musicList.service.PlaylistMusicService
 import com.bbgk.mml.musicList.service.PlaylistService
@@ -35,12 +38,11 @@ class PlaylistMusicControllerTest(
 
 
     @Test
-    @DisplayName("N번 Playlist 조회")
+    @DisplayName("n번 Playlist 조회")
     fun testGetNPlaylist() {
         // given
-        val uri = "/v1/playlists/${N}/musics"
+        val uri = "/v1/playlists/${PLAYLIST_ID}/musics"
 
-        val playlist = Playlist("name", member)
         val playlistDTO = PlaylistDTO(playlist)
 
         `when`(playlistService.findPlaylistById(any()))
@@ -57,7 +59,7 @@ class PlaylistMusicControllerTest(
     @DisplayName("Playlist 내 Music 담기 성공")
     fun testPostPlaylistMusic_Success() {
         // given
-        val uri = "/v1/playlists/1/musics"
+        val uri = "/v1/playlists/${PLAYLIST_ID}/musics"
         val playlistForm = PlaylistForm("playlist")
 
         // when
@@ -71,7 +73,7 @@ class PlaylistMusicControllerTest(
     @DisplayName("Playlist 내 Music 담기 요청 시 경로 오류")
     fun testPostPlaylist_NotFound() {
         // given
-        val uri = "/v1/playlists/1/musics-error"
+        val uri = "/v1/playlists/${PLAYLIST_ID}/musics-error"
         val playlistForm = PlaylistForm("playlist")
 
         // when, then
@@ -82,11 +84,11 @@ class PlaylistMusicControllerTest(
     @DisplayName("Playlist 내 Music 담기 요청 시 클라이언트 오류")
     fun testPostPlaylist_ServerError() {
         // given
-        val uri = "/v1/playlists/1/musics"
+        val uri = "/v1/playlists/${PLAYLIST_ID}/musics"
         val playlistForm = PlaylistForm("playlist")
 
         `when`(playlistMusicService.addMusicInPlaylist(any(), any()))
-                .thenThrow(MmlBadRequestException(MESSAGE_ALREADY_EXIST_PLAYLIST_MUSIC))
+                .thenThrow(MmlBadRequestException(ALREADY_EXIST_PLAYLIST_MUSIC.message))
 
         // when, then
         performPostWithId(uri, playlistForm, "musicId", MUSIC_ID, MockMvcResultMatchers.status().isBadRequest)
@@ -96,7 +98,7 @@ class PlaylistMusicControllerTest(
     @DisplayName("Playlist 내 Music 삭제 요청 시 삭제 성공")
     fun testDeletePlaylist_Success() {
         // given
-        val uri = "/v1/playlists/1/musics"
+        val uri = "/v1/playlists/${PLAYLIST_ID}/musics"
 
         // when
         performDeleteWithId(uri, "musicId", MUSIC_ID, MockMvcResultMatchers.status().isOk)
@@ -109,7 +111,7 @@ class PlaylistMusicControllerTest(
     @DisplayName("Playlist 내 Music 삭제 요청 시 경로 오류")
     fun testDeletePlaylist_NotFound() {
         // given
-        val uri = "/v1/playlists/1/musics-error"
+        val uri = "/v1/playlists/${PLAYLIST_ID}/musics-error"
 
         // when, then
         performDeleteWithId(uri, "musicId", MUSIC_ID, MockMvcResultMatchers.status().isNotFound)
@@ -119,10 +121,10 @@ class PlaylistMusicControllerTest(
     @DisplayName("Playlist 내 Music 삭제 요청 시 클라이언트 오류")
     fun testDeletePlaylist_ServerError() {
         // given
-        val uri = "/v1/playlists/1/musics"
+        val uri = "/v1/playlists/${PLAYLIST_ID}/musics"
 
         `when`(playlistMusicService.deleteMusicInPlaylist(any(), any()))
-                .thenThrow(MmlBadRequestException(MESSAGE_NOT_EXIST_PLAYLIST_MUSIC))
+                .thenThrow(MmlBadRequestException(NOT_EXIST_PLAYLIST_MUSIC.message))
 
         // when, then
         performDeleteWithId(uri, "musicId", MUSIC_ID, MockMvcResultMatchers.status().isBadRequest)

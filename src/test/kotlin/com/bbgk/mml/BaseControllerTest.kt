@@ -1,10 +1,13 @@
 package com.bbgk.mml
 
 import com.bbgk.mml.domain.entity.Member
+import com.bbgk.mml.domain.entity.Music
+import com.bbgk.mml.domain.entity.Playlist
+import com.bbgk.mml.domain.util.PageUtils
+import com.bbgk.mml.musicList.dto.MusicForm
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.junit.jupiter.MockitoExtension
-import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
@@ -23,26 +26,34 @@ abstract class BaseControllerTest(
     protected val objectMapper = ObjectMapper()
 
     // Page Config
-    private val PAGE_NUMBER = 0
-    private val PAGE_SIZE = 5
-    protected val DATA_SIZE = 5
-    protected val pageable: Pageable = PageRequest.of(PAGE_NUMBER, PAGE_SIZE)
+    protected val PAGE = 0
+    protected val pageable: Pageable = PageUtils.getDefaultPageable(PAGE)
 
-    // Member Config
-    protected var USER_ID = 1L
-    protected var PLAYLIST_ID = 1L
-    protected var MUSIC_ID = 2L
-    protected val member = Member("Test", "test")
+    // Data Config
+    protected val MEMBER_ID = 1L
+    protected val member = Member("test", "test")
+    val memberList = listOf(
+        Member("test1", "test1"),
+        Member("test2", "test2"),
+        Member("test3", "test3"),
+    )
 
-    // Message Config
-    protected val MESSAGE_REQUIRED = "필수 값입니다."
-    protected val MESSAGE_NOT_EXIST_MUSIC = "존재하지 않는 음악입니다."
-    protected val MESSAGE_NOT_EXIST_PLAYLIST = "존재하지 않는 플레이리스트입니다."
-    protected val MESSAGE_ALREADY_EXIST_PLAYLIST_MUSIC = "이미 재생목록 내 존재하는 음악입니다."
-    protected val MESSAGE_NOT_EXIST_PLAYLIST_MUSIC = "존재하지 않는 플레이리스트 내 음악입니다."
+    protected val PLAYLIST_ID = 1L
+    val playlist = Playlist("name", member)
+    val playlistList = listOf(
+        Playlist("name1", member),
+        Playlist("name2", member),
+        Playlist("name3", member),
+    )
 
-    // Path value Config
-    protected val N = 1
+    protected var MUSIC_ID = 1L
+    val musicForm = MusicForm("music", "artist", "url")
+    val musicList = listOf(
+        Music("title1", "artist1", "url1"),
+        Music("title2", "artist2", "url2"),
+        Music("title3", "artist3", "url3"),
+    )
+
 
     protected fun performGet(uri: String, status: ResultMatcher): MvcResult {
         return mockMvc

@@ -5,6 +5,11 @@ import com.bbgk.mml.domain.entity.Playlist
 import com.bbgk.mml.domain.exception.MmlBadRequestException
 import com.bbgk.mml.member.service.MemberService
 import com.bbgk.mml.domain.dto.PlaylistDTO
+import com.bbgk.mml.domain.exception.GlobalExceptionMessage
+import com.bbgk.mml.domain.exception.GlobalExceptionMessage.REQUIRED_ARGUMENT
+import com.bbgk.mml.domain.exception.MusicListExceptionMessage
+import com.bbgk.mml.domain.exception.MusicListExceptionMessage.NOT_EXIST_PLAYLIST
+import com.bbgk.mml.domain.util.PageUtils
 import com.bbgk.mml.musicList.dto.PlaylistForm
 import com.bbgk.mml.musicList.service.PlaylistService
 import org.assertj.core.api.Assertions
@@ -39,16 +44,10 @@ class PlaylistControllerTest(
     @DisplayName("Playlists 조회")
     fun testGetPlaylists() {
         // given
-        val uri = "/v1/playlists?page=0"
-
-        val playlistList = listOf(
-                Playlist("name1", member),
-                Playlist("name2", member),
-                Playlist("name3", member),
-        )
+        val uri = "/v1/playlists?page=$PAGE"
 
         val playlistDTOs = playlistList.map { PlaylistDTO(it) }
-        val playlists: Page<PlaylistDTO> = PageImpl(playlistDTOs, pageable, DATA_SIZE.toLong())
+        val playlists: Page<PlaylistDTO> = PageImpl(playlistDTOs, pageable, PageUtils.PAGE_SIZE.toLong())
 
         `when`(playlistService.getPlaylists(any()))
                 .thenReturn(playlists)
@@ -71,7 +70,7 @@ class PlaylistControllerTest(
         val playlistForm = PlaylistForm("playlist")
 
         // when, then
-        performPostWithId(uri, playlistForm, "uid", USER_ID, MockMvcResultMatchers.status().isOk)
+        performPostWithId(uri, playlistForm, "uid", MEMBER_ID, MockMvcResultMatchers.status().isOk)
     }
 
     @Test
@@ -82,7 +81,7 @@ class PlaylistControllerTest(
         val playlistForm = PlaylistForm("playlist")
 
         // when, then
-        performPostWithId(uri, playlistForm, "uid", USER_ID, MockMvcResultMatchers.status().isNotFound)
+        performPostWithId(uri, playlistForm, "uid", MEMBER_ID, MockMvcResultMatchers.status().isNotFound)
     }
 
     @Test
@@ -93,11 +92,11 @@ class PlaylistControllerTest(
         val playlistForm = PlaylistForm("")
 
         // when
-        val mvcResult = performPostWithId(uri, playlistForm, "uid", USER_ID, MockMvcResultMatchers.status().isBadRequest)
+        val mvcResult = performPostWithId(uri, playlistForm, "uid", MEMBER_ID, MockMvcResultMatchers.status().isBadRequest)
         val response = mvcResult.response
 
         // then
-        Assertions.assertThat(response.contentAsString).contains(MESSAGE_REQUIRED)
+        Assertions.assertThat(response.contentAsString).contains(REQUIRED_ARGUMENT.message)
     }
 
     @Test
@@ -135,7 +134,7 @@ class PlaylistControllerTest(
         val playlistForm = PlaylistForm("edited playlist")
 
         `when`(playlistService.updatePlaylist(any(), any()))
-                .thenThrow(MmlBadRequestException(MESSAGE_NOT_EXIST_PLAYLIST))
+                .thenThrow(MmlBadRequestException(NOT_EXIST_PLAYLIST.message))
 
         // when, then
         performPatch(uri, playlistForm, MockMvcResultMatchers.status().isBadRequest)
@@ -171,7 +170,7 @@ class PlaylistControllerTest(
         val uri = "/v1/playlists/1"
 
         `when`(playlistService.deletePlaylist(any()))
-                .thenThrow(MmlBadRequestException(MESSAGE_NOT_EXIST_PLAYLIST))
+                .thenThrow(MmlBadRequestException(NOT_EXIST_PLAYLIST.message))
 
         // when, then
         performDelete(uri, MockMvcResultMatchers.status().isBadRequest)

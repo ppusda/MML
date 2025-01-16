@@ -13,7 +13,7 @@ class ApiResponseTest {
         // given
         val response = ApiResponse<String>(HttpStatus.OK)
 
-        // when
+        // then
         assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
     }
 
