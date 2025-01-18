@@ -1,11 +1,12 @@
 package com.bbgk.mml.domain.util
 
+import com.bbgk.mml.domain.exception.GlobalExceptionMessage
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 
 class PageUtils {
     fun getDefaultPageable() {
-        throw UnsupportedOperationException("유틸 클래스는 인스턴스화 할 수 없습니다.")
+        throw UnsupportedOperationException(GlobalExceptionMessage.CANNOT_INITIALIZE_UTILS.message)
     }
 
     companion object {

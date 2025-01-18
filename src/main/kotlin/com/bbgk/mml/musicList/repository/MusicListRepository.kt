@@ -4,7 +4,7 @@ import com.bbgk.mml.domain.entity.Music
 import com.bbgk.mml.domain.entity.Playlist
 import com.bbgk.mml.domain.entity.PlaylistMusic
 import com.bbgk.mml.domain.exception.MmlBadRequestException
-import com.bbgk.mml.domain.repository.CustomMusicRepository
+import com.bbgk.mml.domain.exception.MusicListExceptionMessage
 import com.bbgk.mml.domain.repository.MusicRepository
 import com.bbgk.mml.domain.repository.PlaylistMusicRepository
 import com.bbgk.mml.domain.repository.PlaylistRepository
@@ -68,7 +68,7 @@ class MusicListRepository( // 퍼사드 패턴 적용, 간단한 DB 기능 분�
     @Transactional(readOnly = true)
     fun findMusicById(id: Long): Music {
         return musicRepository.findById(id).orElseThrow{
-            throw MmlBadRequestException("존재하지 않는 음악입니다.")
+            throw MmlBadRequestException(MusicListExceptionMessage.NOT_EXIST_MUSIC.message)
         }
     }
 
@@ -113,7 +113,7 @@ class MusicListRepository( // 퍼사드 패턴 적용, 간단한 DB 기능 분�
     @Transactional(readOnly = true)
     fun findPlayListById(id: Long): Playlist {
         return playlistRepository.findById(id).orElseThrow {
-            throw MmlBadRequestException("존재하지 않는 플레이리스트입니다.")
+            throw MmlBadRequestException(MusicListExceptionMessage.NOT_EXIST_PLAYLIST.message)
         }
     }
 
@@ -138,7 +138,7 @@ class MusicListRepository( // 퍼사드 패턴 적용, 간단한 DB 기능 분�
     @Transactional(readOnly = true)
     fun findByPlaylistIdAndMusicId(playlistId: Long, musicId: Long): PlaylistMusic {
         return playlistMusicRepository.findByPlaylistIdAndMusicId(playlistId, musicId).orElseThrow {
-            throw MmlBadRequestException("존재하지 않는 재생목록 내 음악입니다.")
+            throw MmlBadRequestException(MusicListExceptionMessage.NOT_EXIST_PLAYLIST_MUSIC.message)
         }
     }
 

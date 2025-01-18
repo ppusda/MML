@@ -2,13 +2,13 @@ package com.bbgk.mml.member.service
 
 import com.bbgk.mml.domain.dto.MemberDTO
 import com.bbgk.mml.domain.entity.Member
+import com.bbgk.mml.domain.exception.MemberExceptionMessage
 import com.bbgk.mml.domain.exception.MmlBadRequestException
 import com.bbgk.mml.domain.repository.MemberRepository
 import com.bbgk.mml.domain.util.PageUtils.Companion.getDefaultPageable
 import com.bbgk.mml.member.dto.MemberForm
 import com.bbgk.mml.member.dto.MemberLoginResponse
 import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -44,7 +44,7 @@ class MemberService(
     @Transactional(readOnly = true)
     fun findMemberById(id: Long): Member {
         return memberRepository.findById(id).orElseThrow{
-            throw MmlBadRequestException("존재하지 않는 사용자입니다.")
+            throw MmlBadRequestException(MemberExceptionMessage.NOT_EXIST_MEMBER.message)
         }
     }
 
@@ -58,7 +58,7 @@ class MemberService(
     @Transactional(readOnly = true)
     fun findMemberByEmail(email: String): Member {
         return memberRepository.findByEmail(email).orElseThrow {
-            throw MmlBadRequestException("존재하지 않는 사용자입니다.")
+            throw MmlBadRequestException(MemberExceptionMessage.NOT_EXIST_MEMBER.message)
         }
     }
 
@@ -112,7 +112,9 @@ class MemberService(
      * @throws MmlBadRequestException 비밀번호가 일치하지 않을 시 발생
      */
     private fun validatePassword(member: Member, password: String) {
-        if (member.password != password) throw MmlBadRequestException("비밀번호가 일치하지 않습니다.")
+        if (member.password != password) {
+            throw MmlBadRequestException(MemberExceptionMessage.NOT_VALIDATE_PASSWORD.message)
+        }
     }
 
 }

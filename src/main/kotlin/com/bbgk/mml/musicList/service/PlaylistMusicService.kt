@@ -4,6 +4,7 @@ import com.bbgk.mml.domain.entity.Music
 import com.bbgk.mml.domain.entity.Playlist
 import com.bbgk.mml.domain.entity.PlaylistMusic
 import com.bbgk.mml.domain.exception.MmlBadRequestException
+import com.bbgk.mml.domain.exception.MusicListExceptionMessage
 import com.bbgk.mml.musicList.repository.MusicListRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -41,7 +42,7 @@ class PlaylistMusicService(
 
     private fun validatePlaylistMusic(playlist: Playlist, music: Music) {
         if (playlist.playlistMusics.any { it.music == music }) {
-            throw MmlBadRequestException("이미 재생목록 내 존재하는 음악입니다.")
+            throw MmlBadRequestException(MusicListExceptionMessage.ALREADY_EXIST_PLAYLIST_MUSIC.message)
         }
     }
 
