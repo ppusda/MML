@@ -19,10 +19,6 @@ class PlaylistMusicRepositoryTest(
 
     @BeforeAll
     fun beforeAll() {
-        val musics = mutableListOf(
-                Music("title1", "artist1", "url1"),
-                Music("title2", "artist2", "url2")
-        )
         val savedMusics = musicRepository.saveAll(musics)
         val savedUser = memberRepository.save(member)
 
