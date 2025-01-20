@@ -27,7 +27,7 @@ abstract class BaseServiceTest {
     val playlist = Playlist("name", member)
 
     protected val MUSIC_ID = 1L
-    protected val musicForm = MusicForm("title", "artist", "url")
+    protected val musicForm = MusicForm("titleForm", "artistForm", "urlForm")
     protected val music = musicForm.toEntity()
 
     protected val PLAYLIST_MUSIC_ID = 1L

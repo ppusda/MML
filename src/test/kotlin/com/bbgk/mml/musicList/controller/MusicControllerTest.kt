@@ -1,17 +1,15 @@
 package com.bbgk.mml.musicList.controller
 
 import com.bbgk.mml.BaseControllerTest
-import com.bbgk.mml.domain.entity.Music
-import com.bbgk.mml.domain.exception.MmlBadRequestException
 import com.bbgk.mml.domain.dto.MusicDTO
-import com.bbgk.mml.domain.exception.GlobalExceptionMessage
+import com.bbgk.mml.domain.entity.Music
 import com.bbgk.mml.domain.exception.GlobalExceptionMessage.REQUIRED_ARGUMENT
-import com.bbgk.mml.domain.exception.MusicListExceptionMessage
+import com.bbgk.mml.domain.exception.MmlBadRequestException
 import com.bbgk.mml.domain.exception.MusicListExceptionMessage.NOT_EXIST_MUSIC
 import com.bbgk.mml.domain.util.PageUtils
 import com.bbgk.mml.musicList.dto.MusicForm
 import com.bbgk.mml.musicList.service.MusicService
-import org.assertj.core.api.Assertions.*
+import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.Matchers.hasSize
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -119,11 +117,10 @@ class MusicControllerTest(
         val musicForm = MusicForm("", "artist", "url")
 
         // when
-        val mvcResult = performPost(uri, musicForm, MockMvcResultMatchers.status().isBadRequest)
-        val response = mvcResult.response
+        val result = performPost(uri, musicForm, MockMvcResultMatchers.status().isBadRequest)
 
         // then
-        assertThat(response.contentAsString).contains(REQUIRED_ARGUMENT.message)
+        assertThat(result.response.contentAsString).contains(REQUIRED_ARGUMENT.message)
     }
 
     @Test
@@ -159,7 +156,8 @@ class MusicControllerTest(
                 .thenThrow(MmlBadRequestException(NOT_EXIST_MUSIC.message))
 
         // when, then
-        performPut(uri, musicForm, MockMvcResultMatchers.status().isBadRequest)
+        val result = performPut(uri, musicForm, MockMvcResultMatchers.status().isBadRequest)
+        assertThat(result.response.contentAsString).isEqualTo(NOT_EXIST_MUSIC.message)
     }
 
     @Test
@@ -195,7 +193,8 @@ class MusicControllerTest(
                 .thenThrow(MmlBadRequestException(NOT_EXIST_MUSIC.message))
 
         // when, then
-        performDelete(uri, MockMvcResultMatchers.status().isBadRequest)
+        val result = performDelete(uri, MockMvcResultMatchers.status().isBadRequest)
+        assertThat(result.response.contentAsString).isEqualTo(NOT_EXIST_MUSIC.message)
     }
 
 }

@@ -115,7 +115,7 @@ class MusicServiceTest: BaseServiceTest() {
     fun testUpdateNotExistMusic() {
         // given
         `when`(musicListRepository.findMusicById(any()))
-                .thenThrow(MmlBadRequestException("존재하지 않는 음악입니다."))
+                .thenThrow(MmlBadRequestException(NOT_EXIST_MUSIC.message))
 
         // when
         val exception = assertThrows<MmlBadRequestException> {

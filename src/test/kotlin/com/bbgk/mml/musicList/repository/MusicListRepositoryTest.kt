@@ -284,7 +284,7 @@ class MusicListRepositoryTest: BaseServiceTest() {
     }
 
     @Test
-    @DisplayName("재생목록 내 음악을 아이디로 검색합니다.")
+    @DisplayName("재생목록 내 음악을 아이디로 검색했을 때 아무것도 검색되지 않습니다.")
     fun testFindNotExistPlaylistMusicById() {
         // given
         `when`(playlistMusicRepository.findByPlaylistIdAndMusicId(any(), any()))
