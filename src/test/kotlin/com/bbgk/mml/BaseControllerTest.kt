@@ -1,14 +1,8 @@
 package com.bbgk.mml
 
-import com.bbgk.mml.domain.entity.Member
-import com.bbgk.mml.domain.entity.Music
-import com.bbgk.mml.domain.entity.Playlist
-import com.bbgk.mml.domain.util.PageUtils
-import com.bbgk.mml.musicList.dto.MusicForm
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.junit.jupiter.MockitoExtension
-import org.springframework.data.domain.Pageable
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.MvcResult
@@ -22,8 +16,7 @@ abstract class BaseControllerTest(
         private val mockMvc: MockMvc
 ): TestConstants() {
 
-    // Object Mapper
-    protected val objectMapper = ObjectMapper()
+    private val objectMapper = ObjectMapper()
 
     protected fun performGet(uri: String, status: ResultMatcher): MvcResult {
         return mockMvc

@@ -8,6 +8,4 @@ import org.springframework.context.annotation.Import
 @DataJpaTest
 @Import(KotlinJdslAutoConfiguration::class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-abstract class BaseRepositoryTest: TestConstants() {
-
-}
+abstract class BaseRepositoryTest: TestConstants()

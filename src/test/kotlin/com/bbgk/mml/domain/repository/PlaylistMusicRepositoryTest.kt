@@ -1,7 +1,6 @@
 package com.bbgk.mml.domain.repository
 
 import com.bbgk.mml.BaseRepositoryTest
-import com.bbgk.mml.domain.entity.Music
 import com.bbgk.mml.domain.entity.Playlist
 import com.bbgk.mml.domain.entity.PlaylistMusic
 import org.assertj.core.api.Assertions
@@ -19,11 +18,11 @@ class PlaylistMusicRepositoryTest(
 
     @BeforeAll
     fun beforeAll() {
-        val savedMusics = musicRepository.saveAll(musics)
-        val savedUser = memberRepository.save(member)
+        val savedMusics = musicRepository.saveAll(musicList)
+        val saveMember = memberRepository.save(member)
 
-        val playlist1 = Playlist("playlist1", savedUser)
-        val playlist2 = Playlist("playlist2", savedUser)
+        val playlist1 = Playlist("playlist1", saveMember)
+        val playlist2 = Playlist("playlist2", saveMember)
         val savedPlaylists = playlistRepository.saveAll(mutableListOf(playlist1, playlist2))
 
         playlist1.addMusics(mutableListOf(
@@ -47,6 +46,7 @@ class PlaylistMusicRepositoryTest(
     @DisplayName("재생목록 아이디와 음악 아이디로 연관관계 테이블 내 아이디를 검색한다.")
     fun testFindByPlaylistIdAndMusicId() {
         // given - beforeAll
+
         // when
         val playlistMusic = playlistMusicRepository.findByPlaylistIdAndMusicId(PLAYLIST_ID, MUSIC_ID)
 
