@@ -20,40 +20,10 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 @ExtendWith(MockitoExtension::class)
 abstract class BaseControllerTest(
         private val mockMvc: MockMvc
-) {
+): TestConstants() {
 
     // Object Mapper
     protected val objectMapper = ObjectMapper()
-
-    // Page Config
-    protected val PAGE = 0
-    protected val pageable: Pageable = PageUtils.getDefaultPageable(PAGE)
-
-    // Data Config
-    protected val MEMBER_ID = 1L
-    protected val member = Member("test", "test")
-    val memberList = listOf(
-        Member("test1", "test1"),
-        Member("test2", "test2"),
-        Member("test3", "test3"),
-    )
-
-    protected val PLAYLIST_ID = 1L
-    val playlist = Playlist("name", member)
-    val playlistList = listOf(
-        Playlist("name1", member),
-        Playlist("name2", member),
-        Playlist("name3", member),
-    )
-
-    protected var MUSIC_ID = 1L
-    val musicForm = MusicForm("music", "artist", "url")
-    val musicList = listOf(
-        Music("title1", "artist1", "url1"),
-        Music("title2", "artist2", "url2"),
-        Music("title3", "artist3", "url3"),
-    )
-
 
     protected fun performGet(uri: String, status: ResultMatcher): MvcResult {
         return mockMvc
