@@ -39,7 +39,7 @@ abstract class TestConstants {
         val playlistList = createPlaylists()
         val playlistForm = createPlaylistForm()
 
-        fun createMember(
+        private fun createMember(
             email: String = EMAIL,
             password: String = PASSWORD
         ) = Member(email, password)
